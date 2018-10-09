@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- data defined saving in cards -->
+<!-- version: 1.0.0.0, last update: 2018.10.01 -->
+
+<CardStru>
+	
+	<data name="SYSU" desc="中山大学">
+		<item name="version" type="BYTE" length="1" offset="0" description="版本号"/>
+		<item name="universityCode" type="STR" length="6" offset="1" description="学校代码"/>
+		<item name="cardno" type="INT32" length="4" offset="0" description="卡号"/>
+		<item name="sno" type="STR" length="20" offset="16" description="学工号"/>
+	</data>
+
+	<data name="PKU" desc="北京大学">
+		<item name="version" type="BYTE" length="1" offset="0" description="版本号"/>
+		<item name="universityCode" type="STR" length="6" offset="1" description="学校代码"/>
+		<item name="cardno" type="INT32" length="4" offset="0" description="卡号"/>
+		<item name="sno" type="STR" length="20" offset="16" description="学工号"/>
+		<item name="balance" type="INT32" length="4" offset="30" description="余额"/>
+	</data>
+	
+</CardStru>

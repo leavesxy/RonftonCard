@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- virtual address of cards -->
+<!-- version: 1.0.0.0, last update: 2018.10.01 -->
+
+<CardAddr>
+	<card name="public" desc="公共">
+		<addr offset="0x0000" length="16" descriptor="0x0000"  block="1" />
+		<addr offset="0x0010" length="16" descriptor="0x0000"  block="2" />
+		<addr offset="0x0020" length="16" descriptor="0x0001"  block="0" />
+		<addr offset="0x0030" length="16" descriptor="0x0001"  block="1" />
+		<addr offset="0x0040" length="16" descriptor="0x0001"  block="2" />
+	</card>
+
+	<card name="PKU" desc="个性化">
+		<addr offset="0x0000" length="16" descriptor="0x0005"  block="0" />
+		<addr offset="0x0010" length="16" descriptor="0x0005"  block="1" />
+		<addr offset="0x0020" length="16" descriptor="0x0005"  block="2" />
+		<addr offset="0x0030" length="16" descriptor="0x0000"  block="1" />
+		<addr offset="0x0040" length="16" descriptor="0x0000"  block="2" />
+	</card>
+	
+</CardAddr>
