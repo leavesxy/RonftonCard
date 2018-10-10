@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardProt.cs" />
+    <Compile Include="CardType.cs" />
     <Compile Include="Config\AbstractConfigTemplete.cs" />
     <Compile Include="Config\CardAddrItem.cs" />
     <Compile Include="Config\CardAddrTemplete.cs" />
@@ -51,7 +53,6 @@
     <Compile Include="CardDataType.cs" />
     <Compile Include="Config\CardStruTemplete.cs" />
     <Compile Include="Reader\AbstractCardReader.cs" />
-    <Compile Include="Reader\CardType.cs" />
     <Compile Include="Reader\ICardReader.cs" />
     <Compile Include="Reader\KeyMode.cs" />
     <Compile Include="Reader\PortType.cs" />

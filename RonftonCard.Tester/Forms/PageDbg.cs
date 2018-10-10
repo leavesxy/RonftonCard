@@ -21,48 +21,61 @@ namespace RonftonCard.Tester.Forms
 
 		private void PageDbg_Load(object sender, EventArgs e)
 		{
-
 		}
 		
 		#region "--- button command ---"
 
 		private void BtnDbgAddrTemplete_Click(object sender, EventArgs e)
 		{
-			List<CardAddrItem> items = TesterContext.GetCardAddrTempleteSelected();
-
-			this.TxtDbg.Text = "  Card Virtual Address, Total Size : " + Environment.NewLine;
-			this.TxtDbg.Text += "------------------------------------------" + Environment.NewLine;
-
-			foreach (CardAddrItem item in items)
-				this.TxtDbg.Text += item.ToString();
-		}
-		private void BtnChkAddrTemplete_Click(object sender, EventArgs e)
-		{
-			CardAddrItem[] sortedAddrTable = TesterContext.GetCardAddrTempleteSelected().OrderBy(addr => addr.Offset).ToArray();
-			int errors = 0;
 			this.TxtDbg.Clear();
+			CardAddrItem[] sortedAddrTable = TesterContext.GetCardAddrTempleteSelected().OrderBy(addr => addr.Offset).ToArray();
+			StringBuilder errMsg = new StringBuilder();
 
-			for (int i = 1; i < sortedAddrTable.Length; i++)
+			int size=0;
+			for (int i = 0; i < sortedAddrTable.Length; i++)
 			{
-				if (sortedAddrTable[i - 1].Offset + sortedAddrTable[i - 1].Length != sortedAddrTable[i].Offset)
+				this.TxtDbg.Text += sortedAddrTable[i].ToString();
+				size += sortedAddrTable[i].Length;
+
+				if ( i>0 && 
+					(sortedAddrTable[i - 1].Offset + sortedAddrTable[i - 1].Length != sortedAddrTable[i].Offset))
 				{
-					this.TxtDbg.Text += "Error : ->" + sortedAddrTable[i].ToString() + Environment.NewLine;
-					errors++;
+					errMsg.Append ("Address conflict! ->").Append(sortedAddrTable[i].ToString());
 				}
 			}
-
-			this.TxtDbg.Text += String.Format("there are {0} errors in current configuration!", errors);
+			this.TxtDbg.Text += "------------------------------------------------------------------------------------" + Environment.NewLine;
+			this.TxtDbg.Text += "Card Virtual Address, Total Size : " + size.ToString() + Environment.NewLine;
+			this.TxtDbg.Text += errMsg.ToString();
 		}
 
 		private void BtnDbgStruTemplete_Click(object sender, EventArgs e)
 		{
-			List<CardStruItem> items = TesterContext.GetCardDataTempleteSelected();
+			CardStruItem[] sortedStruItem = TesterContext.GetCardDataTempleteSelected().OrderBy(item => item.Offset).ToArray();
 
-			this.TxtDbg.Text = "  Card data structure :" + Environment.NewLine;
-			this.TxtDbg.Text += "------------------------------------------" + Environment.NewLine;
+			this.TxtDbg.Clear();
+			this.TxtDbg.Text  = "  Card data structure :" + Environment.NewLine;
+			this.TxtDbg.Text += "------------------------------------------------------------------------------------" + Environment.NewLine;
 
-			foreach (CardStruItem item in items)
-				this.TxtDbg.Text += item.ToString();
+			StringBuilder errMsg = new StringBuilder();
+			int size = 0;
+
+			for (int i = 0; i < sortedStruItem.Length; i++)
+			{
+				this.TxtDbg.Text += sortedStruItem[i].ToString();
+				size += sortedStruItem[i].Length;
+				if ( i >0 &&
+					(sortedStruItem[i].Offset < sortedStruItem[i-1].Offset + sortedStruItem[i - 1].Length) )
+				{
+					errMsg.Append("Address conflict! ->")
+						.Append(sortedStruItem[i].Name)
+						.Append(", Offset=").Append(sortedStruItem[i].Offset.ToString("x4"))
+						.Append(Environment.NewLine);
+				}
+			}
+			this.TxtDbg.Text += "------------------------------------------------------------------------------------" + Environment.NewLine;
+			this.TxtDbg.Text += "Card Structure total Size : " + size.ToString() + Environment.NewLine;
+
+			this.TxtDbg.Text += errMsg.ToString();
 		}
 
 		private void BtnChkStruTemplete_Click(object sender, EventArgs e)
@@ -70,7 +83,7 @@ namespace RonftonCard.Tester.Forms
 			VirtualCard vcard = new VirtualCard(TesterContext.GetCardAddrTempleteSelected());
 			String errMsg;
 
-			this.TxtDbg.Text = String.Format("Total Size = {0}", vcard.Size);
+			this.TxtDbg.Text = String.Format("Total Size = {0}{1}", vcard.Size, Environment.NewLine);
 
 			if (vcard.CheckCardStru(TesterContext.GetCardDataTempleteSelected(), out errMsg))
 				errMsg = "Current Card Stru is OK!";

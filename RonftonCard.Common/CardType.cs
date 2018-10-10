@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.Reader
-{ 
-	/// <summary>
-	/// define card protocol, TypeA or TypeB
-	/// </summary>
+namespace RonftonCard.Common
+{
 	public enum CardType
 	{
-		TypeA,
-		TypeB
+		M1,
+		CPU
 	}
 }

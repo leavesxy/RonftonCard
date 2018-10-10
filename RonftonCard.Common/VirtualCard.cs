@@ -19,7 +19,9 @@ namespace RonftonCard.Common
 
 		public VirtualCard(List<CardAddrItem> addrTable)
 		{
+			// sorted by addr offset
 			cardAddrTable = addrTable.OrderBy(addr => addr.Offset).ToArray();
+
 			if (IsValidAddress())
 			{
 				this.Size = ComputeSize();
@@ -31,6 +33,9 @@ namespace RonftonCard.Common
 		{
 			return cardAddrTable[cardAddrTable.Length - 1].Offset + cardAddrTable[cardAddrTable.Length - 1].Length;
 		}
+
+		private const int MAX_CARD_SIZE_M1 = 1024;
+		private const int MAX_CARD_CPU = 8 * 1024;
 
 		public bool IsValidAddress()
 		{

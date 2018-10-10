@@ -42,6 +42,5 @@ namespace RonftonCard.Common.Config
 		{
 			return this.cardAddr[name];
 		}
-
 	}
 }
