@@ -35,9 +35,9 @@ namespace RonftonCard.Common.Config
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("Offset = 0x").Append(this.Offset.ToString("x4"));
-			sb.Append(",Length = ").Append(this.Length);
-			sb.Append(",Descriptor = ").Append(this.Descriptor);
-			sb.Append(",Block = ").Append(this.Block).Append(Environment.NewLine);
+			sb.Append(",Length = ").Append(this.Length.ToString("D3"));
+			sb.Append(",Descriptor = 0x").Append(this.Descriptor.ToString("x4"));
+			sb.Append(",Block = ").Append(this.Block.ToString("D1")).Append(Environment.NewLine);
 			return sb.ToString();
 		}
 	}

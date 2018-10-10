@@ -19,13 +19,12 @@ namespace RonftonCard.Common.Config
 		}
 
 		public CardAddrTemplete(String fileName, String nodeTagName, String itemTagName)
-			: base(fileName, nodeTagName, itemTagName )
+			: base(nodeTagName, itemTagName )
 		{
 			this.cardAddr = new Dictionary<String, List<CardAddrItem>>();
-			base.LoadConfig<CardAddrItem>(fileName);
+			base.LoadConfiguration<CardAddrItem>(fileName);
 		}
-
-
+		
 		protected override void AddConfig<RT>(String name, List<RT> items)
 		{
 			if (typeof(RT).Equals(typeof(CardAddrItem)))
@@ -34,7 +33,7 @@ namespace RonftonCard.Common.Config
 			}
 		}
 
-		public List<String> GetTempleteName()
+		public override List<String> GetTempleteName()
 		{
 			return this.cardAddr.Keys.ToList();
 		}
@@ -43,5 +42,6 @@ namespace RonftonCard.Common.Config
 		{
 			return this.cardAddr[name];
 		}
+
 	}
 }

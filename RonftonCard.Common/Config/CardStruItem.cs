@@ -19,13 +19,13 @@ namespace RonftonCard.Common.Config
 
 		public override String ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("Name=").Append(this.Name);
-			sb.Append(",Type=").Append(this.DataType);
-			sb.Append(",Length=").Append(this.Length);
-			sb.Append(",Offset=").Append(this.Offset);
-			sb.Append(",Desc=").Append(this.Description).Append(Environment.NewLine);
-			return sb.ToString();
+			return String.Format("name={0,-15},type={1,-10},length={2},offset=0x{3},desc={4}{5}",
+				this.Name,
+				this.DataType,
+				this.Length.ToString("d2"),
+				this.Offset.ToString("X4"),
+				this.Description,
+				Environment.NewLine);
 		}
 	}
 }

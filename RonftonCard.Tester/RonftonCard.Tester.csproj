@@ -53,6 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\PageCardTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PageCardTester.Designer.cs">
+      <DependentUpon>PageCardTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PageDbg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PageDbg.Designer.cs">
+      <DependentUpon>PageDbg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TabPageDescriptor.cs" />
     <Compile Include="Forms\TestMainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +80,12 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="TesterContext.cs" />
+    <EmbeddedResource Include="Forms\PageCardTester.resx">
+      <DependentUpon>PageCardTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PageDbg.resx">
+      <DependentUpon>PageDbg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TestMainFrm.resx">
       <DependentUpon>TestMainFrm.cs</DependentUpon>
     </EmbeddedResource>

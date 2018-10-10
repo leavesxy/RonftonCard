@@ -38,8 +38,7 @@
 			this.CbStruTemplete = new System.Windows.Forms.ComboBox();
 			this.CbCardType = new System.Windows.Forms.ComboBox();
 			this.BtnExit = new System.Windows.Forms.Button();
-			this.TxtDbg = new System.Windows.Forms.TextBox();
-			this.BtnClear = new System.Windows.Forms.Button();
+			this.TabMain = new System.Windows.Forms.TabControl();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -67,12 +66,11 @@
 			// 
 			this.CbAddrTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.CbAddrTemplete.FormattingEnabled = true;
-			this.CbAddrTemplete.Location = new System.Drawing.Point(95, 68);
+			this.CbAddrTemplete.Location = new System.Drawing.Point(504, 70);
 			this.CbAddrTemplete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.CbAddrTemplete.Name = "CbAddrTemplete";
-			this.CbAddrTemplete.Size = new System.Drawing.Size(282, 27);
+			this.CbAddrTemplete.Size = new System.Drawing.Size(232, 27);
 			this.CbAddrTemplete.TabIndex = 1;
-			this.CbAddrTemplete.SelectedIndexChanged += new System.EventHandler(this.CbAddrTemplete_SelectedIndexChanged);
 			// 
 			// CbReaderType
 			// 
@@ -88,7 +86,7 @@
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label2.Location = new System.Drawing.Point(390, 28);
+			this.label2.Location = new System.Drawing.Point(391, 28);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(79, 20);
 			this.label2.TabIndex = 2;
@@ -98,27 +96,27 @@
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label4.Location = new System.Drawing.Point(390, 70);
+			this.label4.Location = new System.Drawing.Point(7, 72);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(79, 20);
+			this.label4.Size = new System.Drawing.Size(107, 20);
 			this.label4.TabIndex = 0;
-			this.label4.Text = "数据模板：";
+			this.label4.Text = "卡片结构模板：";
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label3.Location = new System.Drawing.Point(10, 70);
+			this.label3.Location = new System.Drawing.Point(391, 72);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(79, 20);
+			this.label3.Size = new System.Drawing.Size(107, 20);
 			this.label3.TabIndex = 0;
-			this.label3.Text = "卡片模板：";
+			this.label3.Text = "卡片扇区模板：";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label1.Location = new System.Drawing.Point(10, 28);
+			this.label1.Location = new System.Drawing.Point(7, 28);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(93, 20);
 			this.label1.TabIndex = 0;
@@ -128,18 +126,17 @@
 			// 
 			this.CbStruTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.CbStruTemplete.FormattingEnabled = true;
-			this.CbStruTemplete.Location = new System.Drawing.Point(480, 68);
+			this.CbStruTemplete.Location = new System.Drawing.Point(119, 70);
 			this.CbStruTemplete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.CbStruTemplete.Name = "CbStruTemplete";
 			this.CbStruTemplete.Size = new System.Drawing.Size(260, 27);
 			this.CbStruTemplete.TabIndex = 1;
-			this.CbStruTemplete.SelectedIndexChanged += new System.EventHandler(this.CbStruTemplete_SelectedIndexChanged);
 			// 
 			// CbCardType
 			// 
 			this.CbCardType.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.CbCardType.FormattingEnabled = true;
-			this.CbCardType.Location = new System.Drawing.Point(480, 25);
+			this.CbCardType.Location = new System.Drawing.Point(476, 25);
 			this.CbCardType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.CbCardType.Name = "CbCardType";
 			this.CbCardType.Size = new System.Drawing.Size(260, 27);
@@ -147,7 +144,7 @@
 			// 
 			// BtnExit
 			// 
-			this.BtnExit.Location = new System.Drawing.Point(690, 488);
+			this.BtnExit.Location = new System.Drawing.Point(686, 539);
 			this.BtnExit.Name = "BtnExit";
 			this.BtnExit.Size = new System.Drawing.Size(86, 32);
 			this.BtnExit.TabIndex = 5;
@@ -155,32 +152,22 @@
 			this.BtnExit.UseVisualStyleBackColor = true;
 			this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
 			// 
-			// TxtDbg
+			// TabMain
 			// 
-			this.TxtDbg.Location = new System.Drawing.Point(12, 150);
-			this.TxtDbg.Multiline = true;
-			this.TxtDbg.Name = "TxtDbg";
-			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.TxtDbg.Size = new System.Drawing.Size(764, 332);
-			this.TxtDbg.TabIndex = 6;
-			// 
-			// BtnClear
-			// 
-			this.BtnClear.Location = new System.Drawing.Point(598, 488);
-			this.BtnClear.Name = "BtnClear";
-			this.BtnClear.Size = new System.Drawing.Size(86, 32);
-			this.BtnClear.TabIndex = 5;
-			this.BtnClear.Text = "Clear";
-			this.BtnClear.UseVisualStyleBackColor = true;
-			this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+			this.TabMain.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.TabMain.Location = new System.Drawing.Point(13, 136);
+			this.TabMain.Name = "TabMain";
+			this.TabMain.SelectedIndex = 0;
+			this.TabMain.Size = new System.Drawing.Size(763, 397);
+			this.TabMain.TabIndex = 6;
+			this.TabMain.SelectedIndexChanged += new System.EventHandler(this.TabMain_SelectedIndexChanged);
 			// 
 			// TestMainFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(795, 532);
-			this.Controls.Add(this.TxtDbg);
-			this.Controls.Add(this.BtnClear);
+			this.ClientSize = new System.Drawing.Size(795, 572);
+			this.Controls.Add(this.TabMain);
 			this.Controls.Add(this.BtnExit);
 			this.Controls.Add(this.groupBox1);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -194,7 +181,6 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -210,7 +196,6 @@
 		private System.Windows.Forms.ComboBox CbStruTemplete;
 		private System.Windows.Forms.ComboBox CbCardType;
 		private System.Windows.Forms.Button BtnExit;
-		private System.Windows.Forms.TextBox TxtDbg;
-		private System.Windows.Forms.Button BtnClear;
+		private System.Windows.Forms.TabControl TabMain;
 	}
 }

@@ -25,10 +25,10 @@ namespace RonftonCard.Common.Config
 		}
 
 		public CardStruTemplete(String fileName, String nodeTagName, String itemTagName)
-			: base(fileName, nodeTagName, itemTagName )
+			: base(nodeTagName, itemTagName )
 		{
 			this.cardStru = new Dictionary<String, List<CardStruItem>>();
-			base.LoadConfig<CardStruItem>(fileName);
+			base.LoadConfiguration<CardStruItem>(fileName);
 		}
 
 
@@ -40,7 +40,7 @@ namespace RonftonCard.Common.Config
 			}
 		}
 
-		public List<String> GetTempleteName()
+		public override List<String> GetTempleteName()
 		{
 			return this.cardStru.Keys.ToList();
 		}

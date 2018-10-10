@@ -11,13 +11,11 @@ namespace RonftonCard.Common.Config
 {
 	public abstract class AbstractConfigTemplete
 	{
-		protected String fileName;
 		protected String nodeTagName;
 		protected String itemTagName;
 
-		protected AbstractConfigTemplete(String fileName, String nodeTagName, String itemTagName)
+		protected AbstractConfigTemplete(String nodeTagName, String itemTagName)
 		{
-			this.fileName = fileName;
 			this.nodeTagName = nodeTagName;
 			this.itemTagName = itemTagName;
 		}
@@ -37,29 +35,29 @@ namespace RonftonCard.Common.Config
 			return items;
 		}
 
-		protected bool LoadConfig<RT>(String fileName)
+		protected bool LoadConfiguration<RT>(String fileName)
 		{
 			String fullFileName;
 
-			if (FileUtil.Locate(fileName, out fullFileName))
+			if (!FileUtil.Locate( fileName, out fullFileName))
+				throw new Exception(String.Format("{0} templete is not existed!", fileName));
+
+			XmlDocument doc = new XmlDocument();
+			doc.Load(fullFileName);
+			foreach (XmlNode node in doc.DocumentElement)
 			{
-				XmlDocument doc = new XmlDocument();
-				doc.Load(fullFileName);
-
-				foreach (XmlNode node in doc.DocumentElement)
+				if (XmlNodeType.Element == node.NodeType &&
+					node.Name.Equals(nodeTagName, StringComparison.CurrentCultureIgnoreCase))
 				{
-					if (XmlNodeType.Element == node.NodeType &&
-						node.Name.Equals(nodeTagName, StringComparison.CurrentCultureIgnoreCase))
-					{
-						//this.cardStru.Add(node.Attributes["name"].Value, base.CreateTempleteItem<CardDataItem>(node));
-						AddConfig<RT>(node.Attributes["name"].Value, CreateTempleteItem<RT>(node));
-					}
+					AddConfig<RT>(node.Attributes["name"].Value, CreateTempleteItem<RT>(node));
 				}
-				return true;
 			}
-			return false;
-		}
 
+			return true;
+		}
+		
 		protected abstract void AddConfig<RT>(String name, List<RT> items);
+
+		public abstract List<String> GetTempleteName();
 	}
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.Config
+namespace RonftonCard.Common
 {
 	public enum CardDataType
 	{
@@ -12,10 +12,12 @@ namespace RonftonCard.Common.Config
 		CHAR,
 		BOOL,
 		BYTE,
-		INT32,
 		INT16,
-		INT8,
+		INT32,
+		INT64,
+		UINT32,
 		BCD,
-		BIN
+		BIN,
+		DATE_B
 	}
 }
