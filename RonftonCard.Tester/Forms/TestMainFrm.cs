@@ -3,15 +3,15 @@ using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
 using BlueMoon.Form;
-using RonftonCard.Common.Config;
 using System.Collections.Generic;
+using RonftonCard.Common;
+using RonftonCard.Tester.Entity;
 
 namespace RonftonCard.Tester.Forms
 {
 	public partial class TestMainFrm : Form
 	{
 		private ResourceManager rm;
-		private List<TabPageDescriptor> pageDescriptor;
 
 		public TestMainFrm(ResourceManager rm)
 		{
@@ -19,67 +19,37 @@ namespace RonftonCard.Tester.Forms
 			this.rm = rm;
 		}
 
+		private const String CARD_TEMPLETE_FILE = "CardTemplete.xml";
 		private void TestMainFrm_Load(object sender, EventArgs e)
 		{
 			this.Text = this.rm.GetFormTextName();
 			this.Icon = (Icon)this.rm.GetObject("TestMain");
 
-			if( !TesterContext.Init(this) )
+			try
 			{
+				if (!CardTempleteManager.LoadCardTemplete(CARD_TEMPLETE_FILE))
+				{
+					Application.Exit();
+					return;
+				}
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
-				return;
+				return ;
 			}
 
-			this.CbAddrTemplete.Items.AddRange(TesterContext.addrTemplete.GetTempleteName().ToArray());
-			this.CbStruTemplete.Items.AddRange(TesterContext.struTemplete.GetTempleteName().ToArray());
-
-			this.CbStruTemplete.SelectedIndex = 0;
-			this.CbAddrTemplete.SelectedIndex = 0;
-
-			InitTabPage();
+			this.CbCardTemplete.Items.AddRange( CardTempleteManager.GetTempleteNames().ToArray());
+			this.CbCardTemplete.SelectedIndex = 0;
+			Update();
 		}
 		
-		private void InitTabPage()
-		{
-			this.pageDescriptor = new List<TabPageDescriptor>()
-			{
-				new TabPageDescriptor { PageIndex=0, PageName="Dbg", PageForm = new PageDbg() },
-				new TabPageDescriptor { PageIndex=1, PageName="卡片测试", PageForm = new PageCardTester()},
-			};
-
-			// Ascending order
-			this.pageDescriptor.Sort((d1, d2) => d1.PageIndex.CompareTo(d2.PageIndex));
-
-			this.pageDescriptor.ForEach(
-				desc => 
-				{
-					// set style of form
-					desc.PageForm.TopLevel = false;
-					desc.PageForm.FormBorderStyle = FormBorderStyle.None;
-					desc.PageForm.Dock = DockStyle.Fill;
-					desc.PageForm.AutoScroll = true;
-					//desc.PageForm.Height = TabMain.Height - 200;
-					//desc.PageForm.Width = TabMain.Width;
-
-					// add new tab page
-					TabPage tp = new TabPage();
-					tp.Name = desc.PageName;
-					tp.Text = desc.PageName;
-					tp.Controls.Add(desc.PageForm);
-					this.TabMain.Controls.Add(tp);
-				});
-			this.TabMain.SelectedIndex = 0;
-			this.pageDescriptor.Find(desc => desc.PageIndex == 0).PageForm.Show();
-		}
-
 		#region "--- Event handle ---"
-		private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
+
+		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			TabPageDescriptor pageDesc = this.pageDescriptor.Find(d => d.PageIndex == this.TabMain.SelectedIndex);
-			if (pageDesc != null)
-			{
-				pageDesc.PageForm.Show();
-			}
+
 		}
 
 		#endregion
@@ -94,16 +64,31 @@ namespace RonftonCard.Tester.Forms
 			Application.Exit();
 		}
 
+		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
+		{
+			String cardTempleteName = CbCardTemplete.SelectedItem as String;
+
+			this.TxtDbg.Clear();
+			this.TxtDbg.Text = CardTempleteManager.GetCardTemplete(cardTempleteName).DbgStorageItems();
+			this.TxtDbg.Text += Environment.NewLine;
+			this.TxtDbg.Text += CardTempleteManager.GetCardTemplete(cardTempleteName).DbgDataItems();
+		}
+
+		private void BtnDbgCardEntity_Click(object sender, EventArgs e)
+		{
+			CardEntity entity = CardEntity.CreateTestEntity();
+			this.TxtDbg.Text = "写卡测试数据..." + Environment.NewLine;
+			this.TxtDbg.Text += "---------------------------------------------" + Environment.NewLine;
+			this.TxtDbg.Text += entity.ToString();
+		}
+
+		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
+		{
+
+		}
+
 		#endregion
 
-		public String CardAddrTempleteSelected
-		{
-			get { return this.CbAddrTemplete.SelectedItem as String; }
-		}
 
-		public String CardStruTempleteSelected
-		{
-			get { return this.CbStruTemplete.SelectedItem as String; }
-		}
 	}
 }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RonftonCard.Common.Utils;
 
-namespace RonftonCard.Common.Card
+namespace RonftonCard.Common
 {
 	/// <summary>
 	/// data description which written to card
@@ -38,12 +39,12 @@ namespace RonftonCard.Common.Card
 		/// </summary>
 		public String Description { get; set; }
 
-		private const String TO_STRING_FORMATTER = "name={0,-15},type={1,-10},length={2:D2},offset=0x{3:X4},desc={4}{5}";
+		private const String TO_STRING_FORMATTER = "name={0},type={1,-10},length={2:D2},offset=0x{3:X4},desc={4}{5}";
 
 		public override String ToString()
 		{
 			return String.Format(TO_STRING_FORMATTER,
-				this.Name,
+				this.Name.ToLower().RightPadding(20),
 				this.DataType,
 				this.Length.ToString("d2"),
 				this.Offset.ToString("X4"),

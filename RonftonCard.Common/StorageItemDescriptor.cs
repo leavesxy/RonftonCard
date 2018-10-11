@@ -1,7 +1,7 @@
 ﻿using System;
 using BlueMoon.Attribute;
 
-namespace RonftonCard.Common.Card
+namespace RonftonCard.Common
 {
 	/// <summary>
 	/// Storage description

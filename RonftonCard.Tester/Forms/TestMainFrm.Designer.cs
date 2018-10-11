@@ -29,28 +29,27 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.CbAddrTemplete = new System.Windows.Forms.ComboBox();
 			this.CbReaderType = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.CbStruTemplete = new System.Windows.Forms.ComboBox();
+			this.CbCardTemplete = new System.Windows.Forms.ComboBox();
 			this.CbCardType = new System.Windows.Forms.ComboBox();
 			this.BtnExit = new System.Windows.Forms.Button();
-			this.TabMain = new System.Windows.Forms.TabControl();
+			this.TxtDbg = new System.Windows.Forms.TextBox();
+			this.BtnDbgCardTemplete = new System.Windows.Forms.Button();
+			this.BtnDbgCardEntity = new System.Windows.Forms.Button();
+			this.BtnWriteVirtualCard = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.CbAddrTemplete);
 			this.groupBox1.Controls.Add(this.CbReaderType);
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Controls.Add(this.label4);
-			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this.CbStruTemplete);
+			this.groupBox1.Controls.Add(this.CbCardTemplete);
 			this.groupBox1.Controls.Add(this.CbCardType);
 			this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupBox1.Location = new System.Drawing.Point(12, 13);
@@ -61,16 +60,6 @@
 			this.groupBox1.TabIndex = 4;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "参数设置";
-			// 
-			// CbAddrTemplete
-			// 
-			this.CbAddrTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.CbAddrTemplete.FormattingEnabled = true;
-			this.CbAddrTemplete.Location = new System.Drawing.Point(504, 70);
-			this.CbAddrTemplete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.CbAddrTemplete.Name = "CbAddrTemplete";
-			this.CbAddrTemplete.Size = new System.Drawing.Size(232, 27);
-			this.CbAddrTemplete.TabIndex = 1;
 			// 
 			// CbReaderType
 			// 
@@ -98,19 +87,9 @@
 			this.label4.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.label4.Location = new System.Drawing.Point(7, 72);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(107, 20);
+			this.label4.Size = new System.Drawing.Size(79, 20);
 			this.label4.TabIndex = 0;
-			this.label4.Text = "卡片结构模板：";
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label3.Location = new System.Drawing.Point(391, 72);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(107, 20);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "卡片扇区模板：";
+			this.label4.Text = "卡片模板：";
 			// 
 			// label1
 			// 
@@ -122,15 +101,16 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "读卡器类型：";
 			// 
-			// CbStruTemplete
+			// CbCardTemplete
 			// 
-			this.CbStruTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.CbStruTemplete.FormattingEnabled = true;
-			this.CbStruTemplete.Location = new System.Drawing.Point(119, 70);
-			this.CbStruTemplete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.CbStruTemplete.Name = "CbStruTemplete";
-			this.CbStruTemplete.Size = new System.Drawing.Size(260, 27);
-			this.CbStruTemplete.TabIndex = 1;
+			this.CbCardTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.CbCardTemplete.FormattingEnabled = true;
+			this.CbCardTemplete.Location = new System.Drawing.Point(97, 70);
+			this.CbCardTemplete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.CbCardTemplete.Name = "CbCardTemplete";
+			this.CbCardTemplete.Size = new System.Drawing.Size(282, 27);
+			this.CbCardTemplete.TabIndex = 1;
+			this.CbCardTemplete.SelectedIndexChanged += new System.EventHandler(this.CbCardTemplete_SelectedIndexChanged);
 			// 
 			// CbCardType
 			// 
@@ -144,30 +124,66 @@
 			// 
 			// BtnExit
 			// 
-			this.BtnExit.Location = new System.Drawing.Point(686, 539);
+			this.BtnExit.Location = new System.Drawing.Point(690, 539);
 			this.BtnExit.Name = "BtnExit";
 			this.BtnExit.Size = new System.Drawing.Size(86, 32);
 			this.BtnExit.TabIndex = 5;
-			this.BtnExit.Text = "Exit";
+			this.BtnExit.Text = "退出";
 			this.BtnExit.UseVisualStyleBackColor = true;
 			this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
 			// 
-			// TabMain
+			// TxtDbg
 			// 
-			this.TabMain.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.TabMain.Location = new System.Drawing.Point(13, 136);
-			this.TabMain.Name = "TabMain";
-			this.TabMain.SelectedIndex = 0;
-			this.TabMain.Size = new System.Drawing.Size(763, 397);
-			this.TabMain.TabIndex = 6;
-			this.TabMain.SelectedIndexChanged += new System.EventHandler(this.TabMain_SelectedIndexChanged);
+			this.TxtDbg.Font = new System.Drawing.Font("Microsoft YaHei Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.TxtDbg.Location = new System.Drawing.Point(12, 136);
+			this.TxtDbg.Multiline = true;
+			this.TxtDbg.Name = "TxtDbg";
+			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.TxtDbg.Size = new System.Drawing.Size(764, 397);
+			this.TxtDbg.TabIndex = 6;
+			// 
+			// BtnDbgCardTemplete
+			// 
+			this.BtnDbgCardTemplete.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnDbgCardTemplete.Location = new System.Drawing.Point(12, 539);
+			this.BtnDbgCardTemplete.Name = "BtnDbgCardTemplete";
+			this.BtnDbgCardTemplete.Size = new System.Drawing.Size(110, 32);
+			this.BtnDbgCardTemplete.TabIndex = 5;
+			this.BtnDbgCardTemplete.Text = "显示卡片模板";
+			this.BtnDbgCardTemplete.UseVisualStyleBackColor = true;
+			this.BtnDbgCardTemplete.Click += new System.EventHandler(this.BtnDbgCardTemplete_Click);
+			// 
+			// BtnDbgCardEntity
+			// 
+			this.BtnDbgCardEntity.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnDbgCardEntity.Location = new System.Drawing.Point(128, 539);
+			this.BtnDbgCardEntity.Name = "BtnDbgCardEntity";
+			this.BtnDbgCardEntity.Size = new System.Drawing.Size(110, 32);
+			this.BtnDbgCardEntity.TabIndex = 5;
+			this.BtnDbgCardEntity.Text = "显示测试数据";
+			this.BtnDbgCardEntity.UseVisualStyleBackColor = true;
+			this.BtnDbgCardEntity.Click += new System.EventHandler(this.BtnDbgCardEntity_Click);
+			// 
+			// BtnWriteVirtualCard
+			// 
+			this.BtnWriteVirtualCard.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnWriteVirtualCard.Location = new System.Drawing.Point(244, 539);
+			this.BtnWriteVirtualCard.Name = "BtnWriteVirtualCard";
+			this.BtnWriteVirtualCard.Size = new System.Drawing.Size(110, 32);
+			this.BtnWriteVirtualCard.TabIndex = 5;
+			this.BtnWriteVirtualCard.Text = "虚拟卡测试";
+			this.BtnWriteVirtualCard.UseVisualStyleBackColor = true;
+			this.BtnWriteVirtualCard.Click += new System.EventHandler(this.BtnWriteVirtualCard_Click);
 			// 
 			// TestMainFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(795, 572);
-			this.Controls.Add(this.TabMain);
+			this.ClientSize = new System.Drawing.Size(795, 579);
+			this.Controls.Add(this.TxtDbg);
+			this.Controls.Add(this.BtnWriteVirtualCard);
+			this.Controls.Add(this.BtnDbgCardEntity);
+			this.Controls.Add(this.BtnDbgCardTemplete);
 			this.Controls.Add(this.BtnExit);
 			this.Controls.Add(this.groupBox1);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -181,21 +197,23 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.ComboBox CbAddrTemplete;
 		private System.Windows.Forms.ComboBox CbReaderType;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox CbStruTemplete;
+		private System.Windows.Forms.ComboBox CbCardTemplete;
 		private System.Windows.Forms.ComboBox CbCardType;
 		private System.Windows.Forms.Button BtnExit;
-		private System.Windows.Forms.TabControl TabMain;
+		private System.Windows.Forms.TextBox TxtDbg;
+		private System.Windows.Forms.Button BtnDbgCardTemplete;
+		private System.Windows.Forms.Button BtnDbgCardEntity;
+		private System.Windows.Forms.Button BtnWriteVirtualCard;
 	}
 }

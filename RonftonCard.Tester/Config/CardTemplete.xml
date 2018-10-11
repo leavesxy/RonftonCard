@@ -34,5 +34,19 @@
 			<addr base="0x0070" size="16" descriptor="0x0002"  block="2" />
 		</storage>
 	</templete>
-	
+
+	<templete name="errorTest" desc="错误测试">
+		<storage>
+			<addr base="0x0000" size="16" descriptor="0x0005"  block="0" />
+			<addr base="0x000a" size="16" descriptor="0x0005"  block="1" />
+			<addr base="0x0020" size="16" descriptor="0x0005"  block="2" />
+		</storage>
+		<data>
+			<item name="version" type="BYTE" length="1" offset="0" description="版本号"/>
+			<item name="universityCode" type="STR" length="6" offset="1" description="学校代码"/>
+			<item name="cardno" type="INT32" length="4" offset="0" description="卡号"/>
+			<item name="sno" type="STR" length="20" offset="16" description="学工号"/>
+			<item name="balance" type="INT32" length="4" offset="30" description="余额"/>
+		</data>
+	</templete>
 </CardTemplete>
