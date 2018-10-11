@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace RonftonCard.Common.Config
+namespace RonftonCard.Common
 {
-	public abstract class AbstractConfigTemplete
+	public abstract class AbstractCardTemplete
 	{
-		protected String nodeTagName;
-		protected String itemTagName;
+		protected const String ROOT_TAG_NAME = "templete";
+		protected const String DATA_TAG_NAME = "data";
+		protected const String DATA_ITEM_TAG_NAME = "item";
+		protected const String STORAGE_TAG_NAME = "storage";
+		protected const String STORAGE_ITEM_TAG_NAME = "addr";
 
-		protected AbstractConfigTemplete(String nodeTagName, String itemTagName)
+		protected AbstractCardTemplete()
 		{
-			this.nodeTagName = nodeTagName;
-			this.itemTagName = itemTagName;
 		}
 
 		protected List<RT> CreateTempleteItem<RT>(XmlNode node)
@@ -35,7 +36,7 @@ namespace RonftonCard.Common.Config
 			return items;
 		}
 
-		protected bool LoadConfiguration<RT>(String fileName)
+		protected bool LoadConfiguration(String fileName)
 		{
 			String fullFileName;
 
@@ -47,7 +48,7 @@ namespace RonftonCard.Common.Config
 			foreach (XmlNode node in doc.DocumentElement)
 			{
 				if (XmlNodeType.Element == node.NodeType &&
-					node.Name.Equals(nodeTagName, StringComparison.CurrentCultureIgnoreCase))
+					node.Name.Equals(ROOT_TAG_NAME, StringComparison.CurrentCultureIgnoreCase))
 				{
 					AddConfig<RT>(node.Attributes["name"].Value, CreateTempleteItem<RT>(node));
 				}
@@ -55,9 +56,5 @@ namespace RonftonCard.Common.Config
 
 			return true;
 		}
-		
-		protected abstract void AddConfig<RT>(String name, List<RT> items);
-
-		public abstract List<String> GetTempleteName();
 	}
 }

@@ -123,6 +123,7 @@
     <Content Include="Config\CardStru.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Config\CardTemplete.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TestMain.ico" />

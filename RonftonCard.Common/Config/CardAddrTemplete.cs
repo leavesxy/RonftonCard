@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Common.Config
 {
-	public class CardAddrTemplete : AbstractConfigTemplete
+	public class CardAddrTemplete : AbstractCardTemplete
 	{
 		private IDictionary<String, List<CardAddrItem>> cardAddr;
 

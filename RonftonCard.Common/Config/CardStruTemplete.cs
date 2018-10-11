@@ -12,7 +12,7 @@ namespace RonftonCard.Common.Config
 	/// <summary>
 	/// card structure defined
 	/// </summary>
-	public class CardStruTemplete : AbstractConfigTemplete
+	public class CardStruTemplete : AbstractCardTemplete
 	{
 		private IDictionary<String, List<CardStruItem>> cardStru;
 

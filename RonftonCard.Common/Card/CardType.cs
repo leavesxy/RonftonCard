@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common
+namespace RonftonCard.Common.Card
 {
 	public enum CardType
 	{
