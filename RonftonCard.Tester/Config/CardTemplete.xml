@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CardTemplete>
 	<templete name="RFC" desc="融付通标准卡结构">
+		
 		<data>
+			<!-- 为了避免配置出错，对于offset=0 的项，使用自动配置，即当前offset=上一配置项offset+length-->
 			<item name="version" 		type="BYTE" 	length="1"	offset="0"		description="卡片版本号"/>
 			<item name="universityCode" type="BCD" 		length="3"	offset="1"		description="学校代码"/>
 			<item name="sno" 			type="STR" 		length="20"	offset="4"		description="学工号"/>
@@ -24,19 +26,22 @@
 		</data>
 		
 		<storage>
-			<addr base="0x0000" size="16" descriptor="0x0000"  block="1" />
-			<addr base="0x0010" size="16" descriptor="0x0000"  block="2" />
-			<addr base="0x0020" size="16" descriptor="0x0001"  block="0" />
-			<addr base="0x0030" size="16" descriptor="0x0001"  block="1" />
-			<addr base="0x0040" size="16" descriptor="0x0001"  block="2" />
-			<addr base="0x0050" size="16" descriptor="0x0002"  block="0" />
-			<addr base="0x0060" size="16" descriptor="0x0002"  block="1" />
-			<addr base="0x0070" size="16" descriptor="0x0002"  block="2" />
+			<!-- 相同的物理地址所对应的block+size不应该重合！-->
+			<!-- 对于CPU卡，物理地址就是文件描述号，对M1卡来说就是扇区号 -->
+			<!-- 对于线性flash，则是其物理地址 -->
+			<addr physicalAddr="0x0000" block="1" size="16"  />
+			<addr physicalAddr="0x0000" block="2" size="16"  />
+			<addr physicalAddr="0x0001" block="0" size="16"  />
+			<addr physicalAddr="0x0001" block="1" size="16"  />
+			<addr physicalAddr="0x0001" block="2" size="16"  />
+			<addr physicalAddr="0x0002" block="0" size="16"  />
+			<addr physicalAddr="0x0002" block="1" size="16"  />
+			<addr physicalAddr="0x0002" block="2" size="16"  />
 		</storage>
 	</templete>
 
 	<templete name="errorTest" desc="错误测试">
-		<storage>
+		<!--<storage>
 			<addr base="0x0000" size="16" descriptor="0x0005"  block="0" />
 			<addr base="0x000a" size="16" descriptor="0x0005"  block="1" />
 			<addr base="0x0020" size="16" descriptor="0x0005"  block="2" />
@@ -47,6 +52,6 @@
 			<item name="cardno" type="INT32" length="4" offset="0" description="卡号"/>
 			<item name="sno" type="STR" length="20" offset="16" description="学工号"/>
 			<item name="balance" type="INT32" length="4" offset="30" description="余额"/>
-		</data>
+		</data>-->
 	</templete>
 </CardTemplete>

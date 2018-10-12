@@ -34,6 +34,9 @@ namespace RonftonCard.Common.Utils
 		{
 			IDictionary<String, String> dict = new Dictionary<String, String>(StringComparer.CurrentCultureIgnoreCase);
 
+			if (node == null)
+				return dict;
+
 			// add all attributes
 			if (node.Attributes.Count > 0)
 			{

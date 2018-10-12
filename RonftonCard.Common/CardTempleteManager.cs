@@ -14,6 +14,10 @@ namespace RonftonCard.Common
 
 		private static IDictionary<String, CardTemplete> cardTempletes;
 
+		/// <summary>
+		/// load config from CardTemplete.xml
+		/// </summary>
+		/// <param name="fileName"></param>
 		public static bool LoadCardTemplete(String fileName)
 		{
 			String fullFileName;

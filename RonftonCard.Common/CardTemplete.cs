@@ -27,10 +27,63 @@ namespace RonftonCard.Common
 		{
 		}
 
+		public int CardSize
+		{
+			get
+			{
+				int size = 0;
+				this.StorageItems.ToList().ForEach(item => size += item.Size);
+				return size;
+			}
+		}
+
+		public int DateSize
+		{
+			get
+			{
+				int size = 0;
+				this.DataItems.ToList().ForEach(item => size += item.Length);
+				return size;
+			}
+		}
+
+
+		public static CardTemplete CreateCardTemplete(XmlNode node)
+		{
+			CardTemplete templete = new CardTemplete();
+			templete.TempleteName = node.Attributes["name"].Value;
+			templete.TempleteDesc = node.Attributes["desc"].Value;
+
+			templete.DataItems = CreateTempleteItem<DataItemDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
+			templete.StorageItems = CreateTempleteItem<StorageItemDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.PhysicalAddr).ToArray();
+
+			return templete;
+		}
+
+		public static List<RT> CreateTempleteItem<RT>(XmlNode node, String tagName)
+		{
+			List<RT> items = new List<RT>();
+
+			// node maybe null !!!
+			if (node != null)
+			{
+				foreach (XmlNode n in node.ChildNodes)
+				{
+					if (XmlNodeType.Element == n.NodeType &&
+						n.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase))
+					{
+						items.Add(EntityUtil.CreateEntity<RT>(n));
+					}
+				}
+			}
+			return items;
+		}
+
+		#region "--- for debug ---"
 		public String DbgDataItems()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append("Card data structure :" + Environment.NewLine );
+			sb.Append("Card data structure :" + Environment.NewLine);
 			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
 
 			int size = 0;
@@ -66,15 +119,6 @@ namespace RonftonCard.Common
 			for (int i = 0; i < this.StorageItems.Length; i++)
 			{
 				size += this.StorageItems[i].Size;
-
-				if (i > 0 &&
-					(this.StorageItems[i].VirtualBaseAddr < this.StorageItems[i - 1].VirtualBaseAddr + this.StorageItems[i - 1].Size))
-				{
-					// there is a address conflict!!!
-					sb.Append("[*] ");
-				}
-				else
-					sb.Append("    ");
 				sb.Append(this.StorageItems[i].ToString());
 			}
 
@@ -82,31 +126,7 @@ namespace RonftonCard.Common
 			sb.Append("Card Storage total Size : " + size.ToString() + Environment.NewLine);
 			return sb.ToString();
 		}
+		#endregion
 
-		public static CardTemplete CreateCardTemplete(XmlNode node)
-		{
-			CardTemplete templete = new CardTemplete();
-			templete.TempleteName = node.Attributes["name"].Value;
-			templete.TempleteDesc = node.Attributes["desc"].Value;
-			templete.DataItems = CreateTempleteItem<DataItemDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
-			templete.StorageItems = CreateTempleteItem<StorageItemDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item=>item.VirtualBaseAddr).ToArray();
-
-			return templete;
-		}
-
-		public static List<RT> CreateTempleteItem<RT>(XmlNode node, String tagName )
-		{
-			List<RT> items = new List<RT>();
-
-			foreach (XmlNode n in node.ChildNodes)
-			{
-				if (XmlNodeType.Element == n.NodeType &&
-					n.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase))
-				{
-					items.Add(EntityUtil.CreateEntity<RT>(n));
-				}
-			}
-			return items;
-		}
 	}
 }
