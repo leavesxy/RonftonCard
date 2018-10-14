@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CardReaders>
+
+	<CardReader name="Decard/d8" desc="ShengZhen Decard Technology Co.LTD">
+		<portType>usb</portType>
+		<type>RonftonCard.CardReader.D8Reader,RonftonCard.CardReader</type>
+	</CardReader>
+	
+</CardReaders>

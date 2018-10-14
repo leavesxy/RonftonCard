@@ -1,7 +1,7 @@
 ﻿using System;
 using BlueMoon.Attribute;
 
-namespace RonftonCard.Common
+namespace RonftonCard.Common.Entity
 {
 	/// <summary>
 	/// Storage description
@@ -24,9 +24,10 @@ namespace RonftonCard.Common
 		/// </summary>
 		public int Size { get; set; }
 
+		[MapTo("desc")]
 		public String Description { get; set; }
 		
-		private const String TO_STRING_FORMATTER = "PhysicalAddr = 0x{0:X4}, block = {1:D2}, size = {2:D4}, Description = 0x{3}, {4}";
+		private const String TO_STRING_FORMATTER = "PhysicalAddr = 0x{0:X4}, block = {1:D2}, size = {2:D4}, Description = {3}, {4}";
 		public override String ToString()
 		{
 			return String.Format(TO_STRING_FORMATTER,

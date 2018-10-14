@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RonftonCard.Common.Utils;
 
-namespace RonftonCard.Common
+namespace RonftonCard.Common.Entity
 {
 	/// <summary>
 	/// data description which written to card

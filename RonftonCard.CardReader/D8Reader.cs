@@ -15,6 +15,7 @@ namespace RonftonCard.CardReader
 		public D8Reader(int port, int baud)
 		: base(port, baud)
 		{
+			Open();
 		}
 
 
@@ -41,19 +42,37 @@ namespace RonftonCard.CardReader
 
 		public override void Beep(int times = 1, int duration = 10)
 		{
-			while(times>0)
+			if (this.hDev != -1)
 			{
-				dc_beep(this.hDev, (ushort)duration);
-				times--;
+				while (times > 0)
+				{
+					dc_beep(this.hDev, (ushort)duration);
+					times--;
+				}
 			}
 		}
 
 		public override String GetVersion()
 		{
-			byte[] ver = new byte[128];
-			if (dc_getver(this.hDev, ver) == 0)
+			if (this.hDev != -1)
 			{
-				return Encoding.Default.GetString(ver);
+				byte[] ver = new byte[128];
+				if (dc_getver(this.hDev, ver) == 0)
+				{
+					//return BitConverter.ToString(ver);
+					StringBuilder sb = new StringBuilder();
+
+					for(int i=0;i<ver.Length;i++)
+					{
+						if( ver[i] != 0x00)
+						{
+							sb.Append(ver[i].ToString("x2"));
+							if (Char.IsLetterOrDigit((char)ver[i]))
+								sb.Append("(" + (char)ver[i] +") ");
+						}
+					}
+					return sb.ToString();
+				}
 			}
 			return "";
 		}

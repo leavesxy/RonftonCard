@@ -1,4 +1,5 @@
-﻿using RonftonCard.Common.Utils;
+﻿using RonftonCard.Common.Entity;
+using RonftonCard.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,23 @@ namespace RonftonCard.Common
 		public DataItemDescriptor[] DataItems { get; private set; }
 
 		/// <summary>
-		/// sorted by base addr
+		/// sorted by physical addr
 		/// </summary>
 		public StorageItemDescriptor[] StorageItems { get; private set; }
 
-		public CardTemplete()
+		protected CardTemplete()
 		{
+		}
+
+		public int[] GetCardPhysicalAddr()
+		{
+			List<int> physicalAddrList = new List<int>();
+			foreach(StorageItemDescriptor item in this.StorageItems)
+			{
+				physicalAddrList.Add(item.PhysicalAddr);
+			}
+			// remove same physical address
+			return physicalAddrList.ToArray().GroupBy(p => p).Select(p => p.Key).ToArray();
 		}
 
 		public int CardSize
@@ -37,7 +49,7 @@ namespace RonftonCard.Common
 			}
 		}
 
-		public int DateSize
+		public int DataSize
 		{
 			get
 			{
@@ -47,12 +59,12 @@ namespace RonftonCard.Common
 			}
 		}
 
-
+		#region "--- util ---"
 		public static CardTemplete CreateCardTemplete(XmlNode node)
 		{
 			CardTemplete templete = new CardTemplete();
-			templete.TempleteName = node.Attributes["name"].Value;
-			templete.TempleteDesc = node.Attributes["desc"].Value;
+			templete.TempleteName = node.GetAttributeValue("name","Unknown");
+			templete.TempleteDesc = node.GetAttributeValue("desc","");
 
 			templete.DataItems = CreateTempleteItem<DataItemDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
 			templete.StorageItems = CreateTempleteItem<StorageItemDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.PhysicalAddr).ToArray();
@@ -60,7 +72,7 @@ namespace RonftonCard.Common
 			return templete;
 		}
 
-		public static List<RT> CreateTempleteItem<RT>(XmlNode node, String tagName)
+		private static List<RT> CreateTempleteItem<RT>(XmlNode node, String tagName)
 		{
 			List<RT> items = new List<RT>();
 
@@ -78,10 +90,14 @@ namespace RonftonCard.Common
 			}
 			return items;
 		}
+		#endregion
 
 		#region "--- for debug ---"
 		public String DbgDataItems()
 		{
+			if (this.DataItems == null || this.DataItems.Length == 0)
+				return "Card data structure is null ! please check configuration!";
+
 			StringBuilder sb = new StringBuilder();
 			sb.Append("Card data structure :" + Environment.NewLine);
 			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
@@ -110,6 +126,9 @@ namespace RonftonCard.Common
 
 		public String DbgStorageItems()
 		{
+			if (this.StorageItems == null || this.StorageItems.Length == 0)
+				return "Card storage is null, Please check configuration!";
+
 			StringBuilder sb = new StringBuilder();
 			sb.Append("Card Storage table" + Environment.NewLine);
 			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
