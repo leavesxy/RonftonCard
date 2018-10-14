@@ -33,7 +33,16 @@ namespace RonftonCard.Common.Reader
 		#endregion
 
 		#region "--- Card operation ---"
+		/// <summary>
+		/// authentication
+		/// </summary>
+		bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
 
+		bool Read(int descriptor, out byte[] data);
+
+		bool Select(out byte[] cardId);
+
+		bool Write(int descriptor, byte[] data);
 		#endregion
 	}
 }

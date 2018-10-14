@@ -12,12 +12,12 @@ using RonftonCard.Common.Entity;
 
 namespace RonftonCard.Common
 {
-	public class RFTCardContext
+	public class CardContextManager
 	{
 		private static IDictionary<String, CardTemplete> cardTempletes;
 		private static IDictionary<String, CardReaderDescriptor> cardReaders;
 
-		static RFTCardContext()
+		static CardContextManager()
 		{
 			cardReaders = new Dictionary<String, CardReaderDescriptor>(StringComparer.CurrentCultureIgnoreCase);
 			cardTempletes = new Dictionary<String, CardTemplete>(StringComparer.CurrentCultureIgnoreCase);
@@ -34,6 +34,16 @@ namespace RonftonCard.Common
 
 			doc.Load(fullFileName);
 			return doc.DocumentElement;
+		}
+
+		public static CardContext CreateCardContext(CardType cardType, String templeteName, String readerName)
+		{
+			return new CardContext()
+			{
+				CardReader = GetCardReader(readerName),
+				CardTemplete = GetCardTemplete(templeteName),
+				CardType = cardType
+			};
 		}
 
 		#region "--- Card reader ---"

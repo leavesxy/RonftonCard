@@ -29,8 +29,14 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.TxtKeyB = new System.Windows.Forms.TextBox();
+			this.TxtKeyA = new System.Windows.Forms.TextBox();
+			this.TxtBlockNum = new System.Windows.Forms.TextBox();
 			this.TxtControlBlock = new System.Windows.Forms.TextBox();
 			this.CbCardReader = new System.Windows.Forms.ComboBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
@@ -44,7 +50,13 @@
 			this.BtnWriteVirtualCard = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.BtnUpdateKeyA = new System.Windows.Forms.Button();
+			this.BtnWriteBlock = new System.Windows.Forms.Button();
+			this.BtnReadBlockA = new System.Windows.Forms.Button();
+			this.BtnSelectCard = new System.Windows.Forms.Button();
 			this.BtnReaderInit = new System.Windows.Forms.Button();
+			this.BtnReadBlockB = new System.Windows.Forms.Button();
+			this.BtnUpdateKeyB = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -52,8 +64,14 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.TxtKeyB);
+			this.groupBox1.Controls.Add(this.TxtKeyA);
+			this.groupBox1.Controls.Add(this.TxtBlockNum);
 			this.groupBox1.Controls.Add(this.TxtControlBlock);
 			this.groupBox1.Controls.Add(this.CbCardReader);
+			this.groupBox1.Controls.Add(this.label7);
+			this.groupBox1.Controls.Add(this.label6);
+			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Controls.Add(this.label4);
@@ -65,10 +83,34 @@
 			this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.groupBox1.Size = new System.Drawing.Size(764, 115);
+			this.groupBox1.Size = new System.Drawing.Size(764, 147);
 			this.groupBox1.TabIndex = 4;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "参数设置";
+			// 
+			// TxtKeyB
+			// 
+			this.TxtKeyB.Location = new System.Drawing.Point(383, 109);
+			this.TxtKeyB.Name = "TxtKeyB";
+			this.TxtKeyB.Size = new System.Drawing.Size(236, 25);
+			this.TxtKeyB.TabIndex = 3;
+			this.TxtKeyB.Text = "0f0f0f0f0f0f";
+			// 
+			// TxtKeyA
+			// 
+			this.TxtKeyA.Location = new System.Drawing.Point(59, 109);
+			this.TxtKeyA.Name = "TxtKeyA";
+			this.TxtKeyA.Size = new System.Drawing.Size(251, 25);
+			this.TxtKeyA.TabIndex = 3;
+			this.TxtKeyA.Text = "010101010101";
+			// 
+			// TxtBlockNum
+			// 
+			this.TxtBlockNum.Location = new System.Drawing.Point(693, 109);
+			this.TxtBlockNum.Name = "TxtBlockNum";
+			this.TxtBlockNum.Size = new System.Drawing.Size(43, 25);
+			this.TxtBlockNum.TabIndex = 3;
+			this.TxtBlockNum.Text = "0";
 			// 
 			// TxtControlBlock
 			// 
@@ -87,6 +129,36 @@
 			this.CbCardReader.Size = new System.Drawing.Size(282, 27);
 			this.CbCardReader.TabIndex = 1;
 			this.CbCardReader.SelectedIndexChanged += new System.EventHandler(this.CbCardReader_SelectedIndexChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.label7.Location = new System.Drawing.Point(332, 114);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(45, 20);
+			this.label7.TabIndex = 2;
+			this.label7.Text = "KeyB:";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.label6.Location = new System.Drawing.Point(7, 112);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(46, 20);
+			this.label6.TabIndex = 2;
+			this.label6.Text = "KeyA:";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.label5.Location = new System.Drawing.Point(625, 112);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(51, 20);
+			this.label5.TabIndex = 2;
+			this.label5.Text = "块号：";
 			// 
 			// label3
 			// 
@@ -162,11 +234,11 @@
 			// TxtDbg
 			// 
 			this.TxtDbg.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.TxtDbg.Location = new System.Drawing.Point(12, 136);
+			this.TxtDbg.Location = new System.Drawing.Point(12, 184);
 			this.TxtDbg.Multiline = true;
 			this.TxtDbg.Name = "TxtDbg";
 			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.TxtDbg.Size = new System.Drawing.Size(764, 347);
+			this.TxtDbg.Size = new System.Drawing.Size(764, 299);
 			this.TxtDbg.TabIndex = 6;
 			// 
 			// BtnDbgCardTemplete
@@ -216,13 +288,63 @@
 			// 
 			// groupBox3
 			// 
+			this.groupBox3.Controls.Add(this.BtnUpdateKeyB);
+			this.groupBox3.Controls.Add(this.BtnUpdateKeyA);
+			this.groupBox3.Controls.Add(this.BtnWriteBlock);
+			this.groupBox3.Controls.Add(this.BtnReadBlockB);
+			this.groupBox3.Controls.Add(this.BtnReadBlockA);
+			this.groupBox3.Controls.Add(this.BtnSelectCard);
 			this.groupBox3.Controls.Add(this.BtnReaderInit);
 			this.groupBox3.Location = new System.Drawing.Point(157, 489);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(130, 133);
+			this.groupBox3.Size = new System.Drawing.Size(403, 133);
 			this.groupBox3.TabIndex = 7;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "读卡器测试";
+			// 
+			// BtnUpdateKeyA
+			// 
+			this.BtnUpdateKeyA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnUpdateKeyA.Location = new System.Drawing.Point(6, 90);
+			this.BtnUpdateKeyA.Name = "BtnUpdateKeyA";
+			this.BtnUpdateKeyA.Size = new System.Drawing.Size(110, 32);
+			this.BtnUpdateKeyA.TabIndex = 5;
+			this.BtnUpdateKeyA.Text = "UpdateKey_A";
+			this.BtnUpdateKeyA.UseVisualStyleBackColor = true;
+			this.BtnUpdateKeyA.Click += new System.EventHandler(this.BtnUpdateKeyA_Click);
+			// 
+			// BtnWriteBlock
+			// 
+			this.BtnWriteBlock.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnWriteBlock.Location = new System.Drawing.Point(238, 24);
+			this.BtnWriteBlock.Name = "BtnWriteBlock";
+			this.BtnWriteBlock.Size = new System.Drawing.Size(110, 32);
+			this.BtnWriteBlock.TabIndex = 5;
+			this.BtnWriteBlock.Text = "WriteBlock";
+			this.BtnWriteBlock.UseVisualStyleBackColor = true;
+			this.BtnWriteBlock.Click += new System.EventHandler(this.BtnWriteBlock_Click);
+			// 
+			// BtnReadBlockA
+			// 
+			this.BtnReadBlockA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnReadBlockA.Location = new System.Drawing.Point(6, 57);
+			this.BtnReadBlockA.Name = "BtnReadBlockA";
+			this.BtnReadBlockA.Size = new System.Drawing.Size(110, 32);
+			this.BtnReadBlockA.TabIndex = 5;
+			this.BtnReadBlockA.Text = "ReadBlock_A";
+			this.BtnReadBlockA.UseVisualStyleBackColor = true;
+			this.BtnReadBlockA.Click += new System.EventHandler(this.BtnReadBlock_A_Click);
+			// 
+			// BtnSelectCard
+			// 
+			this.BtnSelectCard.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnSelectCard.Location = new System.Drawing.Point(122, 24);
+			this.BtnSelectCard.Name = "BtnSelectCard";
+			this.BtnSelectCard.Size = new System.Drawing.Size(110, 32);
+			this.BtnSelectCard.TabIndex = 5;
+			this.BtnSelectCard.Text = "SelectCard";
+			this.BtnSelectCard.UseVisualStyleBackColor = true;
+			this.BtnSelectCard.Click += new System.EventHandler(this.BtnSelectCard_Click);
 			// 
 			// BtnReaderInit
 			// 
@@ -234,6 +356,28 @@
 			this.BtnReaderInit.Text = "ReaderInit";
 			this.BtnReaderInit.UseVisualStyleBackColor = true;
 			this.BtnReaderInit.Click += new System.EventHandler(this.BtnReaderInit_Click);
+			// 
+			// BtnReadBlockB
+			// 
+			this.BtnReadBlockB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnReadBlockB.Location = new System.Drawing.Point(122, 57);
+			this.BtnReadBlockB.Name = "BtnReadBlockB";
+			this.BtnReadBlockB.Size = new System.Drawing.Size(110, 32);
+			this.BtnReadBlockB.TabIndex = 5;
+			this.BtnReadBlockB.Text = "ReadBlock_B";
+			this.BtnReadBlockB.UseVisualStyleBackColor = true;
+			this.BtnReadBlockB.Click += new System.EventHandler(this.BtnReadBlock_B_Click);
+			// 
+			// BtnUpdateKeyB
+			// 
+			this.BtnUpdateKeyB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnUpdateKeyB.Location = new System.Drawing.Point(122, 90);
+			this.BtnUpdateKeyB.Name = "BtnUpdateKeyB";
+			this.BtnUpdateKeyB.Size = new System.Drawing.Size(110, 32);
+			this.BtnUpdateKeyB.TabIndex = 5;
+			this.BtnUpdateKeyB.Text = "UpdateKey_B";
+			this.BtnUpdateKeyB.UseVisualStyleBackColor = true;
+			this.BtnUpdateKeyB.Click += new System.EventHandler(this.BtnUpdateKeyB_Click);
 			// 
 			// TestMainFrm
 			// 
@@ -281,5 +425,17 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.Button BtnReaderInit;
+		private System.Windows.Forms.Button BtnSelectCard;
+		private System.Windows.Forms.Button BtnReadBlockA;
+		private System.Windows.Forms.TextBox TxtBlockNum;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Button BtnWriteBlock;
+		private System.Windows.Forms.Button BtnUpdateKeyA;
+		private System.Windows.Forms.TextBox TxtKeyB;
+		private System.Windows.Forms.TextBox TxtKeyA;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Button BtnReadBlockB;
+		private System.Windows.Forms.Button BtnUpdateKeyB;
 	}
 }

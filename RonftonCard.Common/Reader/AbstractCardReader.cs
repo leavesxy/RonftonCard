@@ -36,6 +36,16 @@ namespace RonftonCard.Common.Reader
 
 		#endregion
 
+		#region "--- implement Card operation ---"
+		public abstract bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
+
+		public abstract bool Read(int descriptor, out byte[] data);
+
+		public abstract bool Select(out byte[] cardId);
+
+		public abstract bool Write(int descriptor, byte[] data);
+		#endregion
+
 		#region IDisposable Support
 		private bool disposedValue = false; // To detect redundant calls
 

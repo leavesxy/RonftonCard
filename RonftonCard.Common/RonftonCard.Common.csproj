@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardContext.cs" />
     <Compile Include="Entity\CardReaderDescriptor.cs" />
     <Compile Include="M1VirtualCard.cs" />
     <Compile Include="CardProt.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Reader\KeyMode.cs" />
     <Compile Include="Reader\PortType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RFTCardContext.cs" />
+    <Compile Include="CardContextManager.cs" />
     <Compile Include="Utils\ArrayUtil.cs" />
     <Compile Include="Utils\EntityUtil.cs" />
     <Compile Include="Utils\StringUtil.cs" />

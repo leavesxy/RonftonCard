@@ -1,12 +1,15 @@
 ﻿
 using RonftonCard.Common.Reader;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace RonftonCard.CardReader
 {
 	public partial class D8Reader : AbstractCardReader
 	{
+		private const short RET_OK = 0;
+
 		public D8Reader()
 			: this((int)PortType.USB, 0)
 		{
@@ -18,7 +21,7 @@ namespace RonftonCard.CardReader
 			Open();
 		}
 
-
+		#region "--- device operation ---"
 		protected override void Open()
 		{
 			this.hDev = dc_init((short)this.port, this.baud);
@@ -82,5 +85,38 @@ namespace RonftonCard.CardReader
 			dc_light(this.hDev, (ushort)(onOff ? 1 : 0));
 		}
 
+		#endregion
+
+		#region "--- Card operation ---"
+		public override bool Authen(KeyMode keyMode, int descriptor, byte[] pwd)
+		{
+			byte mode = (keyMode == KeyMode.KeyA) ? (byte)0x00 : (byte)0x04;
+
+			return dc_authentication_passaddr(this.hDev, mode, (byte)(descriptor & 0xff), pwd) == RET_OK;
+		}
+
+		public override bool Read(int descriptor, out byte[] data)
+		{
+			data = new byte[16];
+			return dc_read(this.hDev, (byte)(descriptor & 0xff), data) == RET_OK;
+		}
+
+		public override bool Write(int descriptor, byte[] data)
+		{
+			return dc_write(this.hDev, (byte)(descriptor & 0xff), data) == RET_OK;
+		}
+
+		public override bool Select(out byte[] cardId)
+		{
+			uint cardIdLen = 0;
+			cardId = Enumerable.Repeat((byte)0x00, 16).ToArray();
+
+			if (dc_card_n(this.hDev, 0x00, ref cardIdLen, cardId) != RET_OK)
+			{
+				return false;
+			}
+			return true;
+		}
+		#endregion
 	}
 }
