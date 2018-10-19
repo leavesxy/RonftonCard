@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using BlueMoon.Util;
 using RonftonCard.Common.Reader;
 using RonftonCard.Common.Utils;
 using RonftonCard.Common.Entity;
@@ -23,46 +22,20 @@ namespace RonftonCard.Common
 			cardTempletes = new Dictionary<String, CardTemplete>(StringComparer.CurrentCultureIgnoreCase);
 		}
 
-		private static XmlElement LoadConfiguration(String configName)
-		{
-			String fullFileName;
-
-			if (!FileUtil.Locate(configName, out fullFileName))
-				throw new Exception(String.Format("[{0}] config file is not existed!", configName));
-
-			XmlDocument doc = new XmlDocument();
-
-			doc.Load(fullFileName);
-			return doc.DocumentElement;
-		}
-
 		public static CardContext CreateCardContext(CardType cardType, String templeteName, String readerName)
 		{
 			return new CardContext()
 			{
-				CardReader = GetCardReader(readerName),
+				//CardReader = GetCardReader(readerName),
 				CardTemplete = GetCardTemplete(templeteName),
 				CardType = cardType
 			};
 		}
 
 		#region "--- Card reader ---"
-		private const String READER_TAG_NAME = "CardReader";
 		public static bool LoadCardReader(String configName)
 		{
-			int seq = 1;
-
-			foreach (XmlNode node in LoadConfiguration(configName))
-			{
-				if (XmlNodeType.Element == node.NodeType &&
-					node.Name.Equals(READER_TAG_NAME, StringComparison.CurrentCultureIgnoreCase))
-				{
-					cardReaders.Add(node.GetAttributeValue("name", "Unknown#" + seq.ToString()),
-						EntityUtil.CreateEntity<CardReaderDescriptor>(node));
-					seq++;
-				}
-			}
-			return true;
+			return ConfigureUtil.LoadConfiguration<CardReaderDescriptor>(configName, cardReaders, "CardReader");
 		}
 
 		public static String[] GetCardReaderNames()
@@ -100,12 +73,17 @@ namespace RonftonCard.Common
 		/// <summary>
 		/// load config from CardTemplete.xml
 		/// </summary>
+		//public static bool LoadCardTemplete(String configName)
+		//{
+		//	return ConfigureUtil.LoadConfiguration<CardTemplete>(configName, cardTempletes, "templete");
+		//}
+
 		private const String ROOT_TAG_NAME = "templete";
 		public static bool LoadCardTemplete(String configName)
 		{
 			int seq = 1;
 
-			foreach (XmlNode node in LoadConfiguration(configName))
+			foreach (XmlNode node in ConfigureUtil.GetRootNode(configName))
 			{
 				if (XmlNodeType.Element == node.NodeType &&
 					node.Name.Equals(ROOT_TAG_NAME, StringComparison.CurrentCultureIgnoreCase))

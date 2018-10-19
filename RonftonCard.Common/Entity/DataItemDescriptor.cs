@@ -1,10 +1,10 @@
-﻿using BlueMoon.Attribute;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RonftonCard.Common.Utils;
+using BlueMoon;
 
 namespace RonftonCard.Common.Entity
 {
@@ -21,7 +21,7 @@ namespace RonftonCard.Common.Entity
 		/// <summary>
 		/// type of data item
 		/// </summary>
-		[MapTo("type")]
+		[Alias("type")]
 		public CardDataType DataType { get; set; }
 
 		/// <summary>

@@ -1,9 +1,6 @@
 ﻿using RonftonCard.Common.Reader;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Common
 {
@@ -19,7 +16,7 @@ namespace RonftonCard.Common
 
 		public CardContext()
 		{
-			this.Args = new Dictionary<String, Object>( StringComparer.CurrentCultureIgnoreCase);
+			this.Args = new Dictionary<String, Object>(StringComparer.CurrentCultureIgnoreCase);
 		}
 	}
 }

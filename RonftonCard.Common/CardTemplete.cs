@@ -66,30 +66,12 @@ namespace RonftonCard.Common
 			templete.TempleteName = node.GetAttributeValue("name","Unknown");
 			templete.TempleteDesc = node.GetAttributeValue("desc","");
 
-			templete.DataItems = CreateTempleteItem<DataItemDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
-			templete.StorageItems = CreateTempleteItem<StorageItemDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.PhysicalAddr).ToArray();
+			templete.DataItems = ConfigureUtil.CreateItem<DataItemDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
+			templete.StorageItems = ConfigureUtil.CreateItem<StorageItemDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.PhysicalAddr).ToArray();
 
 			return templete;
 		}
 
-		private static List<RT> CreateTempleteItem<RT>(XmlNode node, String tagName)
-		{
-			List<RT> items = new List<RT>();
-
-			// node maybe null !!!
-			if (node != null)
-			{
-				foreach (XmlNode n in node.ChildNodes)
-				{
-					if (XmlNodeType.Element == n.NodeType &&
-						n.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase))
-					{
-						items.Add(EntityUtil.CreateEntity<RT>(n));
-					}
-				}
-			}
-			return items;
-		}
 		#endregion
 
 		#region "--- for debug ---"

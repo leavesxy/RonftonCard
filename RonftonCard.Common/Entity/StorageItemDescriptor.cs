@@ -1,5 +1,5 @@
 ﻿using System;
-using BlueMoon.Attribute;
+using BlueMoon;
 
 namespace RonftonCard.Common.Entity
 {
@@ -24,7 +24,7 @@ namespace RonftonCard.Common.Entity
 		/// </summary>
 		public int Size { get; set; }
 
-		[MapTo("desc")]
+		[Alias("desc")]
 		public String Description { get; set; }
 		
 		private const String TO_STRING_FORMATTER = "PhysicalAddr = 0x{0:X4}, block = {1:D2}, size = {2:D4}, Description = {3}, {4}";

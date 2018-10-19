@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
-using BlueMoon.Extension;
 
 namespace RonftonCard.Common.Utils
 {
@@ -18,7 +17,7 @@ namespace RonftonCard.Common.Utils
 
 			foreach (PropertyInfo pi in props)
 			{
-				String n = pi.GetMappingName() ?? pi.Name;
+				String n = pi.GetAliasName() ?? pi.Name;
 				if (dict.Keys.Contains(n) )
 				{
 					pi.SetValue(entity, StringConverterManager.ConvertTo(pi.PropertyType, dict[n]));

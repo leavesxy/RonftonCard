@@ -1,4 +1,4 @@
-﻿using BlueMoon.Attribute;
+﻿using BlueMoon;
 using RonftonCard.Common.Reader;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace RonftonCard.Common.Entity
 		public String Desc { get; set; }
 		public PortType PortType { get; set; }
 
-		[MapTo("type")]
+		[Alias("type")]
 		public String DrvType { get; set; }
 
 		public override String ToString()

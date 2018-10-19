@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BlueMoon.Common2.1.0.2, Version=2.1.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BlueMoon.Common2.1.0.2.2.1.0.2\lib\net45\BlueMoon.Common2.1.0.2.dll</HintPath>
+    <Reference Include="BlueMoon.Common2.1.0.3, Version=2.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BlueMoon.Common2.1.0.3.2.1.0.3\lib\net45\BlueMoon.Common2.1.0.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BlueMoon.Form2.1.0.1, Version=2.1.0.1, Culture=neutral, processorArchitecture=MSIL">

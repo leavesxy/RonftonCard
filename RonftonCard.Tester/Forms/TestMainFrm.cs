@@ -7,7 +7,7 @@ using RonftonCard.Common;
 using RonftonCard.Tester.Entity;
 using RonftonCard.Common.Reader;
 using System.Reflection;
-using BlueMoon.Util;
+using BlueMoon;
 
 namespace RonftonCard.Tester.Forms
 {
@@ -88,12 +88,17 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
 		{
+			//String cardTempleteName = CbCardTemplete.SelectedItem as String;
+			//M1VirtualCard mvc = new M1VirtualCard(this.TxtControlBlock.Text, CardContextManager.GetCardTemplete(cardTempleteName), null);
+			//Dbg("User data control String : " + this.TxtControlBlock.Text, true);
+			//Dbg("Key control block    : " + mvc.DbgControlBlock());
+			//Dbg("size of virtual card : " + mvc.CardTemplete.CardSize.ToString());
+			//Dbg("physical address : " + mvc.DbgSectors());
 			String cardTempleteName = CbCardTemplete.SelectedItem as String;
-			M1VirtualCard mvc = new M1VirtualCard(this.TxtControlBlock.Text, CardContextManager.GetCardTemplete(cardTempleteName), null);
-			Dbg("User data control String : " + this.TxtControlBlock.Text, true);
-			Dbg("Key control block    : " + mvc.DbgControlBlock());
-			Dbg("size of virtual card : " + mvc.CardTemplete.CardSize.ToString());
-			Dbg("physical address : " + mvc.DbgSectors());
+			String cardReaderName = CbCardReader.SelectedItem as String;
+
+			VirtualCard vc = new VirtualCard(CardContextManager.CreateCardContext(CardType.M1, cardTempleteName, cardReaderName));
+			Dbg(vc.Dbg(), true);
 		}
 		#endregion
 
@@ -137,14 +142,14 @@ namespace RonftonCard.Tester.Forms
 		}
 		private void BtnReadBlock_A_Click(object sender, EventArgs e)
 		{
-			byte[] keyA = ByteUtil.FromHexString(this.TxtKeyA.Text.Trim());
+			byte[] keyA = HexString.FromString(this.TxtKeyA.Text.Trim());
 			ReadBlock(KeyMode.KeyA, keyA);
 
 		}
 
 		private void BtnReadBlock_B_Click(object sender, EventArgs e)
 		{
-			byte[] keyB = ByteUtil.FromHexString(this.TxtKeyB.Text.Trim());
+			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
 			ReadBlock(KeyMode.KeyB, keyB);
 		}
 
@@ -272,12 +277,12 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnUpdateKeyA_Click(object sender, EventArgs e)
 		{
-			byte[] keyA = ByteUtil.FromHexString(this.TxtKeyA.Text.Trim());
+			byte[] keyA = HexString.FromString(this.TxtKeyA.Text.Trim());
 			UpdateKey(KeyMode.KeyA, keyA);
 		}
 		private void BtnUpdateKeyB_Click(object sender, EventArgs e)
 		{
-			byte[] keyB = ByteUtil.FromHexString(this.TxtKeyB.Text.Trim());
+			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
 			UpdateKey(KeyMode.KeyB, keyB);
 		}
 

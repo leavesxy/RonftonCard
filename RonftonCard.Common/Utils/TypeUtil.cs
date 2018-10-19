@@ -1,10 +1,6 @@
-﻿using BlueMoon.Util;
+﻿using BlueMoon;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Common.Utils
 {
@@ -42,7 +38,7 @@ namespace RonftonCard.Common.Utils
 
 			String fullFileName;
 
-			if( FileUtil.Locate(assemblyName, out fullFileName ))
+			if( FileUtil.Lookup(assemblyName, out fullFileName ))
 			{
 				return Assembly.LoadFile(fullFileName);
 			}
