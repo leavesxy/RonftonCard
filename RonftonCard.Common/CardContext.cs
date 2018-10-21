@@ -1,4 +1,5 @@
-﻿using RonftonCard.Common.Reader;
+﻿using RonftonCard.Common.Config;
+using RonftonCard.Common.Reader;
 using System;
 using System.Collections.Generic;
 
@@ -8,9 +9,9 @@ namespace RonftonCard.Common
 	{
 		public CardType CardType { get; set; }
 
-		public CardTemplete CardTemplete { get; set; }
+		public CardConfigTemplete ConfigTemplete { get; set; }
 
-		public ICardReader CardReader { get; set; }
+		public CardReaderDescriptor ReaderDescriptor { get; set; }
 
 		public IDictionary<String, Object> Args { get; private set; }
 

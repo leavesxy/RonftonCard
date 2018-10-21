@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.Utils
+namespace RonftonCard.Common.Util
 {
 	public static class StringUtil
 	{

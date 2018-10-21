@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RonftonCard.Common.Utils;
+using RonftonCard.Common.Util;
 using BlueMoon;
 
-namespace RonftonCard.Common.Entity
+namespace RonftonCard.Common.Config
 {
 	/// <summary>
 	/// data description which written to card
 	/// </summary>
-	public class DataItemDescriptor
+	public class CardDataDescriptor
 	{
 		/// <summary>
 		/// name of this data item

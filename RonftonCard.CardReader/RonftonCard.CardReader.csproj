@@ -34,10 +34,6 @@
       <HintPath>..\packages\BlueMoon.Common2.1.0.3.2.1.0.3\lib\net45\BlueMoon.Common2.1.0.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BlueMoon.Form2.1.0.1, Version=2.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BlueMoon.Form2.1.0.1.2.1.0.1\lib\net45\BlueMoon.Form2.1.0.1.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

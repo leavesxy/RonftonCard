@@ -1,17 +1,20 @@
 ﻿using System;
 using BlueMoon;
 
-namespace RonftonCard.Common.Entity
+namespace RonftonCard.Common.Config
 {
 	/// <summary>
 	/// Storage description
 	/// </summary>
-	public class StorageItemDescriptor
+	public class CardStorageDescriptor
 	{
 		/// <summary>
 		/// Physical address
+		///		for M1 :	sector
+		///		for CPU:	file descriptor
+		///		for flash : physical address
 		/// </summary>
-		public int PhysicalAddr { get; set; }
+		public int Address { get; set; }
 
 		/// <summary>
 		/// block number
@@ -27,11 +30,11 @@ namespace RonftonCard.Common.Entity
 		[Alias("desc")]
 		public String Description { get; set; }
 		
-		private const String TO_STRING_FORMATTER = "PhysicalAddr = 0x{0:X4}, block = {1:D2}, size = {2:D4}, Description = {3}, {4}";
+		private const String TO_STRING_FORMATTER = "Address = 0x{0:X4}, block = {1:D2}, size = {2:D4}, Description = {3}, {4}";
 		public override String ToString()
 		{
 			return String.Format(TO_STRING_FORMATTER,
-				this.PhysicalAddr,
+				this.Address,
 				this.Block,
 				this.Size,
 				this.Description ?? "", 

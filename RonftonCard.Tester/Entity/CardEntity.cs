@@ -11,7 +11,7 @@ namespace RonftonCard.Tester.Entity
 		public byte Version { get; set; }
 		public String UniversityCode { get; set; }
 		public String Sno { get; set; }
-		public UInt32 CardNo { get; set; }
+		public Int32 CardNo { get; set; }
 		public DateTime ExpireDate { get; set; }
 		public byte IdType { get; set; }
 		public byte IdStatus { get; set; }
@@ -20,7 +20,7 @@ namespace RonftonCard.Tester.Entity
 		public byte Nation { get; set; }
 		public byte Country { get; set; }
 		public byte[] DeptNo { get; set; }
-		public double Balance { get; set; }
+		public Int32 Balance { get; set; }
 		public short Seq { get; set; }
 		public short LastSumByMeal { get; set; }
 		public byte LastMealNo { get; set; }
@@ -34,16 +34,17 @@ namespace RonftonCard.Tester.Entity
 			{
 				Version = 0x01,
 				UniversityCode = "100001",
-				Sno="123456",
+				Sno = "123456",
 				CardNo = 0x12345678,
-				ExpireDate = DateTime.ParseExact("20181012", "yyyyMMdd",null),
-				IdType=1,
-				Name="融付通",
+				ExpireDate = DateTime.ParseExact("20181012", "yyyyMMdd", null),
+				IdType = 1,
+				IdStatus = 1,
+				Name ="ronfton",
 				Sex=0x01,
 				Nation=0x01,
 				Country=0x01,
 				DeptNo=new byte[] { 0x01,0x02,0x03,0x04,0x05,0x06},
-				Balance = 100.01,
+				Balance = 10001,
 				Seq=1,
 				LastSumByMeal=0,
 				LastMealNo=0x01,

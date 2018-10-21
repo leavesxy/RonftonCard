@@ -1,5 +1,6 @@
-﻿using RonftonCard.Common.Reader;
-using RonftonCard.Common.Utils;
+﻿using RonftonCard.Common.Config;
+using RonftonCard.Common.Reader;
+using RonftonCard.Common.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace RonftonCard.Common
 	public class M1VirtualCard
 	{
 		private byte[] controlBlock;
-		public CardTemplete CardTemplete { get; private set; }
+		public CardConfigTemplete CardTemplete { get; private set; }
 		public ICardReader CardReader { get; private set; }
 
 		private byte[] virtualAddress;
 		private int[] physicalSectors;
 
-		public M1VirtualCard(String controlBlockString, CardTemplete cardTemplete, ICardReader cardReader)
+		public M1VirtualCard(String controlBlockString, CardConfigTemplete cardTemplete, ICardReader cardReader)
 		{
 			this.controlBlock = ComputeControlBlock(controlBlockString);
 			this.CardTemplete = cardTemplete;
@@ -29,7 +30,7 @@ namespace RonftonCard.Common
 		private void Init()
 		{
 			this.virtualAddress = InitVirtualAddress();
-			this.physicalSectors = this.CardTemplete.GetCardPhysicalAddr().ToArray();
+			this.physicalSectors = this.CardTemplete.SegmentAddr;
 		}
 
 		public void InitCard()

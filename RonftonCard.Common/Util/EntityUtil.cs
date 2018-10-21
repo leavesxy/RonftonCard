@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
-namespace RonftonCard.Common.Utils
+namespace RonftonCard.Common.Util
 {
 	public class EntityUtil
 	{

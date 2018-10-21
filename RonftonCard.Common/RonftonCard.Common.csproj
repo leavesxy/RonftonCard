@@ -38,6 +38,10 @@
       <HintPath>..\packages\BlueMoon.Form2.1.0.1.2.1.0.1\lib\net45\BlueMoon.Form2.1.0.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,33 +53,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardContext.cs" />
-    <Compile Include="DataTypeHandlers\BcdHandler.cs" />
-    <Compile Include="DataTypeHandlers\IDataHandler.cs" />
-    <Compile Include="Entity\CardReaderDescriptor.cs" />
-    <Compile Include="M1VirtualCard.cs" />
-    <Compile Include="CardProt.cs" />
-    <Compile Include="CardTemplete.cs" />
-    <Compile Include="Entity\DataItemDescriptor.cs" />
-    <Compile Include="Entity\StorageItemDescriptor.cs" />
+    <Compile Include="Config\CardConfigTemplete.cs" />
+    <Compile Include="ContextManager.cs" />
+    <Compile Include="Temp\DataTypeHandler.cs" />
+    <Compile Include="Temp\BcdHandler.cs" />
+    <Compile Include="Temp\IDataHandler.cs" />
+    <Compile Include="Config\CardReaderDescriptor.cs" />
+    <Compile Include="Temp\M1VirtualCard.cs" />
+    <Compile Include="Config\CardDataDescriptor.cs" />
+    <Compile Include="Config\CardStorageDescriptor.cs" />
     <Compile Include="CardType.cs" />
-    <Compile Include="CardDataType.cs" />
+    <Compile Include="Temp\CardDataType.cs" />
     <Compile Include="Reader\AbstractCardReader.cs" />
     <Compile Include="Reader\ICardReader.cs" />
     <Compile Include="Reader\KeyMode.cs" />
     <Compile Include="Reader\PortType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CardContextManager.cs" />
-    <Compile Include="Utils\ArrayUtil.cs" />
-    <Compile Include="Utils\ConfigureUtil.cs" />
-    <Compile Include="Utils\EntityUtil.cs" />
-    <Compile Include="Utils\StringUtil.cs" />
-    <Compile Include="Utils\TypeUtil.cs" />
-    <Compile Include="Utils\XmlUtil.cs" />
-    <Compile Include="VirtualCard.cs" />
+    <Compile Include="UnitTest\ConfigTest.cs" />
+    <Compile Include="Util\ArrayUtil.cs" />
+    <Compile Include="Util\ConfigureUtil.cs" />
+    <Compile Include="Util\EntityUtil.cs" />
+    <Compile Include="Util\StringUtil.cs" />
+    <Compile Include="Util\TypeUtil.cs" />
+    <Compile Include="Temp\VirtualCard.cs" />
+    <Compile Include="Util\XmlUtil.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UnitTestConfig\CardReader.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UnitTestConfig\CardTemplete.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

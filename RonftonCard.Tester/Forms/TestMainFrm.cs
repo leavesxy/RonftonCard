@@ -74,8 +74,8 @@ namespace RonftonCard.Tester.Forms
 		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
 		{
 			String cardTempleteName = CbCardTemplete.SelectedItem as String;
-			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgStorageItems(), true);
-			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgDataItems());
+			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgDataDescriptor(), true);
+			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgStorageDescriptor());
 		}
 
 		private void BtnDbgCardEntity_Click(object sender, EventArgs e)
@@ -88,16 +88,14 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
 		{
-			//String cardTempleteName = CbCardTemplete.SelectedItem as String;
-			//M1VirtualCard mvc = new M1VirtualCard(this.TxtControlBlock.Text, CardContextManager.GetCardTemplete(cardTempleteName), null);
-			//Dbg("User data control String : " + this.TxtControlBlock.Text, true);
-			//Dbg("Key control block    : " + mvc.DbgControlBlock());
-			//Dbg("size of virtual card : " + mvc.CardTemplete.CardSize.ToString());
-			//Dbg("physical address : " + mvc.DbgSectors());
 			String cardTempleteName = CbCardTemplete.SelectedItem as String;
 			String cardReaderName = CbCardReader.SelectedItem as String;
 
 			VirtualCard vc = new VirtualCard(CardContextManager.CreateCardContext(CardType.M1, cardTempleteName, cardReaderName));
+			CardEntity entity = CardEntity.CreateTestEntity();
+
+			vc.WriteEntity<CardEntity>(entity);
+
 			Dbg(vc.Dbg(), true);
 		}
 		#endregion

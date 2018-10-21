@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace RonftonCard.Common.Utils
+namespace RonftonCard.Common.Util
 {
 	public class TypeUtil
 	{
@@ -38,7 +38,7 @@ namespace RonftonCard.Common.Utils
 
 			String fullFileName;
 
-			if( FileUtil.Lookup(assemblyName, out fullFileName ))
+			if( FileHelper.Lookup(assemblyName, out fullFileName ))
 			{
 				return Assembly.LoadFile(fullFileName);
 			}
