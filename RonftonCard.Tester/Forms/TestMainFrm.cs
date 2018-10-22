@@ -99,15 +99,12 @@ namespace RonftonCard.Tester.Forms
 		/// </summary>
 		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
 		{
-			String cardTempleteName = CbCardTemplete.SelectedItem as String;
-			String cardReaderName = CbCardReader.SelectedItem as String;
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
 
-			AbstractVirtualCard vc = new AbstractVirtualCard(CardContextManager.CreateCardContext(CardType.M1, cardTempleteName, cardReaderName));
+			AbstractVirtualCard vc = new MifareVirtualCard(ctx);
 			CardEntity entity = CardEntity.CreateTestEntity();
-
 			vc.WriteEntity<CardEntity>(entity);
-
-			Dbg(vc.Dbg(), true);
+			Dbg(vc.DbgBuffer());
 		}
 		#endregion
 
@@ -116,9 +113,11 @@ namespace RonftonCard.Tester.Forms
 		{
 			String readerName = this.CbCardReader.SelectedItem as String;
 			Dbg("Current activated CardReader : " + readerName, true);
-			Dbg(CardContextManager.GetCardReaderDesc(readerName));
 
-			using (ICardReader reader = CardContextManager.GetCardReader(readerName))
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
+			Dbg(ctx.ReaderDescriptor.ToString());
+
+			using (ICardReader reader = ctx.GetCardReader())
 			{
 				if (reader != null)
 				{
@@ -134,9 +133,9 @@ namespace RonftonCard.Tester.Forms
 		private void BtnSelectCard_Click(object sender, EventArgs e)
 		{
 			Dbg("Begin to Select Card ...", true);
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
 
-			String readerName = this.CbCardReader.SelectedItem as String;
-			using (ICardReader reader = CardContextManager.GetCardReader(readerName))
+			using (ICardReader reader = ctx.GetCardReader())
 			{
 				if (reader != null)
 				{
@@ -167,8 +166,9 @@ namespace RonftonCard.Tester.Forms
 			Dbg("ReadBlock with " + keyMode.ToString(), true);
 			int blockNum = int.Parse(this.TxtBlockNum.Text);
 
-			String readerName = this.CbCardReader.SelectedItem as String;
-			using (ICardReader reader = CardContextManager.GetCardReader(readerName))
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
+
+			using (ICardReader reader = ctx.GetCardReader())
 			{
 				if (reader != null)
 				{
@@ -202,9 +202,9 @@ namespace RonftonCard.Tester.Forms
 		{
 			Dbg("WriteBlock::Begin to Select Card ...", true);
 			int blockNum = int.Parse(this.TxtBlockNum.Text);
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
 
-			String readerName = this.CbCardReader.SelectedItem as String;
-			using (ICardReader reader = CardContextManager.GetCardReader(readerName))
+			using (ICardReader reader = ctx.GetCardReader())
 			{
 				if (reader != null)
 				{
@@ -301,35 +301,35 @@ namespace RonftonCard.Tester.Forms
 			int blockNum = int.Parse(this.TxtBlockNum.Text);
 
 			String readerName = this.CbCardReader.SelectedItem as String;
-			using (ICardReader reader = CardContextManager.GetCardReader(readerName))
-			{
-				if (reader != null)
-				{
-					byte[] cardId;
-					if (reader.Select(out cardId))
-					{
-						Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
-						if (!reader.Authen(keyMode, blockNum, key))
-						{
-							Dbg("Authen failed !");
-							return;
-						}
+			//using (ICardReader reader = CardContextManager.GetCardReader(readerName))
+			//{
+			//	if (reader != null)
+			//	{
+			//		byte[] cardId;
+			//		if (reader.Select(out cardId))
+			//		{
+			//			Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
+			//			if (!reader.Authen(keyMode, blockNum, key))
+			//			{
+			//				Dbg("Authen failed !");
+			//				return;
+			//			}
 
-						Dbg("Auth OK , key = " + BitConverter.ToString(key));
+			//			Dbg("Auth OK , key = " + BitConverter.ToString(key));
 
-						byte[] block = new byte[] { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x78, 0x77, 0x88, 0x69, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f };
-						if (!reader.Write(blockNum, block))
-						{
-							Dbg("Update failed !");
-							return;
-						}
-						Dbg(String.Format("Write block #{0} ok ! --> {1}",
-								blockNum,
-								BitConverter.ToString(block)));
-					}
-					reader.Close();
-				}
-			}
+			//			byte[] block = new byte[] { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x78, 0x77, 0x88, 0x69, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f };
+			//			if (!reader.Write(blockNum, block))
+			//			{
+			//				Dbg("Update failed !");
+			//				return;
+			//			}
+			//			Dbg(String.Format("Write block #{0} ok ! --> {1}",
+			//					blockNum,
+			//					BitConverter.ToString(block)));
+			//		}
+			//		reader.Close();
+			//	}
+			//}
 		}
 	}
 }

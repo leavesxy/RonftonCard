@@ -20,7 +20,7 @@ namespace RonftonCard.Common
 			this.Args = args;
 		}
 
-		public ICardReader GetCardReader(String readerName)
+		public ICardReader GetCardReader()
 		{
 			ICardReader reader = null;
 			try

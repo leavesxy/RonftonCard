@@ -56,7 +56,7 @@ namespace RonftonCard.Common
 
 		public static CardContext CreateContext(String templeteName, String readerName)
 		{
-			return new CardContext()
+			return new CardContext(null)
 			{
 				ConfigTemplete = configTempletes[templeteName],
 				ReaderDescriptor = readerDescriptors[readerName]
