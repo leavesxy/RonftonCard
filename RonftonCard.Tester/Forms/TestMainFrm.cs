@@ -14,6 +14,8 @@ namespace RonftonCard.Tester.Forms
 	public partial class TestMainFrm : Form
 	{
 		private ResourceManager rm;
+		private String cardReaderName;
+		private String configTempleteName;
 
 		public TestMainFrm(ResourceManager rm)
 		{
@@ -28,8 +30,8 @@ namespace RonftonCard.Tester.Forms
 
 			try
 			{
-				CardContextManager.LoadCardTemplete("CardTemplete.xml");
-				CardContextManager.LoadCardReader("CardReader.xml");
+				CardContextManager.LoadCardConfigTemplete("CardTemplete.xml");
+				CardContextManager.LoadCardReaderConfiguration("CardReader.xml");
 			}
 			catch (Exception ex)
 			{
@@ -37,10 +39,10 @@ namespace RonftonCard.Tester.Forms
 				return;
 			}
 
-			this.CbCardTemplete.Items.AddRange(CardContextManager.GetCardTempleteNames());
+			this.CbCardTemplete.Items.AddRange(CardContextManager.CardTempleteNames);
 			this.CbCardTemplete.SelectedIndex = 0;
 
-			this.CbCardReader.Items.AddRange(CardContextManager.GetCardReaderNames());
+			this.CbCardReader.Items.AddRange(CardContextManager.CardReaderNames);
 			this.CbCardReader.SelectedIndex = 0;
 
 			this.TxtControlBlock.Text = "{1 0 0}, {0 1 1}";
@@ -51,12 +53,12 @@ namespace RonftonCard.Tester.Forms
 
 		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			BtnDbgCardTemplete_Click(this, null);
+			this.configTempleteName = CbCardTemplete.SelectedItem as String;
 		}
 
 		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
+			this.cardReaderName = CbCardReader.SelectedItem as String;
 		}
 
 		#endregion
@@ -71,13 +73,19 @@ namespace RonftonCard.Tester.Forms
 
 		#region "--- Config Test ---"
 
+		/// <summary>
+		/// show card templete content
+		/// </summary>
 		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
 		{
-			String cardTempleteName = CbCardTemplete.SelectedItem as String;
-			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgDataDescriptor(), true);
-			Dbg(CardContextManager.GetCardTemplete(cardTempleteName).DbgStorageDescriptor());
+			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
+			Dbg(ctx.ConfigTemplete.DbgDataDescriptor(), true);
+			Dbg(ctx.ConfigTemplete.DbgStorageDescriptor());
 		}
 
+		/// <summary>
+		/// show test data
+		/// </summary>
 		private void BtnDbgCardEntity_Click(object sender, EventArgs e)
 		{
 			CardEntity entity = CardEntity.CreateTestEntity();
@@ -86,12 +94,15 @@ namespace RonftonCard.Tester.Forms
 			Dbg(entity.ToString());
 		}
 
+		/// <summary>
+		/// write to virtual card 
+		/// </summary>
 		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
 		{
 			String cardTempleteName = CbCardTemplete.SelectedItem as String;
 			String cardReaderName = CbCardReader.SelectedItem as String;
 
-			VirtualCard vc = new VirtualCard(CardContextManager.CreateCardContext(CardType.M1, cardTempleteName, cardReaderName));
+			AbstractVirtualCard vc = new AbstractVirtualCard(CardContextManager.CreateCardContext(CardType.M1, cardTempleteName, cardReaderName));
 			CardEntity entity = CardEntity.CreateTestEntity();
 
 			vc.WriteEntity<CardEntity>(entity);

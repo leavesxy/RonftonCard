@@ -7,52 +7,52 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Common
 {
-	public class DataTypeHandler
+	public class DataTypeHelper
 	{
 		public static byte[] ToByte(Object obj, CardDataType dataType)
 		{
-			byte[] ret;
+			byte[] result;
 
 			switch(dataType)
 			{
 				case CardDataType.BIN:
 					if (obj.GetType().Equals(typeof(String)))
-						ret = Encoding.Default.GetBytes(((String)obj));
+						result = Encoding.Default.GetBytes(((String)obj));
 					else
-						ret = (byte[])obj;
+						result = (byte[])obj;
 					break;
 				case CardDataType.STR:
-					ret = WriteSTR((String)obj);
+					result = WriteSTR((String)obj);
 					break;
 				case CardDataType.DATE_B:
-					ret = WriteDateB((DateTime)obj);
+					result = WriteDateB((DateTime)obj);
 					break;
 				case CardDataType.CHAR:
-					ret = WriteChar((char)obj);
+					result = WriteChar((char)obj);
 					break;
 				case CardDataType.BOOL:
-					ret = WriteBool((bool)obj);
+					result = WriteBool((bool)obj);
 					break;
 				case CardDataType.BYTE:
-					ret = new byte[] { (byte)obj };
+					result = new byte[] { (byte)obj };
 					break;
 				case CardDataType.INT16:
-					ret = BitConverter.GetBytes((Int16)obj);
+					result = BitConverter.GetBytes((Int16)obj);
 					break;
 				case CardDataType.INT32:
-					ret = BitConverter.GetBytes((Int32)obj);
+					result = BitConverter.GetBytes((Int32)obj);
 					break;
 				case CardDataType.INT64:
-					ret = BitConverter.GetBytes((Int64)obj);
+					result = BitConverter.GetBytes((Int64)obj);
 					break;
 				case CardDataType.BCD:
-					ret = HexString.FromString((String)obj);
+					result = HexString.FromString((String)obj);
 					break;
 				default:
-					ret = new byte[] { };
+					result = new byte[] { };
 					break;
 			}
-			return ret;
+			return result;
 		}
 
 		private static byte[] WriteBool(bool ch)

@@ -128,6 +128,9 @@ namespace RonftonCard.Common.Util
 
 			bool ret = false;
 
+			// <propName value="propValue"/>
+			// <propName>propValue</propName>
+
 			// attribute first
 			if (node.Attributes["value"] != null)
 			{
@@ -144,7 +147,7 @@ namespace RonftonCard.Common.Util
 			}
 			else
 			{
-				//this property is another POO
+				//this property is another Entity
 				prop.SetValue(instance, CreateEntity((XmlElement)node, prop.PropertyType), null);
 			}
 			return ret;

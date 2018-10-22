@@ -1,6 +1,4 @@
-﻿using RonftonCard.Common.Config;
-using RonftonCard.Common.Reader;
-using RonftonCard.Common.Util;
+﻿using RonftonCard.Common.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,41 +8,17 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Common
 {
-	public class M1VirtualCard
+	public class MifareVirtualCard : AbstractVirtualCard
 	{
 		private byte[] controlBlock;
-		public CardConfigTemplete CardTemplete { get; private set; }
-		public ICardReader CardReader { get; private set; }
 
-		private byte[] virtualAddress;
-		private int[] physicalSectors;
-
-		public M1VirtualCard(String controlBlockString, CardConfigTemplete cardTemplete, ICardReader cardReader)
+		public MifareVirtualCard(CardContext cardContext)
+			: base(cardContext)
 		{
-			this.controlBlock = ComputeControlBlock(controlBlockString);
-			this.CardTemplete = cardTemplete;
-			this.CardReader = cardReader;
-			Init();
+
 		}
 
-		private void Init()
-		{
-			this.virtualAddress = InitVirtualAddress();
-			this.physicalSectors = this.CardTemplete.SegmentAddr;
-		}
-
-		public void InitCard()
-		{
-		}
-
-		private const byte FLASH_DEFAULT_VALUE = (byte)0xFF;
-
-		public byte[] InitVirtualAddress()
-		{
-			int size = this.CardTemplete.CardSize;
-			return Enumerable.Repeat(FLASH_DEFAULT_VALUE, size).ToArray(); ;
-		}
-
+		#region "--- compute control block ---"
 		// there are four bytes for control block, (offset 6-9)
 		// and the 9th byte is reserved, 0x69 is default value
 		private const byte DEFAULT_CONTROL_BLOCK9 = (byte)0x69;
@@ -99,24 +73,39 @@ namespace RonftonCard.Common
 
 			return byteArray.ToArray();
 		}
+		#endregion
 
-		#region "--- debug ---"
-
-		public String DbgControlBlock()
-		{
-			return BitConverter.ToString(this.controlBlock);
-		}
-
-		public String DbgSectors()
+		#region "--- debug---"
+		public override String DbgBuffer()
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach(int ps in this.physicalSectors)
+			sb.Append("virtual Card information :" + Environment.NewLine);
+			sb.Append("-------------------------------------------" + Environment.NewLine);
+			for (int i = 0; i < base.virtualBuffer.Length; i++)
 			{
-				sb.Append(String.Format("{0},", ps));
+				if (i % 16 == 0)
+				{
+					if (i != 0)
+						sb.Append(Environment.NewLine);
+
+					sb.Append(String.Format("{0}:", i.ToString("d4"))).Append(" ");
+				}
+				else
+					sb.Append(" ");
+
+				sb.Append(this.virtualBuffer[i].ToString("x2"));
 			}
+			sb.Append(Environment.NewLine);
 			return sb.ToString();
 		}
 
+		public override String DbgArgs()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("M1 Control Block :").Append(Environment.NewLine);
+			sb.Append(BitConverter.ToString(this.controlBlock));
+			return sb.ToString();
+		}
 		#endregion
 	}
 }

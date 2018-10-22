@@ -15,9 +15,25 @@ namespace RonftonCard.Common
 
 		public IDictionary<String, Object> Args { get; private set; }
 
-		public CardContext()
+		public CardContext(IDictionary<String, Object> args)
 		{
-			this.Args = new Dictionary<String, Object>(StringComparer.CurrentCultureIgnoreCase);
+			this.Args = args;
+		}
+
+		public ICardReader GetCardReader(String readerName)
+		{
+			ICardReader reader = null;
+			try
+			{
+				Type type = RonftonCard.Common.Util.TypeUtil.GetType(this.ReaderDescriptor.DrvType);
+
+				if (type != null)
+					reader = (ICardReader)Activator.CreateInstance(type, new object[] { this.ReaderDescriptor.PortType, this.ReaderDescriptor.Baud });
+			}
+			catch (Exception ex)
+			{
+			}
+			return reader;
 		}
 	}
 }

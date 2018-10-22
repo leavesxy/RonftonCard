@@ -71,6 +71,13 @@ namespace RonftonCard.Common.Config
 		}
 		#endregion
 
+		public CardDataDescriptor GetCardDataDescriptor(String name)
+		{
+			if ( this.DataDescriptor.IsNullOrEmpty() )
+				return null;
+
+			return this.DataDescriptor.FirstOrDefault(d => d.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+		}
 
 		public static CardConfigTemplete Create(XmlNode node)
 		{
