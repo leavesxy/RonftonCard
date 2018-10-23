@@ -5,21 +5,40 @@ using System.Collections.Generic;
 
 namespace RonftonCard.Common
 {
+	/// <summary>
+	/// context of card
+	/// </summary>
 	public class CardContext
 	{
+		/// <summary>
+		/// type of Card
+		/// </summary>
 		public CardType CardType { get; set; }
 
+		/// <summary>
+		/// config templete
+		/// </summary>
 		public CardConfigTemplete ConfigTemplete { get; set; }
 
+		/// <summary>
+		/// card reader descriptor
+		/// </summary>
 		public CardReaderDescriptor ReaderDescriptor { get; set; }
 
+		/// <summary>
+		/// arguments
+		/// </summary>
 		public IDictionary<String, Object> Args { get; private set; }
 
-		public CardContext(IDictionary<String, Object> args)
+		public CardContext()
 		{
-			this.Args = args;
+			this.Args = new Dictionary<String,Object>();
 		}
 
+		/// <summary>
+		/// create card reader instance
+		/// </summary>
+		/// <returns></returns>
 		public ICardReader GetCardReader()
 		{
 			ICardReader reader = null;

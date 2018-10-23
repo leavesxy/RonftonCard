@@ -54,13 +54,17 @@ namespace RonftonCard.Common
 		}
 		#endregion
 
-		public static CardContext CreateContext(String templeteName, String readerName)
+		public static CardContext CreateContext()
 		{
-			return new CardContext(null)
+			return new CardContext()
 			{
-				ConfigTemplete = configTempletes[templeteName],
-				ReaderDescriptor = readerDescriptors[readerName]
+				ConfigTemplete = configTempletes[CurrentTempleteName],
+				ReaderDescriptor = readerDescriptors[CurrentReaderDescriptor]
 			};
 		}
+
+		public static String CurrentTempleteName { get; set; }
+
+		public static String CurrentReaderDescriptor { get; set; }
 	}
 }

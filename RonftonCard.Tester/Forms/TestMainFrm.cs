@@ -8,19 +8,26 @@ using RonftonCard.Tester.Entity;
 using RonftonCard.Common.Reader;
 using System.Reflection;
 using BlueMoon;
+using System.Collections.Generic;
 
 namespace RonftonCard.Tester.Forms
 {
 	public partial class TestMainFrm : Form
 	{
 		private ResourceManager rm;
-		private String cardReaderName;
-		private String configTempleteName;
+		private List<TabPageDescriptor> tabPageDescriptor;
 
 		public TestMainFrm(ResourceManager rm)
 		{
 			InitializeComponent();
 			this.rm = rm;
+			this.tabPageDescriptor = new List<TabPageDescriptor>()
+			{
+				new TabPageDescriptor { PageIndex=0, PageName="ConfigTest", TabPageForm = new ConfigTestFrm()},
+				new TabPageDescriptor { PageIndex=1, PageName="Mifare1Test", TabPageForm = new MifareTestFrm() },
+				new TabPageDescriptor { PageIndex=2, PageName="KeyTest", TabPageForm = new KeyTestFrm() },
+
+			};
 		}
 
 		private void TestMainFrm_Load(object sender, EventArgs e)
@@ -45,23 +52,32 @@ namespace RonftonCard.Tester.Forms
 			this.CbCardReader.Items.AddRange(CardContextManager.CardReaderNames);
 			this.CbCardReader.SelectedIndex = 0;
 
-			this.TxtControlBlock.Text = "{1 0 0}, {0 1 1}";
-			Update();
+			InitTabPage();
+			this.TabMainControl.SelectedIndex = 0;
 		}
 
-		#region "--- Event handle ---"
-
-		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
+		private void InitTabPage()
 		{
-			this.configTempleteName = CbCardTemplete.SelectedItem as String;
-		}
+			// Ascending order
+			this.tabPageDescriptor.Sort((d1, d2) => d1.PageIndex.CompareTo(d2.PageIndex));
 
-		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			this.cardReaderName = CbCardReader.SelectedItem as String;
-		}
+			this.tabPageDescriptor.ForEach(desc => {
+				// set style of form
+				desc.TabPageForm.TopLevel = false;
+				desc.TabPageForm.FormBorderStyle = FormBorderStyle.None;
+				desc.TabPageForm.Dock = DockStyle.Fill;
 
-		#endregion
+				// add new tab page
+				TabPage tp = new TabPage();
+				tp.Name = desc.PageName;
+				tp.Text = desc.PageName;
+				tp.Controls.Add(desc.TabPageForm);
+
+				this.TabMainControl.Controls.Add(tp);
+			});
+
+			this.tabPageDescriptor.Find(desc => desc.PageIndex == 0).TabPageForm.Show();
+		}
 
 		/// <summary>
 		/// exit 
@@ -71,265 +87,28 @@ namespace RonftonCard.Tester.Forms
 			Application.Exit();
 		}
 
-		#region "--- Config Test ---"
 
-		/// <summary>
-		/// show card templete content
-		/// </summary>
-		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
+		#region "--- Event handle ---"
+
+		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-			Dbg(ctx.ConfigTemplete.DbgDataDescriptor(), true);
-			Dbg(ctx.ConfigTemplete.DbgStorageDescriptor());
+			CardContextManager.CurrentTempleteName = CbCardTemplete.SelectedItem as String;
 		}
 
-		/// <summary>
-		/// show test data
-		/// </summary>
-		private void BtnDbgCardEntity_Click(object sender, EventArgs e)
+		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			CardEntity entity = CardEntity.CreateTestEntity();
-			Dbg("Data written to Card ...", true);
-			Dbg("---------------------------------------------");
-			Dbg(entity.ToString());
+			CardContextManager.CurrentReaderDescriptor = CbCardReader.SelectedItem as String;
 		}
 
-		/// <summary>
-		/// write to virtual card 
-		/// </summary>
-		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
+		private void TabMainControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-
-			AbstractVirtualCard vc = new MifareVirtualCard(ctx);
-			CardEntity entity = CardEntity.CreateTestEntity();
-			vc.WriteEntity<CardEntity>(entity);
-			Dbg(vc.DbgBuffer());
-		}
-		#endregion
-
-		#region "--- Card reader Test ---"
-		private void BtnReaderInit_Click(object sender, EventArgs e)
-		{
-			String readerName = this.CbCardReader.SelectedItem as String;
-			Dbg("Current activated CardReader : " + readerName, true);
-
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-			Dbg(ctx.ReaderDescriptor.ToString());
-
-			using (ICardReader reader = ctx.GetCardReader())
+			TabPageDescriptor desc = this.tabPageDescriptor.Find(d => d.PageIndex == this.TabMainControl.SelectedIndex);
+			if (desc != null)
 			{
-				if (reader != null)
-				{
-					Dbg("reader version = " + reader.GetVersion());
-					reader.Beep(2);
-					reader.Close();
-				}
-			}
-
-			// show load assemblies
-			DbgAllAssemblies();
-		}
-		private void BtnSelectCard_Click(object sender, EventArgs e)
-		{
-			Dbg("Begin to Select Card ...", true);
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-
-			using (ICardReader reader = ctx.GetCardReader())
-			{
-				if (reader != null)
-				{
-					byte[] cardId;
-					if (reader.Select(out cardId))
-					{
-						Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
-					}
-					reader.Close();
-				}
+				desc.TabPageForm.Show();
 			}
 		}
-		private void BtnReadBlock_A_Click(object sender, EventArgs e)
-		{
-			byte[] keyA = HexString.FromString(this.TxtKeyA.Text.Trim());
-			ReadBlock(KeyMode.KeyA, keyA);
-
-		}
-
-		private void BtnReadBlock_B_Click(object sender, EventArgs e)
-		{
-			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
-			ReadBlock(KeyMode.KeyB, keyB);
-		}
-
-		private void ReadBlock(KeyMode keyMode, byte[] key)
-		{
-			Dbg("ReadBlock with " + keyMode.ToString(), true);
-			int blockNum = int.Parse(this.TxtBlockNum.Text);
-
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-
-			using (ICardReader reader = ctx.GetCardReader())
-			{
-				if (reader != null)
-				{
-					byte[] cardId;
-					if (reader.Select(out cardId))
-					{
-						Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
-
-						if (!reader.Authen(keyMode, blockNum, key))
-						{
-							Dbg("Authen failed !");
-							return;
-						}
-
-						Dbg("Auth OK , key = " + BitConverter.ToString(key));
-
-						byte[] block;
-						if (reader.Read(blockNum, out block))
-						{
-							Dbg(String.Format("Read block #{0} ok ! --> {1}",
-								blockNum,
-								BitConverter.ToString(block)));
-						}
-					}
-					reader.Close();
-				}
-			}
-		}
-
-		private void BtnWriteBlock_Click(object sender, EventArgs e)
-		{
-			Dbg("WriteBlock::Begin to Select Card ...", true);
-			int blockNum = int.Parse(this.TxtBlockNum.Text);
-			CardContext ctx = CardContextManager.CreateContext(this.configTempleteName, cardReaderName);
-
-			using (ICardReader reader = ctx.GetCardReader())
-			{
-				if (reader != null)
-				{
-					byte[] cardId;
-					if (reader.Select(out cardId))
-					{
-						Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
-
-						//byte[] pwdA = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-						byte[] pwdB = new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-
-						if (!reader.Authen(KeyMode.KeyB, blockNum, pwdB))
-						{
-							Dbg("Authen failed !");
-							return;
-						}
-
-						byte[] block = new byte[] { 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
-						if (reader.Write(blockNum, block))
-						{
-							Dbg(String.Format("Write block #{0} ok ! --> {1}",
-								blockNum,
-								BitConverter.ToString(block)));
-						}
-					}
-					reader.Close();
-				}
-			}
-		}
-		#endregion
-
-		#region "--- debug util ---"
-		private void Dbg(String msg, bool isClear = false)
-		{
-			if (isClear)
-				this.TxtDbg.Clear();
-
-			this.TxtDbg.Text += msg + Environment.NewLine;
-		}
-
-		private void Dbg(String format, params Object[] args)
-		{
-			this.TxtDbg.Text += String.Format(format, args) + Environment.NewLine;
-		}
-
-		private void DbgCr()
-		{
-			this.TxtDbg.Text += Environment.NewLine;
-		}
-
-		private void Dbg(byte[] msg, bool isClear = false)
-		{
-			if (isClear)
-				this.TxtDbg.Clear();
-
-			this.TxtDbg.Text += BitConverter.ToString(msg) + Environment.NewLine;
-		}
-
-		private void DbgAllAssemblies()
-		{
-			Assembly[] assembies = AppDomain.CurrentDomain.GetAssemblies();
-			Dbg("Current assemblies loaded : ");
-
-			foreach (Assembly assembly in assembies)
-			{
-				// filter mircosoft, system
-				String name = assembly.GetName().Name;
-				if (!name.StartsWith("System", StringComparison.CurrentCultureIgnoreCase) &&
-					!name.StartsWith("Microsoft", StringComparison.CurrentCultureIgnoreCase))
-				{
-					Dbg(" --> name = {0}", name);
-				}
-			}
-		}
-
-
 
 		#endregion
-
-		private void BtnUpdateKeyA_Click(object sender, EventArgs e)
-		{
-			byte[] keyA = HexString.FromString(this.TxtKeyA.Text.Trim());
-			UpdateKey(KeyMode.KeyA, keyA);
-		}
-		private void BtnUpdateKeyB_Click(object sender, EventArgs e)
-		{
-			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
-			UpdateKey(KeyMode.KeyB, keyB);
-		}
-
-		private void UpdateKey(KeyMode keyMode, byte[] key)
-		{
-			Dbg("UpdateKey with " + keyMode.ToString() , true);
-			int blockNum = int.Parse(this.TxtBlockNum.Text);
-
-			String readerName = this.CbCardReader.SelectedItem as String;
-			//using (ICardReader reader = CardContextManager.GetCardReader(readerName))
-			//{
-			//	if (reader != null)
-			//	{
-			//		byte[] cardId;
-			//		if (reader.Select(out cardId))
-			//		{
-			//			Dbg("Select Card OK! id = " + BitConverter.ToString(cardId));
-			//			if (!reader.Authen(keyMode, blockNum, key))
-			//			{
-			//				Dbg("Authen failed !");
-			//				return;
-			//			}
-
-			//			Dbg("Auth OK , key = " + BitConverter.ToString(key));
-
-			//			byte[] block = new byte[] { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x78, 0x77, 0x88, 0x69, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f, 0x0f };
-			//			if (!reader.Write(blockNum, block))
-			//			{
-			//				Dbg("Update failed !");
-			//				return;
-			//			}
-			//			Dbg(String.Format("Write block #{0} ok ! --> {1}",
-			//					blockNum,
-			//					BitConverter.ToString(block)));
-			//		}
-			//		reader.Close();
-			//	}
-			//}
-		}
 	}
 }
