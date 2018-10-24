@@ -18,7 +18,7 @@ namespace RonftonCard.Common
 		/// <summary>
 		/// config templete
 		/// </summary>
-		public CardConfigTemplete ConfigTemplete { get; set; }
+		public CardTemplete ConfigTemplete { get; set; }
 
 		/// <summary>
 		/// card reader descriptor

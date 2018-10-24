@@ -11,7 +11,7 @@ namespace RonftonCard.Common.Config
 	/// <summary>
 	/// data description which written to card
 	/// </summary>
-	public class CardDataDescriptor
+	public class TempleteDataDescriptor
 	{
 		/// <summary>
 		/// name of this data item

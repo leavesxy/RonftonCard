@@ -33,7 +33,7 @@ namespace RonftonCard.Common
 			{
 				String name = p.GetAliasName() ?? p.Name;
 
-				CardDataDescriptor descriptor = this.cardContext.ConfigTemplete.GetCardDataDescriptor(name);
+				TempleteDataDescriptor descriptor = this.cardContext.ConfigTemplete.GetTempleteDataDescriptor(name);
 
 				if (descriptor != null)
 				{

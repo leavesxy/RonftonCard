@@ -49,13 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardContext.cs" />
-    <Compile Include="Config\CardConfigTemplete.cs" />
+    <Compile Include="Config\CardTemplete.cs" />
     <Compile Include="CardContextManager.cs" />
     <Compile Include="MifareVirtualCard.cs" />
     <Compile Include="DataTypeHelper.cs" />
     <Compile Include="Config\CardReaderDescriptor.cs" />
-    <Compile Include="Config\CardDataDescriptor.cs" />
-    <Compile Include="Config\CardStorageDescriptor.cs" />
+    <Compile Include="Config\TempleteDataDescriptor.cs" />
+    <Compile Include="Config\TempleteStorageDescriptor.cs" />
     <Compile Include="CardType.cs" />
     <Compile Include="CardDataType.cs" />
     <Compile Include="Reader\AbstractCardReader.cs" />

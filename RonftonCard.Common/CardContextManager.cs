@@ -17,7 +17,7 @@ namespace RonftonCard.Common
 	/// </summary>
 	public class CardContextManager
 	{
-		private static IDictionary<String, CardConfigTemplete> configTempletes;
+		private static IDictionary<String, CardTemplete> templetes;
 		private static IDictionary<String, CardReaderDescriptor> readerDescriptors;
 
 		#region "--- load configuration ---"
@@ -30,18 +30,22 @@ namespace RonftonCard.Common
 
 		public static bool LoadCardConfigTemplete(String configFileName, String sectionName = null)
 		{
-			configTempletes = XmlUtil.CreateEntity<IDictionary<String, CardConfigTemplete>>(configFileName, sectionName);
-			return configTempletes != null;
+			templetes = XmlUtil.CreateEntity<IDictionary<String, CardTemplete>>(configFileName, sectionName);
+			return templetes != null;
 		}
 
 		#endregion
 
 		#region "---Properties ---"
-		public static String[] CardTempleteNames
+
+		/// <summary>
+		/// get all config templete names
+		/// </summary>
+		public static String[] TempleteNames
 		{
 			get
 			{
-				return configTempletes == null ? new String[] { } : configTempletes.Keys.ToArray();
+				return templetes == null ? new String[] { } : templetes.Keys.ToArray();
 			}
 		}
 
@@ -52,13 +56,22 @@ namespace RonftonCard.Common
 				return readerDescriptors == null ? new String[] { } : readerDescriptors.Keys.ToArray();
 			}
 		}
+
+		public static int[] AddrDescriptors
+		{
+			get
+			{
+				return templetes[CurrentTempleteName].SegmentAddr;
+			}
+		}
 		#endregion
 
 		public static CardContext CreateContext()
 		{
 			return new CardContext()
 			{
-				ConfigTemplete = configTempletes[CurrentTempleteName],
+				CardType = CurrentCardType,
+				ConfigTemplete = templetes[CurrentTempleteName],
 				ReaderDescriptor = readerDescriptors[CurrentReaderDescriptor]
 			};
 		}
@@ -66,5 +79,7 @@ namespace RonftonCard.Common
 		public static String CurrentTempleteName { get; set; }
 
 		public static String CurrentReaderDescriptor { get; set; }
+
+		public static CardType CurrentCardType { get; set; }
 	}
 }

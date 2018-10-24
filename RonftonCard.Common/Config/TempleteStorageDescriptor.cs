@@ -6,7 +6,7 @@ namespace RonftonCard.Common.Config
 	/// <summary>
 	/// Storage description
 	/// </summary>
-	public class CardStorageDescriptor
+	public class TempleteStorageDescriptor
 	{
 		/// <summary>
 		/// Physical address

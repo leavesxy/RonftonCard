@@ -28,8 +28,8 @@ namespace RonftonCard.Tester.Forms
 		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
 		{
 			CardContext ctx = CardContextManager.CreateContext();
-			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgDataDescriptor(), true);
-			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgStorageDescriptor());
+			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgTempleteDataDescriptor(), true);
+			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgTempleteStorageDescriptor());
 		}
 
 		private void BtnDbgCardEntity_Click(object sender, EventArgs e)

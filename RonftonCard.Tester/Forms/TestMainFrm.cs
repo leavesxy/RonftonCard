@@ -46,7 +46,7 @@ namespace RonftonCard.Tester.Forms
 				return;
 			}
 
-			this.CbCardTemplete.Items.AddRange(CardContextManager.CardTempleteNames);
+			this.CbCardTemplete.Items.AddRange(CardContextManager.TempleteNames);
 			this.CbCardTemplete.SelectedIndex = 0;
 
 			this.CbCardReader.Items.AddRange(CardContextManager.CardReaderNames);

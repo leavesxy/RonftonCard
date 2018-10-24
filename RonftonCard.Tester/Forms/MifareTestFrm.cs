@@ -24,14 +24,19 @@ namespace RonftonCard.Tester.Forms
 
 		private void MifareTestFrm_Load(object sender, EventArgs e)
 		{
+			CardContextManager.CurrentCardType = CardType.M1;
+			this.TxtControlBlock.Text = "{1 0 0},{0 1 1}";
 			this.mifareCardBlocks = new List<CheckBox>()
 			{
 				this.Cb0,this.Cb1,this.Cb2,this.Cb3,this.Cb4,this.Cb5,this.Cb6,this.Cb7,
 				this.Cb8,this.Cb9,this.Cb10,this.Cb11,this.Cb12,this.Cb13,this.Cb14,this.Cb15,
 			};
-			this.TxtControlBlock.Text = "{1 0 0},{0 1 1}";
+			ResetCardBlock();
 		}
 
+
+
+		#region "--- button command ---"
 		/// <summary>
 		/// select card Test
 		/// </summary>
@@ -66,8 +71,6 @@ namespace RonftonCard.Tester.Forms
 		/// <summary>
 		/// read block with KeyB
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void BtnReadBlockB_Click(object sender, EventArgs e)
 		{
 			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
@@ -89,8 +92,33 @@ namespace RonftonCard.Tester.Forms
 
 		}
 
+		private void BntReset_Click(object sender, EventArgs e)
+		{
+			ResetCardBlock();
+		}
+
+		#endregion
 
 		#region "--- util --"
+
+		/// <summary>
+		/// reset all card block check-box
+		/// </summary>
+		private void ResetCardBlock()
+		{
+			int[] sectors = CardContextManager.AddrDescriptors;
+
+			this.mifareCardBlocks.ForEach(m =>
+			{
+				if (sectors.Contains(int.Parse(m.Text)))
+					m.Checked = true;
+			});
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public int[] GetCardBlockSelected()
 		{
 			Update();
@@ -154,6 +182,8 @@ namespace RonftonCard.Tester.Forms
 		}
 		#endregion
 
+		#region "--- Event Handle ---"
+
 		private void CbAll_CheckedChanged(object sender, EventArgs e)
 		{
 			if( this.CbAll.Checked )
@@ -165,5 +195,8 @@ namespace RonftonCard.Tester.Forms
 				this.mifareCardBlocks.ForEach(c => c.Checked = false);
 			}
 		}
+
+		#endregion
+
 	}
 }

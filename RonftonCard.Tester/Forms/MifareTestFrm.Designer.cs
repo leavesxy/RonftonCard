@@ -35,6 +35,22 @@
 			this.TxtControlBlock = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.Cb15 = new System.Windows.Forms.CheckBox();
+			this.Cb14 = new System.Windows.Forms.CheckBox();
+			this.Cb13 = new System.Windows.Forms.CheckBox();
+			this.Cb12 = new System.Windows.Forms.CheckBox();
+			this.Cb11 = new System.Windows.Forms.CheckBox();
+			this.Cb10 = new System.Windows.Forms.CheckBox();
+			this.Cb9 = new System.Windows.Forms.CheckBox();
+			this.Cb8 = new System.Windows.Forms.CheckBox();
+			this.Cb7 = new System.Windows.Forms.CheckBox();
+			this.Cb6 = new System.Windows.Forms.CheckBox();
+			this.Cb5 = new System.Windows.Forms.CheckBox();
+			this.Cb4 = new System.Windows.Forms.CheckBox();
+			this.Cb3 = new System.Windows.Forms.CheckBox();
+			this.Cb2 = new System.Windows.Forms.CheckBox();
+			this.Cb1 = new System.Windows.Forms.CheckBox();
+			this.Cb0 = new System.Windows.Forms.CheckBox();
 			this.TxtDbg = new System.Windows.Forms.TextBox();
 			this.BtnUpdateKeyB = new System.Windows.Forms.Button();
 			this.BtnUpdateKeyA = new System.Windows.Forms.Button();
@@ -42,23 +58,8 @@
 			this.BtnReadBlockB = new System.Windows.Forms.Button();
 			this.BtnReadBlockA = new System.Windows.Forms.Button();
 			this.BtnSelectCard = new System.Windows.Forms.Button();
-			this.Cb0 = new System.Windows.Forms.CheckBox();
-			this.Cb1 = new System.Windows.Forms.CheckBox();
-			this.Cb2 = new System.Windows.Forms.CheckBox();
-			this.Cb3 = new System.Windows.Forms.CheckBox();
-			this.Cb4 = new System.Windows.Forms.CheckBox();
-			this.Cb5 = new System.Windows.Forms.CheckBox();
-			this.Cb6 = new System.Windows.Forms.CheckBox();
-			this.Cb7 = new System.Windows.Forms.CheckBox();
-			this.Cb8 = new System.Windows.Forms.CheckBox();
-			this.Cb9 = new System.Windows.Forms.CheckBox();
-			this.Cb10 = new System.Windows.Forms.CheckBox();
-			this.Cb11 = new System.Windows.Forms.CheckBox();
-			this.Cb12 = new System.Windows.Forms.CheckBox();
-			this.Cb13 = new System.Windows.Forms.CheckBox();
-			this.Cb14 = new System.Windows.Forms.CheckBox();
-			this.Cb15 = new System.Windows.Forms.CheckBox();
 			this.CbAll = new System.Windows.Forms.CheckBox();
+			this.BntReset = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -139,6 +140,166 @@
 			this.groupBox1.TabIndex = 12;
 			this.groupBox1.TabStop = false;
 			// 
+			// Cb15
+			// 
+			this.Cb15.AutoSize = true;
+			this.Cb15.Location = new System.Drawing.Point(618, 22);
+			this.Cb15.Name = "Cb15";
+			this.Cb15.Size = new System.Drawing.Size(47, 24);
+			this.Cb15.TabIndex = 0;
+			this.Cb15.Text = "15";
+			this.Cb15.UseVisualStyleBackColor = true;
+			// 
+			// Cb14
+			// 
+			this.Cb14.AutoSize = true;
+			this.Cb14.Location = new System.Drawing.Point(572, 22);
+			this.Cb14.Name = "Cb14";
+			this.Cb14.Size = new System.Drawing.Size(47, 24);
+			this.Cb14.TabIndex = 0;
+			this.Cb14.Text = "14";
+			this.Cb14.UseVisualStyleBackColor = true;
+			// 
+			// Cb13
+			// 
+			this.Cb13.AutoSize = true;
+			this.Cb13.Location = new System.Drawing.Point(527, 22);
+			this.Cb13.Name = "Cb13";
+			this.Cb13.Size = new System.Drawing.Size(47, 24);
+			this.Cb13.TabIndex = 0;
+			this.Cb13.Text = "13";
+			this.Cb13.UseVisualStyleBackColor = true;
+			// 
+			// Cb12
+			// 
+			this.Cb12.AutoSize = true;
+			this.Cb12.Location = new System.Drawing.Point(481, 22);
+			this.Cb12.Name = "Cb12";
+			this.Cb12.Size = new System.Drawing.Size(47, 24);
+			this.Cb12.TabIndex = 0;
+			this.Cb12.Text = "12";
+			this.Cb12.UseVisualStyleBackColor = true;
+			// 
+			// Cb11
+			// 
+			this.Cb11.AutoSize = true;
+			this.Cb11.Location = new System.Drawing.Point(438, 22);
+			this.Cb11.Name = "Cb11";
+			this.Cb11.Size = new System.Drawing.Size(47, 24);
+			this.Cb11.TabIndex = 0;
+			this.Cb11.Text = "11";
+			this.Cb11.UseVisualStyleBackColor = true;
+			// 
+			// Cb10
+			// 
+			this.Cb10.AutoSize = true;
+			this.Cb10.Location = new System.Drawing.Point(392, 22);
+			this.Cb10.Name = "Cb10";
+			this.Cb10.Size = new System.Drawing.Size(47, 24);
+			this.Cb10.TabIndex = 0;
+			this.Cb10.Text = "10";
+			this.Cb10.UseVisualStyleBackColor = true;
+			// 
+			// Cb9
+			// 
+			this.Cb9.AutoSize = true;
+			this.Cb9.Location = new System.Drawing.Point(353, 22);
+			this.Cb9.Name = "Cb9";
+			this.Cb9.Size = new System.Drawing.Size(39, 24);
+			this.Cb9.TabIndex = 0;
+			this.Cb9.Text = "9";
+			this.Cb9.UseVisualStyleBackColor = true;
+			// 
+			// Cb8
+			// 
+			this.Cb8.AutoSize = true;
+			this.Cb8.Location = new System.Drawing.Point(314, 22);
+			this.Cb8.Name = "Cb8";
+			this.Cb8.Size = new System.Drawing.Size(39, 24);
+			this.Cb8.TabIndex = 0;
+			this.Cb8.Text = "8";
+			this.Cb8.UseVisualStyleBackColor = true;
+			// 
+			// Cb7
+			// 
+			this.Cb7.AutoSize = true;
+			this.Cb7.Location = new System.Drawing.Point(275, 22);
+			this.Cb7.Name = "Cb7";
+			this.Cb7.Size = new System.Drawing.Size(39, 24);
+			this.Cb7.TabIndex = 0;
+			this.Cb7.Text = "7";
+			this.Cb7.UseVisualStyleBackColor = true;
+			// 
+			// Cb6
+			// 
+			this.Cb6.AutoSize = true;
+			this.Cb6.Location = new System.Drawing.Point(237, 22);
+			this.Cb6.Name = "Cb6";
+			this.Cb6.Size = new System.Drawing.Size(39, 24);
+			this.Cb6.TabIndex = 0;
+			this.Cb6.Text = "6";
+			this.Cb6.UseVisualStyleBackColor = true;
+			// 
+			// Cb5
+			// 
+			this.Cb5.AutoSize = true;
+			this.Cb5.Location = new System.Drawing.Point(198, 22);
+			this.Cb5.Name = "Cb5";
+			this.Cb5.Size = new System.Drawing.Size(39, 24);
+			this.Cb5.TabIndex = 0;
+			this.Cb5.Text = "5";
+			this.Cb5.UseVisualStyleBackColor = true;
+			// 
+			// Cb4
+			// 
+			this.Cb4.AutoSize = true;
+			this.Cb4.Location = new System.Drawing.Point(157, 22);
+			this.Cb4.Name = "Cb4";
+			this.Cb4.Size = new System.Drawing.Size(39, 24);
+			this.Cb4.TabIndex = 0;
+			this.Cb4.Text = "4";
+			this.Cb4.UseVisualStyleBackColor = true;
+			// 
+			// Cb3
+			// 
+			this.Cb3.AutoSize = true;
+			this.Cb3.Location = new System.Drawing.Point(118, 22);
+			this.Cb3.Name = "Cb3";
+			this.Cb3.Size = new System.Drawing.Size(39, 24);
+			this.Cb3.TabIndex = 0;
+			this.Cb3.Text = "3";
+			this.Cb3.UseVisualStyleBackColor = true;
+			// 
+			// Cb2
+			// 
+			this.Cb2.AutoSize = true;
+			this.Cb2.Location = new System.Drawing.Point(84, 22);
+			this.Cb2.Name = "Cb2";
+			this.Cb2.Size = new System.Drawing.Size(39, 24);
+			this.Cb2.TabIndex = 0;
+			this.Cb2.Text = "2";
+			this.Cb2.UseVisualStyleBackColor = true;
+			// 
+			// Cb1
+			// 
+			this.Cb1.AutoSize = true;
+			this.Cb1.Location = new System.Drawing.Point(45, 22);
+			this.Cb1.Name = "Cb1";
+			this.Cb1.Size = new System.Drawing.Size(39, 24);
+			this.Cb1.TabIndex = 0;
+			this.Cb1.Text = "1";
+			this.Cb1.UseVisualStyleBackColor = true;
+			// 
+			// Cb0
+			// 
+			this.Cb0.AutoSize = true;
+			this.Cb0.Location = new System.Drawing.Point(7, 22);
+			this.Cb0.Name = "Cb0";
+			this.Cb0.Size = new System.Drawing.Size(39, 24);
+			this.Cb0.TabIndex = 0;
+			this.Cb0.Text = "0";
+			this.Cb0.UseVisualStyleBackColor = true;
+			// 
 			// TxtDbg
 			// 
 			this.TxtDbg.Location = new System.Drawing.Point(13, 99);
@@ -214,170 +375,10 @@
 			this.BtnSelectCard.UseVisualStyleBackColor = true;
 			this.BtnSelectCard.Click += new System.EventHandler(this.BtnSelectCard_Click);
 			// 
-			// Cb0
-			// 
-			this.Cb0.AutoSize = true;
-			this.Cb0.Location = new System.Drawing.Point(7, 22);
-			this.Cb0.Name = "Cb0";
-			this.Cb0.Size = new System.Drawing.Size(39, 24);
-			this.Cb0.TabIndex = 0;
-			this.Cb0.Text = "0";
-			this.Cb0.UseVisualStyleBackColor = true;
-			// 
-			// Cb1
-			// 
-			this.Cb1.AutoSize = true;
-			this.Cb1.Location = new System.Drawing.Point(45, 22);
-			this.Cb1.Name = "Cb1";
-			this.Cb1.Size = new System.Drawing.Size(39, 24);
-			this.Cb1.TabIndex = 0;
-			this.Cb1.Text = "1";
-			this.Cb1.UseVisualStyleBackColor = true;
-			// 
-			// Cb2
-			// 
-			this.Cb2.AutoSize = true;
-			this.Cb2.Location = new System.Drawing.Point(84, 22);
-			this.Cb2.Name = "Cb2";
-			this.Cb2.Size = new System.Drawing.Size(39, 24);
-			this.Cb2.TabIndex = 0;
-			this.Cb2.Text = "2";
-			this.Cb2.UseVisualStyleBackColor = true;
-			// 
-			// Cb3
-			// 
-			this.Cb3.AutoSize = true;
-			this.Cb3.Location = new System.Drawing.Point(118, 22);
-			this.Cb3.Name = "Cb3";
-			this.Cb3.Size = new System.Drawing.Size(39, 24);
-			this.Cb3.TabIndex = 0;
-			this.Cb3.Text = "3";
-			this.Cb3.UseVisualStyleBackColor = true;
-			// 
-			// Cb4
-			// 
-			this.Cb4.AutoSize = true;
-			this.Cb4.Location = new System.Drawing.Point(157, 22);
-			this.Cb4.Name = "Cb4";
-			this.Cb4.Size = new System.Drawing.Size(39, 24);
-			this.Cb4.TabIndex = 0;
-			this.Cb4.Text = "4";
-			this.Cb4.UseVisualStyleBackColor = true;
-			// 
-			// Cb5
-			// 
-			this.Cb5.AutoSize = true;
-			this.Cb5.Location = new System.Drawing.Point(198, 22);
-			this.Cb5.Name = "Cb5";
-			this.Cb5.Size = new System.Drawing.Size(39, 24);
-			this.Cb5.TabIndex = 0;
-			this.Cb5.Text = "5";
-			this.Cb5.UseVisualStyleBackColor = true;
-			// 
-			// Cb6
-			// 
-			this.Cb6.AutoSize = true;
-			this.Cb6.Location = new System.Drawing.Point(237, 22);
-			this.Cb6.Name = "Cb6";
-			this.Cb6.Size = new System.Drawing.Size(39, 24);
-			this.Cb6.TabIndex = 0;
-			this.Cb6.Text = "6";
-			this.Cb6.UseVisualStyleBackColor = true;
-			// 
-			// Cb7
-			// 
-			this.Cb7.AutoSize = true;
-			this.Cb7.Location = new System.Drawing.Point(275, 22);
-			this.Cb7.Name = "Cb7";
-			this.Cb7.Size = new System.Drawing.Size(39, 24);
-			this.Cb7.TabIndex = 0;
-			this.Cb7.Text = "7";
-			this.Cb7.UseVisualStyleBackColor = true;
-			// 
-			// Cb8
-			// 
-			this.Cb8.AutoSize = true;
-			this.Cb8.Location = new System.Drawing.Point(314, 22);
-			this.Cb8.Name = "Cb8";
-			this.Cb8.Size = new System.Drawing.Size(39, 24);
-			this.Cb8.TabIndex = 0;
-			this.Cb8.Text = "8";
-			this.Cb8.UseVisualStyleBackColor = true;
-			// 
-			// Cb9
-			// 
-			this.Cb9.AutoSize = true;
-			this.Cb9.Location = new System.Drawing.Point(353, 22);
-			this.Cb9.Name = "Cb9";
-			this.Cb9.Size = new System.Drawing.Size(39, 24);
-			this.Cb9.TabIndex = 0;
-			this.Cb9.Text = "9";
-			this.Cb9.UseVisualStyleBackColor = true;
-			// 
-			// Cb10
-			// 
-			this.Cb10.AutoSize = true;
-			this.Cb10.Location = new System.Drawing.Point(392, 22);
-			this.Cb10.Name = "Cb10";
-			this.Cb10.Size = new System.Drawing.Size(47, 24);
-			this.Cb10.TabIndex = 0;
-			this.Cb10.Text = "10";
-			this.Cb10.UseVisualStyleBackColor = true;
-			// 
-			// Cb11
-			// 
-			this.Cb11.AutoSize = true;
-			this.Cb11.Location = new System.Drawing.Point(438, 22);
-			this.Cb11.Name = "Cb11";
-			this.Cb11.Size = new System.Drawing.Size(47, 24);
-			this.Cb11.TabIndex = 0;
-			this.Cb11.Text = "11";
-			this.Cb11.UseVisualStyleBackColor = true;
-			// 
-			// Cb12
-			// 
-			this.Cb12.AutoSize = true;
-			this.Cb12.Location = new System.Drawing.Point(481, 22);
-			this.Cb12.Name = "Cb12";
-			this.Cb12.Size = new System.Drawing.Size(47, 24);
-			this.Cb12.TabIndex = 0;
-			this.Cb12.Text = "12";
-			this.Cb12.UseVisualStyleBackColor = true;
-			// 
-			// Cb13
-			// 
-			this.Cb13.AutoSize = true;
-			this.Cb13.Location = new System.Drawing.Point(527, 22);
-			this.Cb13.Name = "Cb13";
-			this.Cb13.Size = new System.Drawing.Size(47, 24);
-			this.Cb13.TabIndex = 0;
-			this.Cb13.Text = "13";
-			this.Cb13.UseVisualStyleBackColor = true;
-			// 
-			// Cb14
-			// 
-			this.Cb14.AutoSize = true;
-			this.Cb14.Location = new System.Drawing.Point(572, 22);
-			this.Cb14.Name = "Cb14";
-			this.Cb14.Size = new System.Drawing.Size(47, 24);
-			this.Cb14.TabIndex = 0;
-			this.Cb14.Text = "14";
-			this.Cb14.UseVisualStyleBackColor = true;
-			// 
-			// Cb15
-			// 
-			this.Cb15.AutoSize = true;
-			this.Cb15.Location = new System.Drawing.Point(618, 22);
-			this.Cb15.Name = "Cb15";
-			this.Cb15.Size = new System.Drawing.Size(47, 24);
-			this.Cb15.TabIndex = 0;
-			this.Cb15.Text = "15";
-			this.Cb15.UseVisualStyleBackColor = true;
-			// 
 			// CbAll
 			// 
 			this.CbAll.AutoSize = true;
-			this.CbAll.Location = new System.Drawing.Point(691, 65);
+			this.CbAll.Location = new System.Drawing.Point(691, 69);
 			this.CbAll.Name = "CbAll";
 			this.CbAll.Size = new System.Drawing.Size(49, 24);
 			this.CbAll.TabIndex = 20;
@@ -385,12 +386,24 @@
 			this.CbAll.UseVisualStyleBackColor = true;
 			this.CbAll.CheckedChanged += new System.EventHandler(this.CbAll_CheckedChanged);
 			// 
+			// BntReset
+			// 
+			this.BntReset.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.BntReset.Location = new System.Drawing.Point(691, 43);
+			this.BntReset.Name = "BntReset";
+			this.BntReset.Size = new System.Drawing.Size(72, 23);
+			this.BntReset.TabIndex = 21;
+			this.BntReset.Text = "Reset";
+			this.BntReset.UseVisualStyleBackColor = true;
+			this.BntReset.Click += new System.EventHandler(this.BntReset_Click);
+			// 
 			// MifareTestFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.ClientSize = new System.Drawing.Size(778, 468);
+			this.Controls.Add(this.BntReset);
 			this.Controls.Add(this.CbAll);
 			this.Controls.Add(this.BtnUpdateKeyB);
 			this.Controls.Add(this.BtnUpdateKeyA);
@@ -455,5 +468,6 @@
 		private System.Windows.Forms.CheckBox Cb1;
 		private System.Windows.Forms.CheckBox Cb0;
 		private System.Windows.Forms.CheckBox CbAll;
+		private System.Windows.Forms.Button BntReset;
 	}
 }

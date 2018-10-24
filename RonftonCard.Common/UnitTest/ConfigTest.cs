@@ -43,14 +43,32 @@ namespace RonftonCard.Common.UnitTest
 		public void LoadCardTemplete()
 		{
 			XmlElement root = BlueMoon.Config.XmlConfigHelper.GetRootElement("CardTemplete.xml");
-			IDictionary<String, CardConfigTemplete> configTempletes = (IDictionary<String, CardConfigTemplete>)XmlUtil.CreateEntity(root, typeof(Dictionary<String, CardConfigTemplete>));
+			IDictionary<String, CardTemplete> configTempletes = (IDictionary<String, CardTemplete>)XmlUtil.CreateEntity(root, typeof(Dictionary<String, CardTemplete>));
 			
 			foreach( String key in configTempletes.Keys)
 			{
 				Console.Out.WriteLine(configTempletes[key].TempleteName);
-				Console.Out.WriteLine(configTempletes[key].DbgDataDescriptor());
-				Console.Out.WriteLine(configTempletes[key].DbgStorageDescriptor());
+				Console.Out.WriteLine(configTempletes[key].DbgTempleteDataDescriptor());
+				Console.Out.WriteLine(configTempletes[key].DbgTempleteStorageDescriptor());
 			}
+		}
+
+		[TestMethod]
+		public void GetPhysicalAddress()
+		{
+			CardContextManager.LoadCardConfigTemplete("CardTemplete.xml");
+
+			foreach(String name in CardContextManager.TempleteNames)
+			{
+				Console.Out.WriteLine(name);
+			}
+
+			CardContextManager.CurrentTempleteName = "RFC";
+
+			int[] addrs = CardContextManager.AddrDescriptors;
+
+			foreach (int i in addrs)
+				Console.Out.Write("{0} ", i);
 		}
 	}
 }

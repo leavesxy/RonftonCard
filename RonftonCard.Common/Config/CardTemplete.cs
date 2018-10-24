@@ -9,9 +9,9 @@ using RonftonCard.Common.Util;
 
 namespace RonftonCard.Common.Config
 {
-	public class CardConfigTemplete
+	public class CardTemplete
 	{
-		public CardConfigTemplete()
+		public CardTemplete()
 		{
 		}
 
@@ -24,10 +24,10 @@ namespace RonftonCard.Common.Config
 		public String TempleteDesc { get; private set; }
 
 		[Alias("data")]
-		public CardDataDescriptor[] DataDescriptor { get; set; }
+		public TempleteDataDescriptor[] DataDescriptor { get; set; }
 
 		[Alias("storage")]
-		public CardStorageDescriptor[] StorageDescriptor { get; set; }
+		public TempleteStorageDescriptor[] StorageDescriptor { get; set; }
 
 		/// <summary>
 		/// stroage size for store data
@@ -71,7 +71,7 @@ namespace RonftonCard.Common.Config
 		}
 		#endregion
 
-		public CardDataDescriptor GetCardDataDescriptor(String name)
+		public TempleteDataDescriptor GetTempleteDataDescriptor(String name)
 		{
 			if ( this.DataDescriptor.IsNullOrEmpty() )
 				return null;
@@ -79,20 +79,20 @@ namespace RonftonCard.Common.Config
 			return this.DataDescriptor.FirstOrDefault(d => d.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
 		}
 
-		public static CardConfigTemplete Create(XmlNode node)
+		public static CardTemplete Create(XmlNode node)
 		{
-			CardConfigTemplete templete = new CardConfigTemplete();
+			CardTemplete templete = new CardTemplete();
 			templete.TempleteName = ((XmlElement)node).GetAttrValue("name","Unknown");
 			templete.TempleteDesc = ((XmlElement)node).GetAttrValue("desc", "");
 
-			templete.DataDescriptor = ConfigureUtil.CreateItem<CardDataDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
-			templete.StorageDescriptor = ConfigureUtil.CreateItem<CardStorageDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.Address).ToArray();
+			templete.DataDescriptor = ConfigureUtil.CreateItem<TempleteDataDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
+			templete.StorageDescriptor = ConfigureUtil.CreateItem<TempleteStorageDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.Address).ToArray();
 
 			return templete;
 		}
 
 		#region "--- debug ---"
-		public String DbgDataDescriptor()
+		public String DbgTempleteDataDescriptor()
 		{
 			if (this.DataDescriptor.IsNullOrEmpty() )
 				return "Card DataDescriptor is null ! please check configuration!";
@@ -123,7 +123,7 @@ namespace RonftonCard.Common.Config
 			return sb.ToString();
 		}
 
-		public String DbgStorageDescriptor()
+		public String DbgTempleteStorageDescriptor()
 		{
 			if (this.StorageDescriptor.IsNullOrEmpty())
 				return "Card StorageDescriptor is null, Please check configuration!";
