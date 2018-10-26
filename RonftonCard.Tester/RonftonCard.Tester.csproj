@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\CompanySeedKeyFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CompanySeedKeyFrm.Designer.cs">
+      <DependentUpon>CompanySeedKeyFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ConfigTestFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     </Compile>
     <Compile Include="TabPageDescriptor.cs" />
     <Compile Include="TextBoxExtension.cs" />
+    <EmbeddedResource Include="Forms\CompanySeedKeyFrm.resx">
+      <DependentUpon>CompanySeedKeyFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigTestFrm.resx">
       <DependentUpon>ConfigTestFrm.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,6 +148,10 @@
     <None Include="Resources\TestMain.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RonftonCard.AuthenKey\RonftonCard.AuthenKey.csproj">
+      <Project>{51368e69-000d-466a-8a51-7ab70c18b689}</Project>
+      <Name>RonftonCard.AuthenKey</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RonftonCard.CardReader\RonftonCard.CardReader.csproj">
       <Project>{2ea04799-4dda-46b1-a248-0062bae1ceb3}</Project>
       <Name>RonftonCard.CardReader</Name>

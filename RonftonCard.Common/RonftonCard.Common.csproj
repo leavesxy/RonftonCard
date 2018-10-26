@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authen\IAuthenKey.cs" />
+    <Compile Include="Authen\KeyInfo.cs" />
+    <Compile Include="Authen\AuthenMode.cs" />
     <Compile Include="CardContext.cs" />
     <Compile Include="Config\CardTemplete.cs" />
     <Compile Include="CardContextManager.cs" />

@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2EA04799-4DDA-46B1-A248-0062BAE1CEB3}</ProjectGuid>
+    <ProjectGuid>{420B12A7-8618-45CD-A477-A4A07A226662}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RonftonCard.CardReader</RootNamespace>
-    <AssemblyName>RonftonCard.CardReader</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>RonftonCard.Authen</RootNamespace>
+    <AssemblyName>RonftonCard.Authen</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BlueMoon.Common2.1.0.3, Version=2.1.0.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BlueMoon.Common2.1.0.3.2.1.0.3\lib\net45\BlueMoon.Common2.1.0.3.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="D8Reader.cs" />
-    <Compile Include="D8ReaderInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RockeyArm\DongleKey.cs" />
+    <Compile Include="RockeyArm\DongleKeyInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RonftonCard.Common\RonftonCard.Common.csproj">
@@ -55,12 +51,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Plugin\dcrf32.dll">
+    <Content Include="Plugin\Dongle_d.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -110,5 +110,11 @@ namespace RonftonCard.Tester.Forms
 		}
 
 		#endregion
+
+		private void CompanySeedKeyMgr_Click(object sender, EventArgs e)
+		{
+			CompanySeedKeyFrm frm = new CompanySeedKeyFrm();
+			frm.ShowDialog();
+		}
 	}
 }
