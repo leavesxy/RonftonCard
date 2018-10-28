@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RonftonCard.Common.Util;
 using BlueMoon;
 
 namespace RonftonCard.Common.Config

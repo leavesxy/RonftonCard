@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Authen.RockeyArm
+namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey
 	{
@@ -31,22 +31,7 @@ namespace RonftonCard.Authen.RockeyArm
 			public byte[] exponent;					// public exponent
 		}
 
-		//informat of dog
-		[StructLayout(LayoutKind.Sequential)]
-		public struct DONGLE_INFO
-		{
-			public ushort m_Ver;				//COS_version, example: 0x0201 -> v2.01             	
-			public ushort m_Type;				//产品类型: 0xFF表示标准版, 0x00为时钟锁,0x01为带时钟的U盘锁,0x02为标准U盘锁  
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
-			public string m_BirthDay;			//出厂日期 
-			public uint m_Agent;				//代理商编号,比如:默认的0xFFFFFFFF
-			public uint m_PID;					//产品ID
-			public uint m_UserID;				//用户ID
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
-			public string m_HID;				//8字节的硬件ID
-			public uint m_IsMother;				//母锁标志: 0x01表示是母锁, 0x00表示不是母锁
-			public uint m_DevType;				//设备类型(PROTOCOL_HID或者PROTOCOL_CCID)
-		}
+
 		/*************************文件授权结构***********************************/
 		//数据文件授权结构
 		[StructLayout(LayoutKind.Sequential)]
@@ -188,16 +173,6 @@ namespace RonftonCard.Authen.RockeyArm
 		}
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_Enum(ref DONGLE_INFO pDongleInfo, out long pCount);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_Open(ref Int64 phDongle, int nIndex);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_Close(Int64 hDongle);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_VerifyPIN(Int64 hDongle, uint nFlags, byte[] pPIN, out int pRemainCount);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_CreateFile(Int64 hDongle, uint nFileType, ushort wFileID, Int64 pFileAttr);
-		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_WriteFile(Int64 hDongle, uint nFileType, ushort wFileID, short wOffset, byte[] buffer, int nDataLen);
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ReadFile(Int64 hDongle, short wFileID, short wOffset, byte[] buffer, int nDataLen);
@@ -227,8 +202,7 @@ namespace RonftonCard.Authen.RockeyArm
 		static extern uint Dongle_ResetState(Int64 hDongle);
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ChangePIN(Int64 hDongle, uint nFlags, byte[] pOldPIN, byte[] pNewPIN, int nTryCount);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_RFS(Int64 hDongle);
+
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_SetUserID(Int64 hDongle, uint dwUserID);
 		[DllImport(@"Plugin\Dongle_d.dll")]

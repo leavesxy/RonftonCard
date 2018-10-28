@@ -1,4 +1,5 @@
-﻿using RonftonCard.Common.Config;
+﻿using BlueMoon;
+using RonftonCard.Common.Config;
 using RonftonCard.Common.Reader;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace RonftonCard.Common
 			ICardReader reader = null;
 			try
 			{
-				Type type = RonftonCard.Common.Util.TypeUtil.GetType(this.ReaderDescriptor.DrvType);
+				Type type = TypeHelper.ParseType(this.ReaderDescriptor.DrvType);
 
 				if (type != null)
 					reader = (ICardReader)Activator.CreateInstance(type, new object[] { this.ReaderDescriptor.PortType, this.ReaderDescriptor.Baud });

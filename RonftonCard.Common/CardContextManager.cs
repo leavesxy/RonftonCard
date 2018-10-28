@@ -1,6 +1,5 @@
 ﻿using BlueMoon.Config;
 using RonftonCard.Common.Config;
-using RonftonCard.Common.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +23,13 @@ namespace RonftonCard.Common
 
 		public static bool LoadCardReaderConfiguration(String configFileName, String sectionName=null)
 		{
-			readerDescriptors = XmlUtil.CreateEntity<IDictionary<String, CardReaderDescriptor>>(configFileName, sectionName);
+			readerDescriptors = XmlConfigHelper.CreateEntity<IDictionary<String, CardReaderDescriptor>>(configFileName, sectionName);
 			return readerDescriptors != null;
 		}
 
 		public static bool LoadCardConfigTemplete(String configFileName, String sectionName = null)
 		{
-			templetes = XmlUtil.CreateEntity<IDictionary<String, CardTemplete>>(configFileName, sectionName);
+			templetes = XmlConfigHelper.CreateEntity<IDictionary<String, CardTemplete>>(configFileName, sectionName);
 			return templetes != null;
 		}
 

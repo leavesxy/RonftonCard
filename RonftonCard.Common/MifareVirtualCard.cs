@@ -1,4 +1,4 @@
-﻿using RonftonCard.Common.Util;
+﻿using BlueMoon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +67,7 @@ namespace RonftonCard.Common
 				int p1 = match.Value.IndexOf('{');
 				int len = match.Value.IndexOf('}') - p1 - 1;
 				String s = match.Value.Substring(p1 + 1, len);
-				byte[] bb = ArrayUtil.ToByteArray(s, new Char[] { ' ', ',' });
+				byte[] bb = StringConverterManager.ConvertTo<byte[]>(s);
 				byteArray.Add(bb);
 			}
 

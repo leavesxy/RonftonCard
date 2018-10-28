@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using BlueMoon;
 using System.Xml;
-using RonftonCard.Common.Util;
+
 
 namespace RonftonCard.Common.Config
 {
@@ -79,17 +77,17 @@ namespace RonftonCard.Common.Config
 			return this.DataDescriptor.FirstOrDefault(d => d.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
 		}
 
-		public static CardTemplete Create(XmlNode node)
-		{
-			CardTemplete templete = new CardTemplete();
-			templete.TempleteName = ((XmlElement)node).GetAttrValue("name","Unknown");
-			templete.TempleteDesc = ((XmlElement)node).GetAttrValue("desc", "");
+		//public static CardTemplete Create(XmlNode node)
+		//{
+		//	CardTemplete templete = new CardTemplete();
+		//	templete.TempleteName = ((XmlElement)node).GetAttrValue("name","Unknown");
+		//	templete.TempleteDesc = ((XmlElement)node).GetAttrValue("desc", "");
 
-			templete.DataDescriptor = ConfigureUtil.CreateItem<TempleteDataDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
-			templete.StorageDescriptor = ConfigureUtil.CreateItem<TempleteStorageDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.Address).ToArray();
+		//	templete.DataDescriptor = ConfigureUtil.CreateItem<TempleteDataDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
+		//	templete.StorageDescriptor = ConfigureUtil.CreateItem<TempleteStorageDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.Address).ToArray();
 
-			return templete;
-		}
+		//	return templete;
+		//}
 
 		#region "--- debug ---"
 		public String DbgTempleteDataDescriptor()
