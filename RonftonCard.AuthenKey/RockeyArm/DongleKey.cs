@@ -37,27 +37,31 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				this.hDongle = -1;
 			}
 		}
+
 		/// <summary>
-		/// open first device as default
+		/// open special sequence key, and first is default
 		/// </summary>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override bool Open(int sequence = 0)
 		{
-			//avoid to open again
+			//avoid to re-open again
 			if (this.hDongle > 0)
-				return true;
+			{
+				Close();
+				this.hDongle = -1;
+			}
 
-			//DONGLE_INFO pDongleInfo = new DONGLE_INFO();
-			long count = 0;
-			IntPtr pDongleInfo = IntPtr.Zero;
-			return Dongle_Enum(pDongleInfo, out count) == 0 && Dongle_Open(ref this.hDongle, sequence) == 0;
+			this.LastErrorCode = Dongle_Open(ref this.hDongle, sequence);
+			return IsSucc();
 		}
 
+		/// <summary>
+		/// enumerate all keys
+		/// </summary>
 		public override AuthenKeyInfo[] Enumerate()
 		{
 			long count = 0;
-			IntPtr pDongleInfo = IntPtr.Zero;
-			this.LastErrorCode = Dongle_Enum(pDongleInfo, out count);
+			this.LastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
 
 			//no key found
 			if (!IsSucc() || count <= 0)
@@ -66,22 +70,22 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			logger.Debug(String.Format("found {0} Dogs !", count));
 
 			List<AuthenKeyInfo> keyInfo = new List<AuthenKeyInfo>();
+			IntPtr pDongleInfo = IntPtr.Zero;
+
 			try
 			{
 				int size = Marshal.SizeOf(typeof(DONGLE_INFO));
-				//pDongleInfo = Marshal.AllocHGlobal(size * (int)count);
 				pDongleInfo = CreateIntPtr(size * (int)count);
 				this.LastErrorCode = Dongle_Enum(pDongleInfo, out count);
 
 				for (int i = 0; i < count; i++)
 				{
-
-					//DONGLE_INFO dongleInfo = (DONGLE_INFO)Marshal.PtrToStructure(new IntPtr(pDongleInfo.ToInt32() + i * size), typeof(DONGLE_INFO));
 					IntPtr ptr = new IntPtr(pDongleInfo.ToInt64() + i * size);
 					DONGLE_INFO dongleInfo = (DONGLE_INFO)Marshal.PtrToStructure(ptr, typeof(DONGLE_INFO));
 
-					keyInfo.Add(new AuthenKeyInfo()
+					AuthenKeyInfo key = new AuthenKeyInfo()
 					{
+						Seq = (short)i,
 						Version = String.Format("v{0}.{1:d2}-({2:x2},{3}",
 								dongleInfo.m_Ver >> 8 & 0xff,
 								dongleInfo.m_Ver & 0xff,
@@ -90,18 +94,17 @@ namespace RonftonCard.AuthenKey.RockeyArm
 						UserInfo = dongleInfo.m_UserID.ToString("X08"),
 						ProductId = dongleInfo.m_PID.ToString("X08"),
 						KeyId = BitConverter.ToString(dongleInfo.m_HID)
-					});
+					};
+					keyInfo.Add(key);
+					logger.Debug(key.ToString());
 				}
 			}
 			catch (Exception ex)
-			{ }
+			{
+				logger.Error(ex.Message);
+			}
 			finally
 			{
-				//if (pDongleInfo != IntPtr.Zero)
-				//{
-				//	Marshal.FreeHGlobal(pDongleInfo);
-				//	pDongleInfo = IntPtr.Zero;
-				//}
 				FreeIntPtr(pDongleInfo);
 			}
 			return keyInfo.ToArray();
@@ -109,11 +112,56 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 		#endregion
 
-
+		#region "--- util ---"
+		
+		/// <summary>
+		/// convert lastErrorCode to ErrorMsg key
+		/// </summary>
 		protected override String GetErrorMsgKey()
 		{
 			return String.Format("0x{0:X8}", this.LastErrorCode);
 		}
+
+		/// <summary>
+		/// Create IntPtr by structure
+		/// </summary>
+		private IntPtr CreateIntPtr(Object stru)
+		{
+			try
+			{
+				int size = Marshal.SizeOf(stru.GetType());
+				IntPtr ptr = Marshal.AllocHGlobal(size);
+
+				//should set true, if set false, maybe cause memory leaks
+				Marshal.StructureToPtr(stru, ptr, true);
+				return ptr;
+			}
+			catch (Exception ex)
+			{ }
+			return IntPtr.Zero;
+		}
+
+		/// <summary>
+		/// Create IntPtr with special size
+		/// </summary>
+		private IntPtr CreateIntPtr(int count)
+		{
+			return Marshal.AllocHGlobal(count);
+		}
+
+		/// <summary>
+		/// free IntPtr
+		/// </summary>
+		private void FreeIntPtr(IntPtr ptr)
+		{
+			if (ptr != IntPtr.Zero)
+			{
+				Marshal.FreeHGlobal(ptr);
+				ptr = IntPtr.Zero;
+			}
+		}
+
+		#endregion
 
 		#region "--- extension function ---"
 		/// <summary>
@@ -160,47 +208,16 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 		#endregion
 
-		private IntPtr CreateIntPtr(Object stru)
-		{
-			try
-			{
-				int size = Marshal.SizeOf(stru.GetType());
-				IntPtr ptr = Marshal.AllocHGlobal(size);
-
-				//should set true, if set false, maybe cause memory leaks
-				Marshal.StructureToPtr(stru, ptr, true);
-				return ptr;
-			}
-			catch(Exception ex)
-			{ }
-			return IntPtr.Zero;
-		}
-
-		private IntPtr CreateIntPtr( int count )
-		{
-			return Marshal.AllocHGlobal(count);
-		}
-
-		private void FreeIntPtr(IntPtr ptr)
-		{
-			if (ptr != IntPtr.Zero)
-			{
-				Marshal.FreeHGlobal(ptr);
-				ptr = IntPtr.Zero;
-			}
-		}
-
-
 		public override bool Create(AuthenKeyType keyType, byte[] inData)
 		{
 			switch(keyType)
 			{
 				case AuthenKeyType.COMPANY_SEED:
-					CreateCompanySeedKeyFile(inData);
+					CreateKeyFile(DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, inData);
 					break;
 
 				case AuthenKeyType.USER_ROOT:
-					
+					CreateKeyFile(DongleKey.USER_ROOT_KEY_DESCRIPTOR, inData);
 					break;
 				case AuthenKeyType.AUTHEN:
 					CreateAuthenKeyFile(inData);
@@ -215,14 +232,14 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// <summary>
 		/// create company seed key file,and seedKey is request 16 bytes at least
 		/// </summary>
-		private bool CreateCompanySeedKeyFile(byte[] seedKey)
+		private bool CreateKeyFile(ushort descriptor, byte[] seedKey)
 		{
 			KEY_FILE_ATTR keyAttr = new KEY_FILE_ATTR();
 			keyAttr.m_Size = 16;
 			keyAttr.m_Lic.m_Priv_Enc = 0;
 
 			IntPtr ptr = CreateIntPtr(keyAttr);
-			this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_KEY, DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, ptr);
+			this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_KEY, descriptor, ptr);
 			FreeIntPtr(ptr);
 
 			if (!IsSucc())
@@ -231,22 +248,45 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			// dongle key require 16 bytes key
 			// fill zero if seedKey is less than 16 bytes
 			byte[] key = ArrayHelper.CopyFrom<byte>(seedKey, 16);
-			this.LastErrorCode = Dongle_WriteFile(hDongle, DongleFileType.FILE_KEY, DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, 0, key, 16);
+			logger.Debug(String.Format("Create Key file, descriptor={0}, key={1}", descriptor, BitConverter.ToString(key)));
+
+			this.LastErrorCode = Dongle_WriteFile(hDongle, DongleFileType.FILE_KEY, descriptor, 0, key, 16);
 
 			return IsSucc();
 		}
 
-		//public bool TDesEncrypt(String plain, out byte[] cipher)
-		//{
-		//	byte[] temp = Encoding.Default.GetBytes(plain);
-		//	int len = (temp.Length % 16 == 0) ? temp.Length : (temp.Length / 16 + 1 ) * 16 ;
 
-		//	// fill zero
-		//	cipher = ArrayHelper.CopyFrom<byte>(temp, len);
-		//	this.LastErrCode = Dongle_TDES(this.hDongle, DongleKey.TDES_FILE_DESCRIPTOR, 0, cipher, cipher, (uint)len);
+		public override bool Encrypt(AuthenKeyType keyType, byte[]plain, out byte[] cipher)
+		{
+			cipher = null;
 
-		//	return this.LastErrCode == DongleKey.SUCC;
-		//}
+			switch (keyType)
+			{
+				case AuthenKeyType.COMPANY_SEED:
+					TDesEncrypt(DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, plain, out cipher);
+					break;
+
+				case AuthenKeyType.USER_ROOT:
+					TDesEncrypt(DongleKey.USER_ROOT_KEY_DESCRIPTOR, plain, out cipher);
+					break;
+				case AuthenKeyType.AUTHEN:
+					break;
+				default:
+					break;
+			}
+
+			return IsSucc();
+		}
+
+		public void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
+		{
+			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
+
+			// fill zero
+			cipher = ArrayHelper.CopyFrom<byte>(plain, len);
+
+			this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
+		}
 
 		//public bool SetUserID(uint uid)
 		//{
@@ -254,32 +294,30 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		//	return this.LastErrCode == DongleKey.SUCC;
 		//}
 
-		public override bool Encrypt(AuthenKeyType keyType, byte[] inData, out byte[] outData)
-		{
-			outData = null;
-			return IsSucc();
-		}
 
-		public bool CreateAuthenKeyFile(byte[] inData)
+		/// <summary>
+		/// create RSA private key
+		/// </summary>
+		private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
 		{
 			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
-
-			//创建RSA私钥
+			
 			priAttr.m_Size = 1024;
 			priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
 			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
 			priAttr.m_Lic.m_IsDecOnRAM = 0;
 			priAttr.m_Lic.m_IsReset = 0;
 			priAttr.m_Lic.m_Priv = 0;
+			return priAttr;
+		}
 
+		public bool CreateAuthenKeyFile(byte[] inData)
+		{
+			PRIKEY_FILE_ATTR priAttr = CreatePrikeyFileAttr();
 			IntPtr ptr = CreateIntPtr(priAttr);
 
 			try
 			{
-				//int size = Marshal.SizeOf(typeof(PRIKEY_FILE_ATTR));
-				//ptr = Marshal.AllocHGlobal(size);
-				//Marshal.StructureToPtr(priAttr, ptr, true);
-
 				this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_PRIKEY_RSA, DongleKey.AUTHEN_KEY_DESCRIPTOR, ptr);
 			}
 			finally
@@ -287,7 +325,28 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				FreeIntPtr(ptr);
 			}
 
+			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
+			RSA_PRIVATE_KEY rsaPri = new RockeyArm.DongleKey.RSA_PRIVATE_KEY();
+			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
+
+			byte[] rsaPubBuffer = StructToBytes(rsaPub);
+			byte[] rsaPriBuffer = StructToBytes(rsaPri);
+
+			logger.Debug("RSA-PRI = " + BitConverter.ToString(rsaPriBuffer));
+			logger.Debug("RSA-PUB = " + BitConverter.ToString(rsaPubBuffer));
+
 			return IsSucc();
+		}
+
+		public static byte[] StructToBytes(object structObj)
+		{
+			int size = Marshal.SizeOf(structObj);
+			byte[] _bytes = new byte[size];
+			IntPtr structPtr = Marshal.AllocHGlobal(size);
+			Marshal.StructureToPtr(structObj, structPtr, false);
+			Marshal.Copy(structPtr, _bytes, 0, size);
+			Marshal.FreeHGlobal(structPtr);
+			return _bytes;
 		}
 	}
 }

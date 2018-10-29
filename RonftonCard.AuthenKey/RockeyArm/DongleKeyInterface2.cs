@@ -173,8 +173,6 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		}
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_WriteFile(Int64 hDongle, uint nFileType, ushort wFileID, short wOffset, byte[] buffer, int nDataLen);
-		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ReadFile(Int64 hDongle, short wFileID, short wOffset, byte[] buffer, int nDataLen);
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ListFile(Int64 hDongle, uint nFileType, DATA_FILE_LIST[] pFileList, ref int pDataLen);

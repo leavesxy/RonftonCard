@@ -19,19 +19,22 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// Open dog, should invoke Dongle_Enum
 		/// </summary>
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_Open(ref Int64 phDongle, int nIndex);
+		static extern uint Dongle_Open(ref Int64 phDongle, int seq);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_Close(Int64 hDongle);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_VerifyPIN(Int64 hDongle, uint nFlags, byte[] pPIN, out int pRemainCount);
+		static extern uint Dongle_VerifyPIN(Int64 hDongle, uint nFlags, byte[] pin, out int pRemainCount);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_RFS(Int64 hDongle);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_CreateFile(Int64 hDongle, uint nFileType, ushort wFileID, IntPtr pFileAttr);
+		static extern uint Dongle_CreateFile(Int64 hDongle, uint nFileType, ushort descriptor, IntPtr pFileAttr);
+
+		[DllImport(@"Plugin\Dongle_d.dll")]
+		static extern uint Dongle_WriteFile(Int64 hDongle, uint nFileType, ushort descriptor, short wOffset, byte[] buffer, int nDataLen);
 
 	}
 }

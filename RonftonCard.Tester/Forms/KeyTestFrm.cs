@@ -3,6 +3,7 @@ using RonftonCard.AuthenKey.RockeyArm;
 using RonftonCard.Common.AuthenKey;
 using System;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RonftonCard.Tester.Forms
@@ -13,6 +14,7 @@ namespace RonftonCard.Tester.Forms
 		private byte[] userPwd;
 		private byte[] adminPwd;
 		private byte[] seed;
+		AuthenKeyInfo[] keyInfo;
 
 		public KeyTestFrm()
 		{
@@ -22,12 +24,35 @@ namespace RonftonCard.Tester.Forms
 		private void KeyTestFrm_Load(object sender, EventArgs e)
 		{
 			this.key = new DongleKey();
-			this.key.Open();
 			this.TxtUserPwd.Text = "12345678";
 			this.TxtAdminPwd.Text = "FFFFFFFFFFFFFFFF";
 			this.TxtSeed.Text = "11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11";
 			this.TxtTdesKey.Text = "0123456789abcdef";
 			this.TxtUserID.Text = "0x30303031";
+
+			//flesh UI,and enumerate Key
+			Update();
+			new Thread(() => EnumerateKey()).Start();
+		}
+
+		private void EnumerateKey()
+		{
+			Action action = delegate()
+			{
+				this.CbCurrentKey.Items.Clear();
+				keyInfo = key.Enumerate();
+				if (!keyInfo.IsNullOrEmpty())
+				{
+					Array.ForEach(keyInfo,
+						 k =>
+						 {
+							 this.CbCurrentKey.Items.Add(k.GetName());
+							 this.TxtDbg.Trace(k.ToString());
+						 });
+				}
+				this.CbCurrentKey.SelectedIndex = 0;
+			};
+			this.BeginInvoke(action);
 		}
 
 		#region "--- Event handle ---"
@@ -46,14 +71,23 @@ namespace RonftonCard.Tester.Forms
 			this.key.Close();
 		}
 
+		private void CbCurrentKey_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			int selected = this.CbCurrentKey.SelectedIndex;
+
+			if (this.key.Open(selected))
+				this.TxtDbg.Trace(String.Format("Open {0} key OK, {1}" , selected, keyInfo[selected].ToString()));
+			else
+				this.TxtDbg.Trace(String.Format("Open {0} key Failed, {1}", selected, this.key.LastErrorMessage));
+		}
+
 		#endregion
 
+		#region "--- button handle ---"
 		private void BtnEnumKey_Click(object sender, EventArgs e)
 		{
 			this.TxtDbg.Trace("Default CharSet : " + Encoding.Default.EncodingName, true);
-			AuthenKeyInfo[] keyInfo = key.Enumerate();
-			this.TxtDbg.Trace(String.Format( "Found {0} keys" , keyInfo.Length) );
-			Array.ForEach(keyInfo, key => this.TxtDbg.Trace(key.ToString()));
+			EnumerateKey();
 		}
 
 		private void BtnUniqueKey_Click(object sender, EventArgs e)
@@ -98,34 +132,69 @@ namespace RonftonCard.Tester.Forms
 				this.TxtDbg.Trace("User authen Failed!");
 		}
 
-		private void BtnCreateCompanyKeyFile_Click(object sender, EventArgs e)
+		private void BtnCreateCompanySeed_Click(object sender, EventArgs e)
 		{
 			this.TxtDbg.Trace("Create Company seed key ...", true);
 
-			byte[] deskey = Encoding.Default.GetBytes(this.TxtTdesKey.Text.Trim());
+			byte[] compKey = Encoding.Default.GetBytes(this.TxtTdesKey.Text.Trim());
 
-			if( this.key.Create( AuthenKeyType.COMPANY_SEED, deskey) )
+			if( this.key.Create( AuthenKeyType.COMPANY_SEED, compKey) )
 			{
-				this.TxtDbg.Trace("Create Company seed key OK! " + BitConverter.ToString(deskey));
+				this.TxtDbg.Trace("Create Company seed key OK! " + BitConverter.ToString(compKey));
 			}
 			else
 				this.TxtDbg.Trace("Create 3Des Key failed!" + this.key.LastErrorMessage);
 		}
 
-		private void BtnTdesEncrypt_Click(object sender, EventArgs e)
+		private void BtnCreateUserRootKey_Click(object sender, EventArgs e)
+		{
+			this.TxtDbg.Trace("Create Company seed key ...", true);
+
+			// to test, use reverse of company
+			char[] ch = this.TxtTdesKey.Text.Trim().ToCharArray();
+			Array.Reverse(ch);
+			String keyString = new String(ch);
+
+			byte[] userKey = Encoding.Default.GetBytes(keyString);
+
+			if (this.key.Create(AuthenKeyType.USER_ROOT, userKey))
+			{
+				this.TxtDbg.Trace("Create User key OK! " + BitConverter.ToString(userKey));
+			}
+			else
+				this.TxtDbg.Trace("Create User Key failed!" + this.key.LastErrorMessage);
+		}
+
+		private void BtnEncryptByCompanySeed_Click(object sender, EventArgs e)
 		{
 			byte[] cipher;
-			this.TxtDbg.Trace("Encrypt with 3Des ...", true);
+			this.TxtDbg.Trace("Encrypt By Company seed ...", true);
 			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
 
-			//if (this.key.TDesEncrypt(this.TxtPlain.Text.Trim(), out cipher))
-			//{
-			//	this.TxtDbg.Trace("cipher length = " + cipher.Length);
-			//	this.TxtDbg.Trace("cipher data = " + BitConverter.ToString(cipher));
-			//}
-			//else
-			//	this.TxtDbg.Trace("Encrypt failed !" + this.key.GetLastErrMsg());
+			if (this.key.Encrypt( AuthenKeyType.COMPANY_SEED, plain, out cipher))
+			{
+				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" ,cipher.Length, BitConverter.ToString(cipher)));
+			}
+			else
+				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
 		}
+
+		private void BtnEncryptByUserRoot_Click(object sender, EventArgs e)
+		{
+			byte[] cipher;
+			this.TxtDbg.Trace("Encrypt By User root ...", true);
+			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
+
+			if (this.key.Encrypt(AuthenKeyType.USER_ROOT, plain, out cipher))
+			{
+				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" + cipher.Length, BitConverter.ToString(cipher)));
+			}
+			else
+				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
+		}
+
 
 		private void BtnRestore_Click(object sender, EventArgs e)
 		{
@@ -167,5 +236,10 @@ namespace RonftonCard.Tester.Forms
 			this.TxtDbg.Trace("Show Error Message ...", true);
 			this.TxtDbg.Trace(this.key.GetAllErrorMessage());
 		}
+
+
+		#endregion
+
+
 	}
 }

@@ -36,11 +36,11 @@
 			this.BtnUniqueKey = new System.Windows.Forms.Button();
 			this.BtnAdminAuthen = new System.Windows.Forms.Button();
 			this.BtnUserAuthen = new System.Windows.Forms.Button();
-			this.BtnCreateCompanyKeyFile = new System.Windows.Forms.Button();
+			this.BtnCreateCompanySeed = new System.Windows.Forms.Button();
 			this.BtnCreateRsaKeyFile = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
 			this.TxtPlain = new System.Windows.Forms.TextBox();
-			this.BtnTdesEncrypt = new System.Windows.Forms.Button();
+			this.BtnEncryptByCompanySeed = new System.Windows.Forms.Button();
 			this.BtnRestore = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.TxtSeed = new System.Windows.Forms.TextBox();
@@ -52,15 +52,19 @@
 			this.TxtUserID = new System.Windows.Forms.TextBox();
 			this.BtnDbgErrorMsg = new System.Windows.Forms.Button();
 			this.BtnEnumKey = new System.Windows.Forms.Button();
+			this.label7 = new System.Windows.Forms.Label();
+			this.CbCurrentKey = new System.Windows.Forms.ComboBox();
+			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
+			this.BtnEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// TxtDbg
 			// 
-			this.TxtDbg.Location = new System.Drawing.Point(12, 79);
+			this.TxtDbg.Location = new System.Drawing.Point(12, 117);
 			this.TxtDbg.Multiline = true;
 			this.TxtDbg.Name = "TxtDbg";
 			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtDbg.Size = new System.Drawing.Size(771, 312);
+			this.TxtDbg.Size = new System.Drawing.Size(771, 274);
 			this.TxtDbg.TabIndex = 0;
 			// 
 			// label1
@@ -127,19 +131,19 @@
 			this.BtnUserAuthen.UseVisualStyleBackColor = true;
 			this.BtnUserAuthen.Click += new System.EventHandler(this.BtnUserAuthen_Click);
 			// 
-			// BtnCreateCompanyKeyFile
+			// BtnCreateCompanySeed
 			// 
-			this.BtnCreateCompanyKeyFile.Location = new System.Drawing.Point(286, 397);
-			this.BtnCreateCompanyKeyFile.Name = "BtnCreateCompanyKeyFile";
-			this.BtnCreateCompanyKeyFile.Size = new System.Drawing.Size(104, 29);
-			this.BtnCreateCompanyKeyFile.TabIndex = 1;
-			this.BtnCreateCompanyKeyFile.Text = "创建公司种子";
-			this.BtnCreateCompanyKeyFile.UseVisualStyleBackColor = true;
-			this.BtnCreateCompanyKeyFile.Click += new System.EventHandler(this.BtnCreateCompanyKeyFile_Click);
+			this.BtnCreateCompanySeed.Location = new System.Drawing.Point(286, 397);
+			this.BtnCreateCompanySeed.Name = "BtnCreateCompanySeed";
+			this.BtnCreateCompanySeed.Size = new System.Drawing.Size(104, 29);
+			this.BtnCreateCompanySeed.TabIndex = 1;
+			this.BtnCreateCompanySeed.Text = "创建公司种子";
+			this.BtnCreateCompanySeed.UseVisualStyleBackColor = true;
+			this.BtnCreateCompanySeed.Click += new System.EventHandler(this.BtnCreateCompanySeed_Click);
 			// 
 			// BtnCreateRsaKeyFile
 			// 
-			this.BtnCreateRsaKeyFile.Location = new System.Drawing.Point(429, 397);
+			this.BtnCreateRsaKeyFile.Location = new System.Drawing.Point(520, 397);
 			this.BtnCreateRsaKeyFile.Name = "BtnCreateRsaKeyFile";
 			this.BtnCreateRsaKeyFile.Size = new System.Drawing.Size(143, 29);
 			this.BtnCreateRsaKeyFile.TabIndex = 1;
@@ -165,15 +169,15 @@
 			this.TxtPlain.Text = "01234567";
 			this.TxtPlain.TextChanged += new System.EventHandler(this.TxtUserPwd_TextChanged);
 			// 
-			// BtnTdesEncrypt
+			// BtnEncryptByCompanySeed
 			// 
-			this.BtnTdesEncrypt.Location = new System.Drawing.Point(286, 428);
-			this.BtnTdesEncrypt.Name = "BtnTdesEncrypt";
-			this.BtnTdesEncrypt.Size = new System.Drawing.Size(90, 29);
-			this.BtnTdesEncrypt.TabIndex = 1;
-			this.BtnTdesEncrypt.Text = "3DES加密";
-			this.BtnTdesEncrypt.UseVisualStyleBackColor = true;
-			this.BtnTdesEncrypt.Click += new System.EventHandler(this.BtnTdesEncrypt_Click);
+			this.BtnEncryptByCompanySeed.Location = new System.Drawing.Point(286, 428);
+			this.BtnEncryptByCompanySeed.Name = "BtnEncryptByCompanySeed";
+			this.BtnEncryptByCompanySeed.Size = new System.Drawing.Size(104, 29);
+			this.BtnEncryptByCompanySeed.TabIndex = 1;
+			this.BtnEncryptByCompanySeed.Text = "公司种子加密";
+			this.BtnEncryptByCompanySeed.UseVisualStyleBackColor = true;
+			this.BtnEncryptByCompanySeed.Click += new System.EventHandler(this.BtnEncryptByCompanySeed_Click);
 			// 
 			// BtnRestore
 			// 
@@ -204,7 +208,7 @@
 			// 
 			// BtnRsaPriEncrypt
 			// 
-			this.BtnRsaPriEncrypt.Location = new System.Drawing.Point(429, 428);
+			this.BtnRsaPriEncrypt.Location = new System.Drawing.Point(520, 428);
 			this.BtnRsaPriEncrypt.Name = "BtnRsaPriEncrypt";
 			this.BtnRsaPriEncrypt.Size = new System.Drawing.Size(90, 29);
 			this.BtnRsaPriEncrypt.TabIndex = 1;
@@ -277,11 +281,50 @@
 			this.BtnEnumKey.UseVisualStyleBackColor = true;
 			this.BtnEnumKey.Click += new System.EventHandler(this.BtnEnumKey_Click);
 			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(13, 85);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(93, 20);
+			this.label7.TabIndex = 2;
+			this.label7.Text = "当前加密狗：";
+			// 
+			// CbCurrentKey
+			// 
+			this.CbCurrentKey.FormattingEnabled = true;
+			this.CbCurrentKey.Location = new System.Drawing.Point(113, 85);
+			this.CbCurrentKey.Name = "CbCurrentKey";
+			this.CbCurrentKey.Size = new System.Drawing.Size(670, 27);
+			this.CbCurrentKey.TabIndex = 4;
+			this.CbCurrentKey.SelectedIndexChanged += new System.EventHandler(this.CbCurrentKey_SelectedIndexChanged);
+			// 
+			// BtnCreateUserRootKey
+			// 
+			this.BtnCreateUserRootKey.Location = new System.Drawing.Point(389, 397);
+			this.BtnCreateUserRootKey.Name = "BtnCreateUserRootKey";
+			this.BtnCreateUserRootKey.Size = new System.Drawing.Size(104, 29);
+			this.BtnCreateUserRootKey.TabIndex = 1;
+			this.BtnCreateUserRootKey.Text = "创建用户根密钥";
+			this.BtnCreateUserRootKey.UseVisualStyleBackColor = true;
+			this.BtnCreateUserRootKey.Click += new System.EventHandler(this.BtnCreateUserRootKey_Click);
+			// 
+			// BtnEncryptByUserRoot
+			// 
+			this.BtnEncryptByUserRoot.Location = new System.Drawing.Point(389, 428);
+			this.BtnEncryptByUserRoot.Name = "BtnEncryptByUserRoot";
+			this.BtnEncryptByUserRoot.Size = new System.Drawing.Size(104, 29);
+			this.BtnEncryptByUserRoot.TabIndex = 1;
+			this.BtnEncryptByUserRoot.Text = "用户根加密";
+			this.BtnEncryptByUserRoot.UseVisualStyleBackColor = true;
+			this.BtnEncryptByUserRoot.Click += new System.EventHandler(this.BtnEncryptByUserRoot_Click);
+			// 
 			// KeyTestFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
+			this.Controls.Add(this.CbCurrentKey);
 			this.Controls.Add(this.TxtTdesKey);
 			this.Controls.Add(this.TxtSeed);
 			this.Controls.Add(this.TxtAdminPwd);
@@ -292,6 +335,7 @@
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label7);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.BtnUserAuthen);
@@ -299,8 +343,10 @@
 			this.Controls.Add(this.BtnRestore);
 			this.Controls.Add(this.BtnDbgErrorMsg);
 			this.Controls.Add(this.BtnRsaPriEncrypt);
-			this.Controls.Add(this.BtnTdesEncrypt);
-			this.Controls.Add(this.BtnCreateCompanyKeyFile);
+			this.Controls.Add(this.BtnEncryptByUserRoot);
+			this.Controls.Add(this.BtnEncryptByCompanySeed);
+			this.Controls.Add(this.BtnCreateUserRootKey);
+			this.Controls.Add(this.BtnCreateCompanySeed);
 			this.Controls.Add(this.BtnAdminAuthen);
 			this.Controls.Add(this.BtnUniqueKey);
 			this.Controls.Add(this.BtnSetUserID);
@@ -331,11 +377,11 @@
 		private System.Windows.Forms.Button BtnUniqueKey;
 		private System.Windows.Forms.Button BtnAdminAuthen;
 		private System.Windows.Forms.Button BtnUserAuthen;
-		private System.Windows.Forms.Button BtnCreateCompanyKeyFile;
+		private System.Windows.Forms.Button BtnCreateCompanySeed;
 		private System.Windows.Forms.Button BtnCreateRsaKeyFile;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TextBox TxtPlain;
-		private System.Windows.Forms.Button BtnTdesEncrypt;
+		private System.Windows.Forms.Button BtnEncryptByCompanySeed;
 		private System.Windows.Forms.Button BtnRestore;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox TxtSeed;
@@ -347,5 +393,9 @@
 		private System.Windows.Forms.TextBox TxtUserID;
 		private System.Windows.Forms.Button BtnDbgErrorMsg;
 		private System.Windows.Forms.Button BtnEnumKey;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ComboBox CbCurrentKey;
+		private System.Windows.Forms.Button BtnCreateUserRootKey;
+		private System.Windows.Forms.Button BtnEncryptByUserRoot;
 	}
 }
