@@ -1,4 +1,5 @@
 ﻿using BlueMoon;
+using log4net;
 using RonftonCard.AuthenKey.RockeyArm;
 using RonftonCard.Common.AuthenKey;
 using System;
@@ -10,6 +11,8 @@ namespace RonftonCard.Tester.Forms
 {
 	public partial class KeyTestFrm : Form
 	{
+		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
+
 		private DongleKey key;
 		private byte[] userPwd;
 		private byte[] adminPwd;
@@ -137,8 +140,9 @@ namespace RonftonCard.Tester.Forms
 			this.TxtDbg.Trace("Create Company seed key ...", true);
 
 			byte[] compKey = Encoding.Default.GetBytes(this.TxtTdesKey.Text.Trim());
+			byte[] outData;
 
-			if( this.key.Create( AuthenKeyType.COMPANY_SEED, compKey) )
+			if( this.key.Create( AuthenKeyType.COMPANY_SEED, compKey, out outData) )
 			{
 				this.TxtDbg.Trace("Create Company seed key OK! " + BitConverter.ToString(compKey));
 			}
@@ -156,8 +160,9 @@ namespace RonftonCard.Tester.Forms
 			String keyString = new String(ch);
 
 			byte[] userKey = Encoding.Default.GetBytes(keyString);
+			byte[] outData;
 
-			if (this.key.Create(AuthenKeyType.USER_ROOT, userKey))
+			if (this.key.Create(AuthenKeyType.USER_ROOT, userKey, out outData))
 			{
 				this.TxtDbg.Trace("Create User key OK! " + BitConverter.ToString(userKey));
 			}
@@ -195,7 +200,6 @@ namespace RonftonCard.Tester.Forms
 				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
 		}
 
-
 		private void BtnRestore_Click(object sender, EventArgs e)
 		{
 			this.TxtDbg.Trace("Restore ...", true);
@@ -218,16 +222,41 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnCreateRsaKeyFile_Click(object sender, EventArgs e)
 		{
-			//this.TxtDbg.Trace("CreateRsaKeyFile ...", true);
-			//if( this.key.CreateRSAKeyFile())
-			//	this.TxtDbg.Trace("CreateRsaKeyFile OK..." );
-			//else
-			//	this.TxtDbg.Trace("CreateRsaKeyFile failed ! " + this.key.GetLastErrMsg());
+			this.TxtDbg.Trace("CreateRsaKeyFile ...", true);
+			byte[] rsaPubKey;
 
+			if (this.key.Create(AuthenKeyType.AUTHEN, null, out rsaPubKey))
+			{
+				this.TxtDbg.Trace("CreateRsaKeyFile OK...pub key :");
+				this.TxtDbg.Trace("RSA-PUB byte : " + BitConverter.ToString(rsaPubKey));
+				this.TxtDbg.Trace("RSA-PUB Base64 : " + Convert.ToBase64String(rsaPubKey));
+			}
+			else
+				this.TxtDbg.Trace("CreateRsaKeyFile failed ! " + this.key.LastErrorMessage);
 		}
 
 		private void BtnRsaPriEncrypt_Click(object sender, EventArgs e)
 		{
+			byte[] cipher;
+			this.TxtDbg.Trace("Encrypt By RSA-PRI ...", true);
+			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
+
+			if (this.key.Encrypt(AuthenKeyType.AUTHEN, plain, out cipher))
+			{
+				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToString(cipher)));
+				logger.Debug("RSA-PRI : " + HexString.ToString(cipher));
+			}
+			else
+				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
+		}
+
+		private void BtnRsaPubDecrypt_Click(object sender, EventArgs e)
+		{
+			byte[] cipher;
+			byte[] pubKey = HexString.FromString(this.TxtPubKey.Text.Trim());
+			this.key.RsaPubDecrypt()
+			this.TxtDbg.Trace("Decrypt By RSA-PUB ...", true);
 
 		}
 
@@ -236,6 +265,7 @@ namespace RonftonCard.Tester.Forms
 			this.TxtDbg.Trace("Show Error Message ...", true);
 			this.TxtDbg.Trace(this.key.GetAllErrorMessage());
 		}
+
 
 
 		#endregion

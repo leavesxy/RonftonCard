@@ -56,15 +56,17 @@
 			this.CbCurrentKey = new System.Windows.Forms.ComboBox();
 			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
 			this.BtnEncryptByUserRoot = new System.Windows.Forms.Button();
+			this.BtnRsaPubDecrypt = new System.Windows.Forms.Button();
+			this.TxtPubKey = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// TxtDbg
 			// 
-			this.TxtDbg.Location = new System.Drawing.Point(12, 117);
+			this.TxtDbg.Location = new System.Drawing.Point(12, 194);
 			this.TxtDbg.Multiline = true;
 			this.TxtDbg.Name = "TxtDbg";
 			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtDbg.Size = new System.Drawing.Size(771, 274);
+			this.TxtDbg.Size = new System.Drawing.Size(771, 197);
 			this.TxtDbg.TabIndex = 0;
 			// 
 			// label1
@@ -143,7 +145,7 @@
 			// 
 			// BtnCreateRsaKeyFile
 			// 
-			this.BtnCreateRsaKeyFile.Location = new System.Drawing.Point(520, 397);
+			this.BtnCreateRsaKeyFile.Location = new System.Drawing.Point(493, 397);
 			this.BtnCreateRsaKeyFile.Name = "BtnCreateRsaKeyFile";
 			this.BtnCreateRsaKeyFile.Size = new System.Drawing.Size(143, 29);
 			this.BtnCreateRsaKeyFile.TabIndex = 1;
@@ -208,7 +210,7 @@
 			// 
 			// BtnRsaPriEncrypt
 			// 
-			this.BtnRsaPriEncrypt.Location = new System.Drawing.Point(520, 428);
+			this.BtnRsaPriEncrypt.Location = new System.Drawing.Point(493, 428);
 			this.BtnRsaPriEncrypt.Name = "BtnRsaPriEncrypt";
 			this.BtnRsaPriEncrypt.Size = new System.Drawing.Size(90, 29);
 			this.BtnRsaPriEncrypt.TabIndex = 1;
@@ -319,11 +321,30 @@
 			this.BtnEncryptByUserRoot.UseVisualStyleBackColor = true;
 			this.BtnEncryptByUserRoot.Click += new System.EventHandler(this.BtnEncryptByUserRoot_Click);
 			// 
+			// BtnRsaPubDecrypt
+			// 
+			this.BtnRsaPubDecrypt.Location = new System.Drawing.Point(584, 428);
+			this.BtnRsaPubDecrypt.Name = "BtnRsaPubDecrypt";
+			this.BtnRsaPubDecrypt.Size = new System.Drawing.Size(90, 29);
+			this.BtnRsaPubDecrypt.TabIndex = 1;
+			this.BtnRsaPubDecrypt.Text = "公钥解密";
+			this.BtnRsaPubDecrypt.UseVisualStyleBackColor = true;
+			this.BtnRsaPubDecrypt.Click += new System.EventHandler(this.BtnRsaPubDecrypt_Click);
+			// 
+			// TxtPubKey
+			// 
+			this.TxtPubKey.Location = new System.Drawing.Point(12, 118);
+			this.TxtPubKey.Multiline = true;
+			this.TxtPubKey.Name = "TxtPubKey";
+			this.TxtPubKey.Size = new System.Drawing.Size(771, 70);
+			this.TxtPubKey.TabIndex = 5;
+			// 
 			// KeyTestFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
+			this.Controls.Add(this.TxtPubKey);
 			this.Controls.Add(this.CbCurrentKey);
 			this.Controls.Add(this.TxtTdesKey);
 			this.Controls.Add(this.TxtSeed);
@@ -342,6 +363,7 @@
 			this.Controls.Add(this.BtnCreateRsaKeyFile);
 			this.Controls.Add(this.BtnRestore);
 			this.Controls.Add(this.BtnDbgErrorMsg);
+			this.Controls.Add(this.BtnRsaPubDecrypt);
 			this.Controls.Add(this.BtnRsaPriEncrypt);
 			this.Controls.Add(this.BtnEncryptByUserRoot);
 			this.Controls.Add(this.BtnEncryptByCompanySeed);
@@ -397,5 +419,7 @@
 		private System.Windows.Forms.ComboBox CbCurrentKey;
 		private System.Windows.Forms.Button BtnCreateUserRootKey;
 		private System.Windows.Forms.Button BtnEncryptByUserRoot;
+		private System.Windows.Forms.Button BtnRsaPubDecrypt;
+		private System.Windows.Forms.TextBox TxtPubKey;
 	}
 }

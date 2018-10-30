@@ -86,7 +86,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 					AuthenKeyInfo key = new AuthenKeyInfo()
 					{
 						Seq = (short)i,
-						Version = String.Format("v{0}.{1:d2}-({2:x2},{3}",
+						Version = String.Format("v{0}.{1:d2}-({2:x2},{3})",
 								dongleInfo.m_Ver >> 8 & 0xff,
 								dongleInfo.m_Ver & 0xff,
 								dongleInfo.m_Type,
@@ -200,16 +200,18 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, pid, newAdminPwd);
 
-			logger.Debug("new pid = " + BitConverter.ToString(pid));
-			logger.Debug("new admin pwd = " + BitConverter.ToString(newAdminPwd));
+			logger.Debug("new pid = " + Encoding.ASCII.GetString(pid));
+			logger.Debug("new admin pwd = " + Encoding.ASCII.GetString(newAdminPwd) );
 
 			return IsSucc();
 		}
 
 		#endregion
 
-		public override bool Create(AuthenKeyType keyType, byte[] inData)
+		public override bool Create(AuthenKeyType keyType, byte[] inData, out byte[] outData)
 		{
+			outData = null;
+
 			switch(keyType)
 			{
 				case AuthenKeyType.COMPANY_SEED:
@@ -219,9 +221,11 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				case AuthenKeyType.USER_ROOT:
 					CreateKeyFile(DongleKey.USER_ROOT_KEY_DESCRIPTOR, inData);
 					break;
+
 				case AuthenKeyType.AUTHEN:
-					CreateAuthenKeyFile(inData);
+					CreateAuthenKeyFile(DongleKey.AUTHEN_KEY_DESCRIPTOR, inData, out outData);
 					break;
+
 				default:
 					break;
 			}
@@ -255,6 +259,52 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return IsSucc();
 		}
 
+		/// <summary>
+		/// create RSA private key
+		/// </summary>
+		private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
+		{
+			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
+
+			priAttr.m_Size = 1024;
+			priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
+			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
+			priAttr.m_Lic.m_IsDecOnRAM = 0;
+			priAttr.m_Lic.m_IsReset = 0;
+			priAttr.m_Lic.m_Priv = 0;
+			return priAttr;
+		}
+
+		public bool CreateAuthenKeyFile(ushort descriptor, byte[] inData, out byte[] outData)
+		{
+			PRIKEY_FILE_ATTR priAttr = CreatePrikeyFileAttr();
+			IntPtr ptr = CreateIntPtr(priAttr);
+
+			try
+			{
+				this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_PRIKEY_RSA, descriptor,  ptr);
+			}
+			finally
+			{
+				FreeIntPtr(ptr);
+			}
+
+			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
+			RSA_PRIVATE_KEY rsaPri = new RockeyArm.DongleKey.RSA_PRIVATE_KEY();
+			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
+
+			byte[] rsaPriBuffer = StructToBytes(rsaPri);
+			//outData = StructToBytes(rsaPub);
+			outData = rsaPub.exponent;
+			//logger.Debug("RSA-PRI = " + BitConverter.ToString(rsaPriBuffer));
+			//logger.Debug("RSA-PRI = " + Convert.ToBase64String(rsaPriBuffer));
+			logger.Debug(String.Format("RSA-PUB information : bit={0},modulus={1},exponent={2}",
+						rsaPub.bits,
+						rsaPub.modulus,
+						Convert.ToBase64String(rsaPub.exponent)));
+			logger.Debug("RSA-PUB : " + HexString.ToString(rsaPub.exponent));
+			return IsSucc();
+		}
 
 		public override bool Encrypt(AuthenKeyType keyType, byte[]plain, out byte[] cipher)
 		{
@@ -269,8 +319,11 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				case AuthenKeyType.USER_ROOT:
 					TDesEncrypt(DongleKey.USER_ROOT_KEY_DESCRIPTOR, plain, out cipher);
 					break;
+
 				case AuthenKeyType.AUTHEN:
+					RsaPriEncrypt(DongleKey.AUTHEN_KEY_DESCRIPTOR, plain, out cipher);
 					break;
+
 				default:
 					break;
 			}
@@ -278,7 +331,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return IsSucc();
 		}
 
-		public void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
+		private void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
 		{
 			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
 
@@ -288,6 +341,27 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
 		}
 
+		private void RsaPriEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
+		{
+			uint nOutDataLen = 128;
+			cipher = new byte[128];
+			this.LastErrorCode = Dongle_RsaPri(this.hDongle, descriptor, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+		}
+
+
+		public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
+		{
+			uint nOutDataLen = 128;
+			cipher = new byte[128];
+
+			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
+			rsaPub.bits = 1024;
+			rsaPub.modulus = 65537;
+			rsaPub.exponent = pubKey;
+
+			this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+		}
+
 		//public bool SetUserID(uint uid)
 		//{
 		//	this.LastErrCode = Dongle_SetUserID(this.hDongle, uid);
@@ -295,48 +369,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		//}
 
 
-		/// <summary>
-		/// create RSA private key
-		/// </summary>
-		private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
-		{
-			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
-			
-			priAttr.m_Size = 1024;
-			priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
-			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
-			priAttr.m_Lic.m_IsDecOnRAM = 0;
-			priAttr.m_Lic.m_IsReset = 0;
-			priAttr.m_Lic.m_Priv = 0;
-			return priAttr;
-		}
 
-		public bool CreateAuthenKeyFile(byte[] inData)
-		{
-			PRIKEY_FILE_ATTR priAttr = CreatePrikeyFileAttr();
-			IntPtr ptr = CreateIntPtr(priAttr);
-
-			try
-			{
-				this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_PRIKEY_RSA, DongleKey.AUTHEN_KEY_DESCRIPTOR, ptr);
-			}
-			finally
-			{
-				FreeIntPtr(ptr);
-			}
-
-			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
-			RSA_PRIVATE_KEY rsaPri = new RockeyArm.DongleKey.RSA_PRIVATE_KEY();
-			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
-
-			byte[] rsaPubBuffer = StructToBytes(rsaPub);
-			byte[] rsaPriBuffer = StructToBytes(rsaPri);
-
-			logger.Debug("RSA-PRI = " + BitConverter.ToString(rsaPriBuffer));
-			logger.Debug("RSA-PUB = " + BitConverter.ToString(rsaPubBuffer));
-
-			return IsSucc();
-		}
 
 		public static byte[] StructToBytes(object structObj)
 		{

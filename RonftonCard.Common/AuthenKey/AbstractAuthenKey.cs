@@ -74,7 +74,7 @@ namespace RonftonCard.Common.AuthenKey
 		public abstract void Close();
 		public abstract bool Open(int seq = 0);
 		public abstract AuthenKeyInfo[] Enumerate();
-		public abstract bool Create(AuthenKeyType keyType, byte[] inData);
+		public abstract bool Create(AuthenKeyType keyType, byte[] inData, out byte[] outData);
 		public abstract bool Encrypt(AuthenKeyType keyType, byte[] plain, out byte[] cipher);
 
 		protected abstract String GetErrorMsgKey();

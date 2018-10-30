@@ -22,7 +22,7 @@ namespace RonftonCard.Common.AuthenKey
 		public override String ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append(this.Seq).Append(",");
+			sb.Append(this.Seq).Append(" : ");
 			sb.Append(this.Version).Append(",");
 			sb.Append(this.ProductId).Append(",");
 			sb.Append(this.UserInfo).Append(",");

@@ -30,7 +30,7 @@ namespace RonftonCard.Common.AuthenKey
 		/// </summary>
 		bool Open(int seq = 0);
 
-		bool Create( AuthenKeyType keyType, byte[] inData );
+		bool Create( AuthenKeyType keyType, byte[] inData, out byte[] outData );
 
 		bool Encrypt(AuthenKeyType keyType, byte[] plain, out byte[] cipher);
 	}
