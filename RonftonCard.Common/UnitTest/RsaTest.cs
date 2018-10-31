@@ -74,41 +74,41 @@ namespace RonftonCard.Common.UnitTest
 			//Console.WriteLine("cipher2 = " + Convert.ToBase64String(cipher2));
 		}
 
-		private string DecryptProcess(string source, string e, string n)
-		{
-			byte[] N = Convert.FromBase64String(n);
-			byte[] E = Convert.FromBase64String(e);
-			BigInteger biN = new BigInteger(N);
-			BigInteger biE = new BigInteger(E);
-			return DecryptString(source, biE, biN);
-		}
+		//private string DecryptProcess(string source, string e, string n)
+		//{
+		//	byte[] N = Convert.FromBase64String(n);
+		//	byte[] E = Convert.FromBase64String(e);
+		//	BigInteger biN = new BigInteger(N);
+		//	BigInteger biE = new BigInteger(E);
+		//	return DecryptString(source, biE, biN);
+		//}
 
 
-		private string DecryptString(string source, BigInteger e, BigInteger n)
-		{
-			int len = source.Length;
-			int len1 = 0;
-			int blockLen = 0;
-			if ((len % 256) == 0)
-				len1 = len / 256;
-			else
-				len1 = len / 256 + 1;
-			string block = "";
-			string temp = "";
-			for (int i = 0; i < len1; i++)
-			{
-				if (len >= 256)
-					blockLen = 256;
-				else
-					blockLen = len;
-				block = source.Substring(i * 256, blockLen);
-				BigInteger biText = new BigInteger(block, 16);
-				BigInteger biEnText = biText.modPow(e, n);
-				string temp1 = System.Text.Encoding.Default.GetString(biEnText.getBytes());
-				temp += temp1;
-				len -= blockLen;
-			}
-			return temp;
-		}
+		//private string DecryptString(string source, BigInteger e, BigInteger n)
+		//{
+		//	int len = source.Length;
+		//	int len1 = 0;
+		//	int blockLen = 0;
+		//	if ((len % 256) == 0)
+		//		len1 = len / 256;
+		//	else
+		//		len1 = len / 256 + 1;
+		//	string block = "";
+		//	string temp = "";
+		//	for (int i = 0; i < len1; i++)
+		//	{
+		//		if (len >= 256)
+		//			blockLen = 256;
+		//		else
+		//			blockLen = len;
+		//		block = source.Substring(i * 256, blockLen);
+		//		BigInteger biText = new BigInteger(block, 16);
+		//		BigInteger biEnText = biText.modPow(e, n);
+		//		string temp1 = System.Text.Encoding.Default.GetString(biEnText.getBytes());
+		//		temp += temp1;
+		//		len -= blockLen;
+		//	}
+		//	return temp;
+		//}
 	}
 }
