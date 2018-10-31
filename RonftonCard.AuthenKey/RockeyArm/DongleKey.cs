@@ -8,11 +8,14 @@ using System.Runtime.InteropServices;
 using log4net;
 using BlueMoon.Config;
 using RonftonCard.Common.AuthenKey;
+using System.IO;
 
 namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey  : AbstractAuthenKey
 	{
+		private const int RSA_KEY_LEN = 256;
+
 		// handle for dog
 		private Int64 hDongle;
 		
@@ -266,7 +269,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		{
 			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
 
-			priAttr.m_Size = 1024;
+			priAttr.m_Size = RSA_KEY_LEN * 8;
 			priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
 			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
 			priAttr.m_Lic.m_IsDecOnRAM = 0;
@@ -292,17 +295,28 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
 			RSA_PRIVATE_KEY rsaPri = new RockeyArm.DongleKey.RSA_PRIVATE_KEY();
 			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
+						
+			outData = rsaPub.exponent;
+
+			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}",rsaPri.bits,rsaPri.modulus));
+
+			logger.Debug("RSA-PRI : " + Convert.ToBase64String(rsaPri.exponent));
+			logger.Debug("   -PUB : " + Convert.ToBase64String(rsaPri.publicExponent));
+
+			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", rsaPub.bits, rsaPub.modulus));
+			logger.Debug("RSA-PUB : " + Convert.ToBase64String(rsaPub.exponent));
 
 			byte[] rsaPriBuffer = StructToBytes(rsaPri);
-			//outData = StructToBytes(rsaPub);
-			outData = rsaPub.exponent;
-			//logger.Debug("RSA-PRI = " + BitConverter.ToString(rsaPriBuffer));
-			//logger.Debug("RSA-PRI = " + Convert.ToBase64String(rsaPriBuffer));
-			logger.Debug(String.Format("RSA-PUB information : bit={0},modulus={1},exponent={2}",
-						rsaPub.bits,
-						rsaPub.modulus,
-						Convert.ToBase64String(rsaPub.exponent)));
-			logger.Debug("RSA-PUB : " + HexString.ToString(rsaPub.exponent));
+			byte[] rsaPubBuffer = StructToBytes(rsaPub);
+
+			FileStream fs = new FileStream("Rsa.pub", FileMode.Create);
+			fs.Write(rsaPubBuffer, 0, rsaPubBuffer.Length);
+			fs.Close();
+
+			fs = new FileStream("Rsa.pri", FileMode.Create);
+			fs.Write(rsaPriBuffer, 0, rsaPriBuffer.Length);
+			fs.Close();
+
 			return IsSucc();
 		}
 
@@ -343,21 +357,24 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 		private void RsaPriEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
 		{
-			uint nOutDataLen = 128;
-			cipher = new byte[128];
+			uint nOutDataLen = RSA_KEY_LEN;
+			cipher = new byte[nOutDataLen];
 			this.LastErrorCode = Dongle_RsaPri(this.hDongle, descriptor, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 		}
 
 
 		public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
 		{
-			uint nOutDataLen = 128;
-			cipher = new byte[128];
+			uint nOutDataLen = RSA_KEY_LEN;
+			cipher = new byte[nOutDataLen];
 
 			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
-			rsaPub.bits = 1024;
+
+			rsaPub.bits = RSA_KEY_LEN * 8 ;
 			rsaPub.modulus = 65537;
-			rsaPub.exponent = pubKey;
+			rsaPub.exponent = new byte[256];
+
+			Array.Copy(pubKey, rsaPub.exponent, pubKey.Length);
 
 			this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 		}

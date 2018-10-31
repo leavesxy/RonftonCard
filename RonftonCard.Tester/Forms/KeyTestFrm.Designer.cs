@@ -57,16 +57,15 @@
 			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
 			this.BtnEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.BtnRsaPubDecrypt = new System.Windows.Forms.Button();
-			this.TxtPubKey = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// TxtDbg
 			// 
-			this.TxtDbg.Location = new System.Drawing.Point(12, 194);
+			this.TxtDbg.Location = new System.Drawing.Point(12, 118);
 			this.TxtDbg.Multiline = true;
 			this.TxtDbg.Name = "TxtDbg";
 			this.TxtDbg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtDbg.Size = new System.Drawing.Size(771, 197);
+			this.TxtDbg.Size = new System.Drawing.Size(771, 273);
 			this.TxtDbg.TabIndex = 0;
 			// 
 			// label1
@@ -147,7 +146,7 @@
 			// 
 			this.BtnCreateRsaKeyFile.Location = new System.Drawing.Point(493, 397);
 			this.BtnCreateRsaKeyFile.Name = "BtnCreateRsaKeyFile";
-			this.BtnCreateRsaKeyFile.Size = new System.Drawing.Size(143, 29);
+			this.BtnCreateRsaKeyFile.Size = new System.Drawing.Size(181, 29);
 			this.BtnCreateRsaKeyFile.TabIndex = 1;
 			this.BtnCreateRsaKeyFile.Text = "创建RSA私钥文件";
 			this.BtnCreateRsaKeyFile.UseVisualStyleBackColor = true;
@@ -331,20 +330,11 @@
 			this.BtnRsaPubDecrypt.UseVisualStyleBackColor = true;
 			this.BtnRsaPubDecrypt.Click += new System.EventHandler(this.BtnRsaPubDecrypt_Click);
 			// 
-			// TxtPubKey
-			// 
-			this.TxtPubKey.Location = new System.Drawing.Point(12, 118);
-			this.TxtPubKey.Multiline = true;
-			this.TxtPubKey.Name = "TxtPubKey";
-			this.TxtPubKey.Size = new System.Drawing.Size(771, 70);
-			this.TxtPubKey.TabIndex = 5;
-			// 
 			// KeyTestFrm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
-			this.Controls.Add(this.TxtPubKey);
 			this.Controls.Add(this.CbCurrentKey);
 			this.Controls.Add(this.TxtTdesKey);
 			this.Controls.Add(this.TxtSeed);
@@ -420,6 +410,5 @@
 		private System.Windows.Forms.Button BtnCreateUserRootKey;
 		private System.Windows.Forms.Button BtnEncryptByUserRoot;
 		private System.Windows.Forms.Button BtnRsaPubDecrypt;
-		private System.Windows.Forms.TextBox TxtPubKey;
 	}
 }

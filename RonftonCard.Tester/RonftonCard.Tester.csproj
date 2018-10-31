@@ -71,6 +71,12 @@
       <DependentUpon>ConfigTestFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Entity\CardEntity.cs" />
+    <Compile Include="Forms\KeyRsaPubDecryptFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KeyRsaPubDecryptFrm.Designer.cs">
+      <DependentUpon>KeyRsaPubDecryptFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KeyTestFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigTestFrm.resx">
       <DependentUpon>ConfigTestFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KeyRsaPubDecryptFrm.resx">
+      <DependentUpon>KeyRsaPubDecryptFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyTestFrm.resx">
       <DependentUpon>KeyTestFrm.cs</DependentUpon>

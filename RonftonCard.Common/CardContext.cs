@@ -26,6 +26,8 @@ namespace RonftonCard.Common
 		/// </summary>
 		public CardReaderDescriptor ReaderDescriptor { get; set; }
 
+		//public DongleKey Key { get; set; }
+
 		/// <summary>
 		/// arguments
 		/// </summary>

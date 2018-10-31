@@ -23,9 +23,9 @@ namespace RonftonCard.Tester.Forms
 			this.rm = rm;
 			this.tabPageDescriptor = new List<TabPageDescriptor>()
 			{
-				new TabPageDescriptor { PageIndex=0, PageName="ConfigTest", TabPageForm = new ConfigTestFrm()},
-				new TabPageDescriptor { PageIndex=1, PageName="Mifare1Test", TabPageForm = new MifareTestFrm() },
-				new TabPageDescriptor { PageIndex=2, PageName="KeyTest", TabPageForm = new KeyTestFrm() },
+				new TabPageDescriptor { PageIndex=0, PageName="配置测试", TabPageForm = new ConfigTestFrm()},
+				new TabPageDescriptor { PageIndex=1, PageName="卡测试", TabPageForm = new MifareTestFrm() },
+				new TabPageDescriptor { PageIndex=2, PageName="Key测试", TabPageForm = new KeyTestFrm() },
 
 			};
 		}

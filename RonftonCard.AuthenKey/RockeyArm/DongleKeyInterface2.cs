@@ -9,27 +9,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey
 	{
-		//RSA_PUB_KEY(support 1024,2048)
-		[StructLayout(LayoutKind.Sequential)]
-		public struct RSA_PUBLIC_KEY
-		{
-			public uint bits;					// length in bits of modulus        	
-			public uint modulus;				// modulus
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-			public byte[] exponent;				// public exponent
-		}
 
-		//RSA_PRI_KEY(support 1024,2048)
-		[StructLayout(LayoutKind.Sequential)]
-		public struct RSA_PRIVATE_KEY
-		{
-			public uint bits;						// length in bits of modulus        	
-			public uint modulus;					// modulus  
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-			public byte[] publicExponent;			// public exponent
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-			public byte[] exponent;					// public exponent
-		}
 
 
 		/*************************文件授权结构***********************************/

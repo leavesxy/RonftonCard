@@ -244,8 +244,13 @@ namespace RonftonCard.Tester.Forms
 
 			if (this.key.Encrypt(AuthenKeyType.AUTHEN, plain, out cipher))
 			{
-				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToString(cipher)));
-				logger.Debug("RSA-PRI : " + HexString.ToString(cipher));
+				this.TxtDbg.Trace(String.Format("cipher length [{0}] ", cipher.Length));
+				this.TxtDbg.Trace("hex    : " + HexString.ToString(cipher));
+				this.TxtDbg.Trace("base64 : " + Convert.ToBase64String(cipher));
+
+				logger.Debug("RSA-PRI encrypt [" + this.TxtPlain.Text.Trim() + "]");
+				logger.Debug("   hex String  : " + HexString.ToString(cipher));
+				logger.Debug("   base64      : " + Convert.ToBase64String(cipher));
 			}
 			else
 				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
@@ -253,11 +258,8 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnRsaPubDecrypt_Click(object sender, EventArgs e)
 		{
-			byte[] cipher;
-			byte[] pubKey = HexString.FromString(this.TxtPubKey.Text.Trim());
-			this.key.RsaPubDecrypt()
-			this.TxtDbg.Trace("Decrypt By RSA-PUB ...", true);
-
+			KeyRsaPubDecryptFrm frm = new KeyRsaPubDecryptFrm(this.key);
+			frm.ShowDialog();
 		}
 
 		private void BtnDbgErrorMsg_Click(object sender, EventArgs e)

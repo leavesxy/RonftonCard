@@ -25,5 +25,27 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			public uint m_IsMother;             //母锁标志: 0x01表示是母锁, 0x00表示不是母锁
 			public uint m_DevType;              //设备类型(PROTOCOL_HID或者PROTOCOL_CCID)
 		}
+
+		//RSA_PUB_KEY(support 1024,2048)
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RSA_PUBLIC_KEY
+		{
+			public uint bits;                   // length in bits of modulus        	
+			public uint modulus;                // modulus
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+			public byte[] exponent;             // public exponent
+		}
+
+		//RSA_PRI_KEY(support 1024,2048)
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RSA_PRIVATE_KEY
+		{
+			public uint bits;                       // length in bits of modulus        	
+			public uint modulus;                    // modulus  
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+			public byte[] publicExponent;           // public exponent
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+			public byte[] exponent;                 // public exponent
+		}
 	}
 }
