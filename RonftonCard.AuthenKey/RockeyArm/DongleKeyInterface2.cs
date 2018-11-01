@@ -186,8 +186,6 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ResetUserPIN(Int64 hDongle, byte[] pAdminPIN);
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_RsaGenPubPriKey(Int64 hDongle, ushort wPriFileID, ref RSA_PUBLIC_KEY pPubBakup, ref RSA_PRIVATE_KEY pPriBakup);
-		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_RsaPri(Int64 hDongle, ushort wPriFileID, uint nFlag, byte[] pInData, uint nInDataLen, byte[] pOutData, ref uint pOutDataLen);
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_RsaPub(Int64 hDongle, uint nFlag, ref RSA_PUBLIC_KEY pPubKey, byte[] pInData, uint nInDataLen, byte[] pOutData, ref uint pOutDataLen);

@@ -64,7 +64,7 @@ namespace RonftonCard.Tester.Forms
 		/// </summary>
 		private void BtnReadBlockA_Click(object sender, EventArgs e)
 		{
-			byte[] keyA = HexString.FromString(this.TxtKeyA.Text.Trim());
+			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim());
 			ReadBlock(KeyMode.KeyA, keyA);
 		}
 
@@ -73,7 +73,7 @@ namespace RonftonCard.Tester.Forms
 		/// </summary>
 		private void BtnReadBlockB_Click(object sender, EventArgs e)
 		{
-			byte[] keyB = HexString.FromString(this.TxtKeyB.Text.Trim());
+			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim());
 			ReadBlock(KeyMode.KeyB, keyB);
 		}
 

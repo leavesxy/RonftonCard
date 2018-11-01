@@ -46,7 +46,7 @@ namespace RonftonCard.Common
 					result = BitConverter.GetBytes((Int64)obj);
 					break;
 				case CardDataType.BCD:
-					result = HexString.FromString((String)obj);
+					result = HexString.FromHexString((String)obj);
 					break;
 				default:
 					result = new byte[] { };
@@ -73,7 +73,7 @@ namespace RonftonCard.Common
 		private static byte[] WriteDateB(DateTime obj)
 		{
 			String ss = obj.ToString("yyyyMMdd");
-			return HexString.FromString(ss.Substring(2));
+			return HexString.FromHexString(ss.Substring(2));
 		}
 	}
 }

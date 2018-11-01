@@ -73,6 +73,7 @@
     <Compile Include="Reader\KeyMode.cs" />
     <Compile Include="Reader\PortType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest\Base64Test.cs" />
     <Compile Include="UnitTest\ConfigTest.cs" />
     <Compile Include="AbstractVirtualCard.cs" />
     <Compile Include="UnitTest\PwdTest.cs" />

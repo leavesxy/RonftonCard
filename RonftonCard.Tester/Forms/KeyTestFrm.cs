@@ -245,11 +245,11 @@ namespace RonftonCard.Tester.Forms
 			if (this.key.Encrypt(AuthenKeyType.AUTHEN, plain, out cipher))
 			{
 				this.TxtDbg.Trace(String.Format("cipher length [{0}] ", cipher.Length));
-				this.TxtDbg.Trace("hex    : " + HexString.ToString(cipher));
+				this.TxtDbg.Trace("hex    : " + HexString.ToHexString(cipher));
 				this.TxtDbg.Trace("base64 : " + Convert.ToBase64String(cipher));
 
 				logger.Debug("RSA-PRI encrypt [" + this.TxtPlain.Text.Trim() + "]");
-				logger.Debug("   hex String  : " + HexString.ToString(cipher));
+				logger.Debug("   hex String  : " + HexString.ToHexString(cipher));
 				logger.Debug("   base64      : " + Convert.ToBase64String(cipher));
 			}
 			else

@@ -14,7 +14,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey  : AbstractAuthenKey
 	{
-		private const int RSA_KEY_LEN = 256;
+		private const int RSA_KEY_LEN = 128;
 
 		// handle for dog
 		private Int64 hDongle;
@@ -292,30 +292,20 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				FreeIntPtr(ptr);
 			}
 
-			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
-			RSA_PRIVATE_KEY rsaPri = new RockeyArm.DongleKey.RSA_PRIVATE_KEY();
-			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
-						
+			IntPtr pRsaPub = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PUBLIC_KEY)) );
+			IntPtr pRsaPri = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PRIVATE_KEY)));
+
+			//this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
+			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, pRsaPub, pRsaPri);
+
+			RSA_PUBLIC_KEY rsaPub = (RSA_PUBLIC_KEY)Marshal.PtrToStructure(pRsaPub, typeof(RSA_PUBLIC_KEY));
+			RSA_PRIVATE_KEY rsaPri = (RSA_PRIVATE_KEY)Marshal.PtrToStructure(pRsaPri, typeof(RSA_PRIVATE_KEY));
+
+			FreeIntPtr(pRsaPub);
+			FreeIntPtr(pRsaPri);
+
+			LogRsaKey(rsaPub, rsaPri);
 			outData = rsaPub.exponent;
-
-			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}",rsaPri.bits,rsaPri.modulus));
-
-			logger.Debug("RSA-PRI : " + Convert.ToBase64String(rsaPri.exponent));
-			logger.Debug("   -PUB : " + Convert.ToBase64String(rsaPri.publicExponent));
-
-			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", rsaPub.bits, rsaPub.modulus));
-			logger.Debug("RSA-PUB : " + Convert.ToBase64String(rsaPub.exponent));
-
-			byte[] rsaPriBuffer = StructToBytes(rsaPri);
-			byte[] rsaPubBuffer = StructToBytes(rsaPub);
-
-			FileStream fs = new FileStream("Rsa.pub", FileMode.Create);
-			fs.Write(rsaPubBuffer, 0, rsaPubBuffer.Length);
-			fs.Close();
-
-			fs = new FileStream("Rsa.pri", FileMode.Create);
-			fs.Write(rsaPriBuffer, 0, rsaPriBuffer.Length);
-			fs.Close();
 
 			return IsSucc();
 		}
@@ -362,7 +352,6 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			this.LastErrorCode = Dongle_RsaPri(this.hDongle, descriptor, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 		}
 
-
 		public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
 		{
 			uint nOutDataLen = RSA_KEY_LEN;
@@ -373,8 +362,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			rsaPub.bits = RSA_KEY_LEN * 8 ;
 			rsaPub.modulus = 65537;
 			rsaPub.exponent = new byte[256];
-
-			Array.Copy(pubKey, rsaPub.exponent, pubKey.Length);
+			Array.Copy(pubKey, rsaPub.exponent, RSA_KEY_LEN);
 
 			this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 		}
@@ -385,10 +373,21 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		//	return this.LastErrCode == DongleKey.SUCC;
 		//}
 
+		private void LogRsaKey(RSA_PUBLIC_KEY rsaPub, RSA_PRIVATE_KEY rsaPri)
+		{
+			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}", rsaPri.bits, rsaPri.modulus));
+			logger.Debug("RSA-PRI : " + Convert.ToBase64String(rsaPri.exponent));
+			logger.Debug("    128 : " + Convert.ToBase64String(rsaPri.exponent, 0, RSA_KEY_LEN));
+			logger.Debug("   -PUB : " + Convert.ToBase64String(rsaPri.publicExponent));
+			logger.Debug("   -128 : " + Convert.ToBase64String(rsaPri.publicExponent, 0, RSA_KEY_LEN));
 
 
+			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", rsaPub.bits, rsaPub.modulus));
+			logger.Debug("RSA-PUB : " + Convert.ToBase64String(rsaPub.exponent, 0, RSA_KEY_LEN));
+			logger.Debug("     (*): " + HexString.ToHexString(rsaPub.exponent));
+		}
 
-		public static byte[] StructToBytes(object structObj)
+		private byte[] StructToBytes(object structObj)
 		{
 			int size = Marshal.SizeOf(structObj);
 			byte[] _bytes = new byte[size];
