@@ -4,8 +4,8 @@
 
 	<!-- port : COM=0,USB=100,PCSC=200,BLUE_TOOTH=300 -->
 	<CardReader name="Decard-d8" desc="ShengZhen Decard Technology Co.LTD">
-		<port value="usb" />
-		<baud value="9600" />
+		<port>usb</port>
+		<baud>9600</baud>
 		<type>RonftonCard.CardReader.D8Reader,RonftonCard.CardReader</type>
 	</CardReader>
 
