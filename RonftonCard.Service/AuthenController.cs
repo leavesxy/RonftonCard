@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using BlueMoon;
 using System.Web;
+using System.Collections.Specialized;
+using RonftonCard.Service.Test;
 
 namespace RonftonCard.Service
 {
@@ -26,18 +28,37 @@ namespace RonftonCard.Service
 			return result;
 		}
 
-		// POST api/authen 
-		[HttpPost]
-		public IHttpActionResult Post()
-		{
-			int num = HttpContext.Current.Request.Form.Count;
+        public IHttpActionResult Post([FromBody] TestInfo testInfo)
+        {
+            String ret = testInfo == null ? "null" : testInfo.ToString();
+            logger.Debug("Received : " + ret);
 
-			logger.Debug("receive post" + num.ToString());
+            return Json<String>("I received request " + ret);
+        }
 
-			return Json<String>("I received request " + num.ToString());
-		}
+        // POST api/authen [FromBody]  <------> public IHttpActionResult Post([FormBody]String name )
+        // add httpHeader : Content-Type: application/x-www-form-urlencoded
+        // POST api/authen/Values
+        //      post data only one String, like =hubin  
+        //                                 ^ no key !!!
+        // POST api/authen?name=hubin <-----> Post(String name)
+        // POST api/authen  <-------> Post()
 
-		private String EnumerateKey()
+        private String getAllRequestData(IDictionary<String, Object> nv)
+        {
+            if (nv == null)
+                return "";
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (String key in nv.Keys)
+            {
+                sb.Append(key).Append("=").Append(nv[key]);
+            }
+            return sb.ToString();
+        }
+
+        private String EnumerateKey()
 		{
 			DongleKey key = new DongleKey();
 			AuthenKeyInfo[] keyInfo = key.Enumerate();
