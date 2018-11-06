@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using BlueMoon;
 using System.Runtime.InteropServices;
-using log4net;
-using BlueMoon.Config;
 using RonftonCard.Common.AuthenKey;
-using System.IO;
 
 namespace RonftonCard.AuthenKey.RockeyArm
 {
