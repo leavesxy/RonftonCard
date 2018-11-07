@@ -3,14 +3,8 @@ using Newtonsoft.Json;
 using RonftonCard.AuthenKey.RockeyArm;
 using RonftonCard.Common.AuthenKey;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using BlueMoon;
-using System.Web;
-using System.Collections.Specialized;
 using RonftonCard.Service.Test;
 
 namespace RonftonCard.Service
@@ -19,50 +13,47 @@ namespace RonftonCard.Service
 	{
 		protected static ILog logger = LogManager.GetLogger("RonftonCardService");
 
-		// GET api/authen 
 		[HttpGet]
-		public IHttpActionResult Get()
+		[Route("api/get_test")]
+		public IHttpActionResult GetTest()
+		{
+			return Ok("Hello! this is a get test ");
+		}
+
+		[HttpPost]
+		[Route("api/post_test")]
+		public IHttpActionResult PostTest()
+		{
+			return Ok("Hello! this is a post test ");
+		}
+
+
+		// enumerate all keys
+		[HttpGet]
+		[Route("api/enum")]
+		public IHttpActionResult Enumerate()
 		{
 			String result = EnumerateKey();
 			logger.Debug(result);
-			return Json < String > (result);
+
+			return Ok(result);
 		}
 
-		
-		// required : http://localhost:9000/api/authen?text=hubin
 		[HttpPost]
-		[Route("authen/text")]
-		public IHttpActionResult Text(String text)
+		[Route("api/send")]
+		public IHttpActionResult Send(TestInfo testInfo)
 		{
-			String ret = text == null ? "null" : text;
-			logger.Debug("Received : " + text);
+			logger.Debug(JsonConvert.SerializeObject(testInfo));
+			TestInfo t = new TestInfo()
+			{
+				Id = "1111",
+				Desc = "Description",
+				Price = 99
+			};
 
-			return Ok("I received request " + text);
+			return Json< TestInfo>(t);
 		}
 
-		// fiddler ---> {"Id":"0001","Desc":"这是一个测试","Price":10 }
-		// Content-Type: application/json; charset=utf-8
-		[HttpPost]
-		[Route("authen/json")]
-        public IHttpActionResult JsonString(TestInfo testInfo)
-        {
-            String ret = testInfo == null ? "null" : testInfo.ToString();
-            logger.Debug("Received : " + ret);
-
-            return Ok<String>("I received request " + ret);
-        }
-
-
-		[HttpPost]
-		[Route("authen/json2")]
-		public IHttpActionResult Json(TestInfo testInfo)
-		{
-			String ret = testInfo == null ? "null" : testInfo.ToString();
-			logger.Debug("Received : " + ret);
-			testInfo.Desc = "hhhhhhhh";
-
-			return Json<TestInfo>(testInfo); 
-		}
 
 		// POST api/authen [FromBody]  <------> public IHttpActionResult Post([FormBody]String name )
 		// add httpHeader : Content-Type: application/x-www-form-urlencoded
@@ -72,21 +63,7 @@ namespace RonftonCard.Service
 		// POST api/authen?name=hubin <-----> Post(String name)
 		// POST api/authen  <-------> Post()
 
-		private String getAllRequestData(IDictionary<String, Object> nv)
-        {
-            if (nv == null)
-                return "";
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach (String key in nv.Keys)
-            {
-                sb.Append(key).Append("=").Append(nv[key]);
-            }
-            return sb.ToString();
-        }
-
-        private String EnumerateKey()
+		private String EnumerateKey()
 		{
 			DongleKey key = new DongleKey();
 			AuthenKeyInfo[] keyInfo = key.Enumerate();

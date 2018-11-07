@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace RonftonCard.Service
 {
@@ -14,6 +15,10 @@ namespace RonftonCard.Service
 		{
 			// Configure Web API for self-host. 
 			HttpConfiguration config = new HttpConfiguration();
+
+			var cors = new EnableCorsAttribute("*", "*", "*");
+
+			config.EnableCors(cors);
 
 			// enable specified routes
 			config.MapHttpAttributeRoutes();
