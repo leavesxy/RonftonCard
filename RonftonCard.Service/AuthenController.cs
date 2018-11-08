@@ -53,16 +53,7 @@ namespace RonftonCard.Service
 
 			return Json< TestInfo>(t);
 		}
-
-
-		// POST api/authen [FromBody]  <------> public IHttpActionResult Post([FormBody]String name )
-		// add httpHeader : Content-Type: application/x-www-form-urlencoded
-		// POST api/authen/Values
-		//      post data only one String, like =hubin  
-		//                                 ^ no key !!!
-		// POST api/authen?name=hubin <-----> Post(String name)
-		// POST api/authen  <-------> Post()
-
+		
 		private String EnumerateKey()
 		{
 			DongleKey key = new DongleKey();
