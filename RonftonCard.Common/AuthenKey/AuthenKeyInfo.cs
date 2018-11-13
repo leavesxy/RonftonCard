@@ -8,15 +8,35 @@ namespace RonftonCard.Common.AuthenKey
 {
 	public class AuthenKeyInfo
 	{
+		/// <summary>
+		/// sequence number for enumerate
+		/// </summary>
 		public short Seq { get; set; }
+
+		/// <summary>
+		/// version of KEY
+		/// Dongle: COS_VER + type + factory_date
+		/// </summary>
 		public String Version { get; set; }
-		public String ProductId { get; set; }
-		public String UserInfo { get; set; }
+
+		/// <summary>
+		/// only for authen_key
+		/// </summary>
+		public String AppId { get; set; }
+
+		/// <summary>
+		/// for user
+		/// </summary>
+		public String UserId { get; set; }
+
+		/// <summary>
+		/// hardware id
+		/// </summary>
 		public String KeyId { get; set; }
 
 		public String GetName()
 		{
-			return this.Seq.ToString() + ": id=[" + this.KeyId + "], pid=[" + ProductId + "], uid=[" + UserInfo +"]";
+			return this.Seq.ToString() + ": id=[" + this.KeyId + "], pid=[" + AppId + "], uid=[" + UserId + "]";
 		}
 
 		public override String ToString()
@@ -24,8 +44,8 @@ namespace RonftonCard.Common.AuthenKey
 			StringBuilder sb = new StringBuilder();
 			sb.Append(this.Seq).Append(" : ");
 			sb.Append(this.Version).Append(",");
-			sb.Append(this.ProductId).Append(",");
-			sb.Append(this.UserInfo).Append(",");
+			sb.Append(this.AppId).Append(",");
+			sb.Append(this.UserId).Append(",");
 			sb.Append(this.KeyId);
 			return sb.ToString();
 		}
