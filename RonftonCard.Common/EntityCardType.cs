@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Common
 {
-	public enum CardType
+	/// <summary>
+	/// define type of entity card
+	/// </summary>
+	public enum EntityCardType
 	{
 		M1,
 		CPU

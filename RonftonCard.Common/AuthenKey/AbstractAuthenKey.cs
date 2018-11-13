@@ -1,4 +1,5 @@
-﻿using BlueMoon.Config;
+﻿using BlueMoon;
+using BlueMoon.Config;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -23,25 +24,15 @@ namespace RonftonCard.Common.AuthenKey
 		protected String defaultAdminPin;
 		protected String defaultUserPin;
 
-		protected const ushort COMPANY_SEED_KEY_DESCRIPTOR = 0x1005;
-		protected const ushort USER_ROOT_KEY_DESCRIPTOR = 0x1006;
-		protected const ushort AUTHEN_KEY_DESCRIPTOR = 0x1007;
-
 		// error message config
-		private Properties errorMessage;
-
-		public uint LastErrorCode { get; protected set; }
+		private Properties errorMsgProp;
 
 		#region "--- constructor ---"
-		protected AbstractAuthenKey(String errMsgFileName)
-			: this("FFFFFFFFFFFFFFFF", "12345678", errMsgFileName)
-		{
-		}
 
-		protected AbstractAuthenKey(String adminPin, String userPin, String errMsgFileName)
+		protected AbstractAuthenKey(String defaultAdminPin, String defaultUserPin, String errMsgFileName)
 		{
-			this.defaultAdminPin = adminPin;
-			this.defaultUserPin = userPin;
+			this.defaultAdminPin = defaultAdminPin;
+			this.defaultUserPin = defaultUserPin;
 			this.succ = 0x00000000;
 
 			if ( !String.IsNullOrEmpty(errMsgFileName))
@@ -55,31 +46,35 @@ namespace RonftonCard.Common.AuthenKey
 			return this.LastErrorCode == this.succ;
 		}
 
+		public uint LastErrorCode { get; protected set; }
+
 		public String LastErrorMessage
 		{
 			get
 			{
-				
-				return errorMessage.Get(GetErrorMsgKey());
+				return this.errorMsgProp.Get(GetErrorMsgKey());
 			}
 		}
 
 		public String GetAllErrorMessage()
 		{
-			return errorMessage.ToString();
+			return this.errorMsgProp.ToString();
 		}
 
-
 		#region "--- abstract method ---"
+
 		public abstract void Close();
 		public abstract bool Open(int seq = 0);
 		public abstract AuthenKeyInfo[] Enumerate();
-		public abstract bool Create(AuthenKeyType keyType, byte[] inData, out byte[] outData);
-		public abstract bool Encrypt(AuthenKeyType keyType, byte[] plain, out byte[] cipher);
 
+		public abstract RetArgs Initialize();
+		public abstract RetArgs CreateRootKey();
+		public abstract RetArgs CreateAuthenKey();
+		public abstract bool Encrypt(byte[] plain, out byte[] cipher);
 		protected abstract String GetErrorMsgKey();
 
 		#endregion
+
 
 		#region IDisposable Support
 		private bool disposedValue = false; // To detect redundant calls
@@ -90,29 +85,19 @@ namespace RonftonCard.Common.AuthenKey
 			{
 				if (disposing)
 				{
-					// TODO: dispose managed state (managed objects).
+					//dispose managed state (managed objects).
 				}
 
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
+				// free unmanaged resources (unmanaged objects) and override a finalizer below.
 				Close();
 				disposedValue = true;
 			}
 		}
 
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~AbstractAuthenKey() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
 		// This code added to correctly implement the disposable pattern.
 		public void Dispose()
 		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
 		}
 
 		#endregion

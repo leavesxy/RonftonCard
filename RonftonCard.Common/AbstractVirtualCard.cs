@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using BlueMoon;
+using RonftonCard.Common.Util;
 
 namespace RonftonCard.Common
 {

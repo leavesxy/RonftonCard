@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CardReaders>
+
+	<!-- port : COM=0,USB=100,PCSC=200,BLUE_TOOTH=300 -->
+	<CardReader name="Decard-d8" desc="ShengZhen Decard Technology Co.LTD">
+		<port>usb</port>
+		<baud>9600</baud>
+		<type>RonftonCard.CardReader.D8Reader,RonftonCard.CardReader</type>
+	</CardReader>
+
+	<CardReader name="ePass-SmartPlus" desc="FeiTian Technology Co.LTD">
+		<port>usb</port>
+		<type>RonftonCard.CardReader.D8Reader,RonftonCard.CardReader</type>
+	</CardReader>
+	
+</CardReaders>

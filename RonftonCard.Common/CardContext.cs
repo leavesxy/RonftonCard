@@ -14,7 +14,7 @@ namespace RonftonCard.Common
 		/// <summary>
 		/// type of Card
 		/// </summary>
-		public CardType CardType { get; set; }
+		public EntityCardType CardType { get; set; }
 
 		/// <summary>
 		/// config templete

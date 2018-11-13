@@ -19,28 +19,27 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// Open dog, should invoke Dongle_Enum
 		/// </summary>
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_Open(ref Int64 phDongle, int seq);
+		static extern uint Dongle_Open(ref Int64 hDongle, int seq);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_Close(Int64 hDongle);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_VerifyPIN(Int64 hDongle, uint nFlags, byte[] pin, out int pRemainCount);
+		static extern uint Dongle_VerifyPIN(Int64 hDongle, uint flag, byte[] pin, out int pRemainCount);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_RFS(Int64 hDongle);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_CreateFile(Int64 hDongle, uint nFileType, ushort descriptor, IntPtr pFileAttr);
+		static extern uint Dongle_CreateFile(Int64 hDongle, uint fileType, ushort descriptor, IntPtr pFileAttr);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_WriteFile(Int64 hDongle, uint nFileType, ushort descriptor, short wOffset, byte[] buffer, int nDataLen);
+		static extern uint Dongle_WriteFile(Int64 hDongle, uint fileType, ushort descriptor, short offset, byte[] buffer, int bufferLen);
 
 		//[DllImport(@"Plugin\Dongle_d.dll")]
 		//static extern uint Dongle_RsaGenPubPriKey(Int64 hDongle, ushort wPriFileID, ref RSA_PUBLIC_KEY pPubBakup, ref RSA_PRIVATE_KEY pPriBakup);
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_RsaGenPubPriKey(Int64 hDongle, ushort wPriFileID, IntPtr pPubBakup, IntPtr pPriBakup);
-
+		static extern uint Dongle_RsaGenPubPriKey(Int64 hDongle, ushort descriptor, IntPtr pubKey, IntPtr priKey);
 
 	}
 }

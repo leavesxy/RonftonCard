@@ -10,20 +10,18 @@ namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey  : AbstractAuthenKey
 	{
-		private const int RSA_KEY_LEN = 128;
+		private const String errorMsgFile = "ErrorMessage.properties";
 
 		// handle for dog
 		private Int64 hDongle;
 		
 		public DongleKey()
-			: base("ErrorMessage.properties")
+			: base(AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE, errorMsgFile)
 		{
 			this.hDongle = -1;
-			
-			// set base.succ, default succ = 0x00;
 		}
 
-		#region "--- implement abstract ---"
+		#region "--- implement AbstractAuthenKey ---"
 
 		/// <summary>
 		/// Close device
@@ -38,10 +36,10 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		}
 
 		/// <summary>
-		/// open special sequence key, and first is default
+		/// open specified key by seq , and first is default
 		/// </summary>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override bool Open(int sequence = 0)
+		public override bool Open(int seq = 0)
 		{
 			//avoid to re-open again
 			if (this.hDongle > 0)
@@ -50,7 +48,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				this.hDongle = -1;
 			}
 
-			this.LastErrorCode = Dongle_Open(ref this.hDongle, sequence);
+			this.LastErrorCode = Dongle_Open(ref this.hDongle, seq);
 			return IsSucc();
 		}
 
@@ -66,7 +64,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			if (!IsSucc() || count <= 0)
 				return null;
 
-			logger.Debug(String.Format("found {0} Dogs !", count));
+			AbstractAuthenKey.logger.Debug(String.Format("found {0} Dogs !", count));
 
 			List<AuthenKeyInfo> keyInfo = new List<AuthenKeyInfo>();
 			IntPtr pDongleInfo = IntPtr.Zero;
@@ -81,30 +79,16 @@ namespace RonftonCard.AuthenKey.RockeyArm
 				{
 					IntPtr ptr = new IntPtr(pDongleInfo.ToInt64() + i * size);
 					DONGLE_INFO dongleInfo = (DONGLE_INFO)Marshal.PtrToStructure(ptr, typeof(DONGLE_INFO));
-
-					AuthenKeyInfo key = new AuthenKeyInfo()
-					{
-						Seq = (short)i,
-						Version = String.Format("v{0}.{1:d2}-({2:x2},{3})",
-								dongleInfo.m_Ver >> 8 & 0xff,
-								dongleInfo.m_Ver & 0xff,
-								dongleInfo.m_Type,
-								BitConverter.ToString(dongleInfo.m_BirthDay)),
-						UserInfo = dongleInfo.m_UserID.ToString("X08"),
-						ProductId = dongleInfo.m_PID.ToString("X08"),
-						KeyId = BitConverter.ToString(dongleInfo.m_HID)
-					};
-					keyInfo.Add(key);
-					logger.Debug(key.ToString());
+					keyInfo.Add( CreateAuthenKeyInfo((short)i, dongleInfo));
 				}
 			}
 			catch (Exception ex)
 			{
-				logger.Error(ex.Message);
+				AbstractAuthenKey.logger.Error(ex.Message);
 			}
 			finally
 			{
-				FreeIntPtr(pDongleInfo);
+				FreeIntPtr(ref pDongleInfo);
 			}
 			return keyInfo.ToArray();
 		}
@@ -112,7 +96,27 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		#endregion
 
 		#region "--- util ---"
-		
+
+		private AuthenKeyInfo CreateAuthenKeyInfo(short seq, DONGLE_INFO dongleInfo)
+		{
+			AuthenKeyInfo keyInfo = new AuthenKeyInfo()
+			{
+				Seq = seq,
+				Version = String.Format("v{0}.{1:d2}-({2:x2},{3})",
+								dongleInfo.m_Ver >> 8 & 0xff,
+								dongleInfo.m_Ver & 0xff,
+								dongleInfo.m_Type,
+								BitConverter.ToString(dongleInfo.m_BirthDay)),
+				UserId = dongleInfo.m_UserID.ToString("X08"),
+				AppId = dongleInfo.m_PID.ToString("X08"),
+				KeyId = BitConverter.ToString(dongleInfo.m_HID)
+			};
+
+			AbstractAuthenKey.logger.Debug(keyInfo.ToString());
+
+			return keyInfo;
+		}
+
 		/// <summary>
 		/// convert lastErrorCode to ErrorMsg key
 		/// </summary>
@@ -121,44 +125,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return String.Format("0x{0:X8}", this.LastErrorCode);
 		}
 
-		/// <summary>
-		/// Create IntPtr by structure
-		/// </summary>
-		private IntPtr CreateIntPtr(Object stru)
-		{
-			try
-			{
-				int size = Marshal.SizeOf(stru.GetType());
-				IntPtr ptr = Marshal.AllocHGlobal(size);
 
-				//should set true, if set false, maybe cause memory leaks
-				Marshal.StructureToPtr(stru, ptr, true);
-				return ptr;
-			}
-			catch (Exception ex)
-			{ }
-			return IntPtr.Zero;
-		}
-
-		/// <summary>
-		/// Create IntPtr with special size
-		/// </summary>
-		private IntPtr CreateIntPtr(int count)
-		{
-			return Marshal.AllocHGlobal(count);
-		}
-
-		/// <summary>
-		/// free IntPtr
-		/// </summary>
-		private void FreeIntPtr(IntPtr ptr)
-		{
-			if (ptr != IntPtr.Zero)
-			{
-				Marshal.FreeHGlobal(ptr);
-				ptr = IntPtr.Zero;
-			}
-		}
 
 		#endregion
 

@@ -24,7 +24,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void MifareTestFrm_Load(object sender, EventArgs e)
 		{
-			CardContextManager.CurrentCardType = CardType.M1;
+			CardContextManager.CurrentCardType = EntityCardType.M1;
 			this.TxtControlBlock.Text = "{1 0 0},{0 1 1}";
 			this.mifareCardBlocks = new List<CheckBox>()
 			{

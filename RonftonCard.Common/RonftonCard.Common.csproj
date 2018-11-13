@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenKey\AbstractAuthenKey.cs" />
+    <Compile Include="AuthenKey\AuthenKeyConst.cs" />
     <Compile Include="AuthenKey\AuthenKeyType.cs" />
     <Compile Include="AuthenKey\IAuthenKey.cs" />
     <Compile Include="AuthenKey\AuthenKeyInfo.cs" />
@@ -58,11 +59,11 @@
     <Compile Include="Config\CardTemplete.cs" />
     <Compile Include="CardContextManager.cs" />
     <Compile Include="MifareVirtualCard.cs" />
-    <Compile Include="DataTypeHelper.cs" />
+    <Compile Include="Util\DataTypeHelper.cs" />
     <Compile Include="Config\CardReaderDescriptor.cs" />
     <Compile Include="Config\TempleteDataDescriptor.cs" />
     <Compile Include="Config\TempleteStorageDescriptor.cs" />
-    <Compile Include="CardType.cs" />
+    <Compile Include="EntityCardType.cs" />
     <Compile Include="CardDataType.cs" />
     <Compile Include="Reader\AbstractCardReader.cs" />
     <Compile Include="Reader\ICardReader.cs" />

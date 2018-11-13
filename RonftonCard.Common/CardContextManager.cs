@@ -79,6 +79,6 @@ namespace RonftonCard.Common
 
 		public static String CurrentReaderDescriptor { get; set; }
 
-		public static CardType CurrentCardType { get; set; }
+		public static EntityCardType CurrentCardType { get; set; }
 	}
 }

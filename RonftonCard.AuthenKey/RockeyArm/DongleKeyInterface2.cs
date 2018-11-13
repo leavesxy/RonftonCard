@@ -9,9 +9,6 @@ namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey
 	{
-
-
-
 		/*************************文件授权结构***********************************/
 		//数据文件授权结构
 		[StructLayout(LayoutKind.Sequential)]

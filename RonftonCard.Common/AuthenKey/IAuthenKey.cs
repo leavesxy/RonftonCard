@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlueMoon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,8 +31,24 @@ namespace RonftonCard.Common.AuthenKey
 		/// </summary>
 		bool Open(int seq = 0);
 
-		bool Create( AuthenKeyType keyType, byte[] inData, out byte[] outData );
+		/// <summary>
+		/// initialize key
+		/// </summary>
+		RetArgs Initialize();
 
-		bool Encrypt(AuthenKeyType keyType, byte[] plain, out byte[] cipher);
+		/// <summary>
+		/// Create user root key
+		/// </summary>
+		RetArgs CreateRootKey();
+
+		/// <summary>
+		/// Create authen key
+		/// </summary>
+		RetArgs CreateAuthenKey();
+
+		/// <summary>
+		/// encrypt plain text use root key or private key
+		/// </summary>
+		bool Encrypt(byte[] plain, out byte[] cipher);
 	}
 }
