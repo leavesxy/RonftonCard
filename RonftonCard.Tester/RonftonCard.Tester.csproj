@@ -34,12 +34,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BlueMoon.Common2.1.0.4, Version=2.1.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BlueMoon.Common2.1.0.4.2.1.0.4\lib\net45\BlueMoon.Common2.1.0.4.dll</HintPath>
+    <Reference Include="Bluemoon.Core-2.2.0.1, Version=2.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bluemoon.Core-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.Core-2.2.0.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BlueMoon.Form2.1.0.1, Version=2.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BlueMoon.Form2.1.0.1.2.1.0.1\lib\net45\BlueMoon.Form2.1.0.1.dll</HintPath>
+    <Reference Include="Bluemoon.WinForm-2.2.0.1, Version=2.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bluemoon.WinForm-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.WinForm-2.2.0.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

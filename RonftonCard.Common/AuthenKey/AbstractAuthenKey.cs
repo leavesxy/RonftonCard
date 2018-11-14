@@ -1,11 +1,8 @@
-﻿using BlueMoon;
-using BlueMoon.Config;
+﻿using Bluemoon;
+using Bluemoon.Config;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Common.AuthenKey
 {
@@ -16,6 +13,8 @@ namespace RonftonCard.Common.AuthenKey
 	{
 		// use log4net logger
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
+
+		protected readonly byte[] seed;
 
 		// SUCC flag
 		protected uint succ;
@@ -34,12 +33,14 @@ namespace RonftonCard.Common.AuthenKey
 			this.defaultAdminPin = defaultAdminPin;
 			this.defaultUserPin = defaultUserPin;
 			this.succ = 0x00000000;
-
+			this.seed = "0123456789abcdef".getB
 			if ( !String.IsNullOrEmpty(errMsgFileName))
-				this.errorMessage = new Properties(errMsgFileName);
+				this.errorMsgProp = new Properties(errMsgFileName);
 		}
 
 		#endregion
+
+		#region "--- implement IAuthenKey ---"
 
 		public bool IsSucc()
 		{
@@ -56,6 +57,18 @@ namespace RonftonCard.Common.AuthenKey
 			}
 		}
 
+		public bool Open(String keyId)
+		{
+			foreach(AuthenKeyInfo key in GetAuthenKeys())
+			{
+				if (key.KeyId.Equals(keyId))
+					return Open(key.Seq);
+			}
+			return false;
+		}
+		#endregion
+
+
 		public String GetAllErrorMessage()
 		{
 			return this.errorMsgProp.ToString();
@@ -65,11 +78,12 @@ namespace RonftonCard.Common.AuthenKey
 
 		public abstract void Close();
 		public abstract bool Open(int seq = 0);
-		public abstract AuthenKeyInfo[] Enumerate();
-
-		public abstract RetArgs Initialize();
-		public abstract RetArgs CreateRootKey();
-		public abstract RetArgs CreateAuthenKey();
+		
+		//public abstract AuthenKeyInfo[] Enumerate();
+		public abstract List<AuthenKeyInfo> GetAuthenKeys();
+		public abstract ResultArgs Initialize();
+		public abstract ResultArgs CreateRootKey();
+		public abstract ResultArgs CreateAuthenKey();
 		public abstract bool Encrypt(byte[] plain, out byte[] cipher);
 		protected abstract String GetErrorMsgKey();
 

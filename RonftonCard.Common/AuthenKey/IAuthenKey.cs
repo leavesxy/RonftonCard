@@ -1,24 +1,27 @@
-﻿using BlueMoon;
+﻿using Bluemoon;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Common.AuthenKey
 {
 	public interface IAuthenKey : IDisposable
 	{
 		/// <summary>
-		/// last error message
+		/// last error code & message
 		/// </summary>
 		String LastErrorMessage { get; }
+		uint LastErrorCode { get; }
 
 		/// <summary>
-		/// enumerate all keys
+		/// last operation is succ or not
+		/// </summary>
+		bool IsSucc();
+
+		/// <summary>
+		/// get all keys
 		/// </summary>
 		/// <returns></returns>
-		AuthenKeyInfo[] Enumerate();
+		List<AuthenKeyInfo> GetAuthenKeys();
 
 
 		/// <summary>
@@ -27,24 +30,43 @@ namespace RonftonCard.Common.AuthenKey
 		void Close();
 
 		/// <summary>
-		/// open device and first is default
+		/// open device in enumerate sequence
 		/// </summary>
 		bool Open(int seq = 0);
 
 		/// <summary>
-		/// initialize key
+		/// open device with specified key id
 		/// </summary>
-		RetArgs Initialize();
+		bool Open(String keyId);
+
+		/// <summary>
+		/// restore current key
+		/// </summary>
+		bool Restore(byte[] pin);
+
 
 		/// <summary>
 		/// Create user root key
 		/// </summary>
-		RetArgs CreateRootKey();
+		ResultArgs CreateUserRootKey(String userId, String appId, byte[] seed, byte[] rootPin);
+
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+		/// <summary>
+		/// initialize key
+		/// </summary>
+		ResultArgs Initialize();
+
+
 
 		/// <summary>
 		/// Create authen key
 		/// </summary>
-		RetArgs CreateAuthenKey();
+		ResultArgs CreateAuthenKey();
 
 		/// <summary>
 		/// encrypt plain text use root key or private key

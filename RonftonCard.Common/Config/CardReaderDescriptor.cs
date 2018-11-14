@@ -1,4 +1,4 @@
-﻿using BlueMoon;
+﻿using Bluemoon;
 using RonftonCard.Common.Reader;
 using System;
 using System.Collections.Generic;

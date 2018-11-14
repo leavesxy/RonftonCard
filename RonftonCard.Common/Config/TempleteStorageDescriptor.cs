@@ -1,5 +1,5 @@
 ﻿using System;
-using BlueMoon;
+using Bluemoon;
 
 namespace RonftonCard.Common.Config
 {

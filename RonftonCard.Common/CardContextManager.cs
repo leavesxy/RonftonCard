@@ -1,13 +1,8 @@
-﻿using BlueMoon.Config;
+﻿using Bluemoon.Config;
 using RonftonCard.Common.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using BlueMoon;
-using RonftonCard.Common.Reader;
 
 namespace RonftonCard.Common
 {

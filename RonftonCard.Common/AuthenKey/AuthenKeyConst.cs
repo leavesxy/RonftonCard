@@ -11,6 +11,7 @@ namespace RonftonCard.Common.AuthenKey
 	/// </summary>
 	public class AuthenKeyConst
 	{
+		// length of RSA
 		public const int RSA_KEY_LEN = 128;
 
 		#region "---descriptor for key file---"
@@ -36,5 +37,6 @@ namespace RonftonCard.Common.AuthenKey
 		public const String DEFAULT_USER_PIN_DONGLE = "12345678";
 
 		#endregion
+
 	}
 }

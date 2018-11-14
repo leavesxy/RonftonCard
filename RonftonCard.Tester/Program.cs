@@ -1,13 +1,9 @@
-﻿using BlueMoon.Form;
-using log4net.Config;
+﻿using Bluemoon.WinForm;
 using RonftonCard.Tester.Forms;
 using RonftonCard.Tester.Resources;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Resources;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RonftonCard.Tester

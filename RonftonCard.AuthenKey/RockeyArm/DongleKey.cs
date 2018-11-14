@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
-using BlueMoon;
+using Bluemoon;
 using System.Runtime.InteropServices;
 using RonftonCard.Common.AuthenKey;
 
@@ -11,6 +11,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 	public partial class DongleKey  : AbstractAuthenKey
 	{
 		private const String errorMsgFile = "ErrorMessage.properties";
+		private List<AuthenKeyInfo> keyInfo;
 
 		// handle for dog
 		private Int64 hDongle;
@@ -19,43 +20,13 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			: base(AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE, errorMsgFile)
 		{
 			this.hDongle = -1;
-		}
-
-		#region "--- implement AbstractAuthenKey ---"
-
-		/// <summary>
-		/// Close device
-		/// </summary>
-		public override void Close()
-		{
-			if( hDongle > 0 )
-			{
-				Dongle_Close(hDongle);
-				this.hDongle = -1;
-			}
-		}
-
-		/// <summary>
-		/// open specified key by seq , and first is default
-		/// </summary>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override bool Open(int seq = 0)
-		{
-			//avoid to re-open again
-			if (this.hDongle > 0)
-			{
-				Close();
-				this.hDongle = -1;
-			}
-
-			this.LastErrorCode = Dongle_Open(ref this.hDongle, seq);
-			return IsSucc();
+			this.keyInfo = Enumerate();
 		}
 
 		/// <summary>
 		/// enumerate all keys
 		/// </summary>
-		public override AuthenKeyInfo[] Enumerate()
+		private List<AuthenKeyInfo> Enumerate()
 		{
 			long count = 0;
 			this.LastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
@@ -71,15 +42,16 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 			try
 			{
-				int size = Marshal.SizeOf(typeof(DONGLE_INFO));
-				pDongleInfo = CreateIntPtr(size * (int)count);
+				int size = IntPtrUtil.SizeOf(typeof(DONGLE_INFO));
+				pDongleInfo = IntPtrUtil.Create(size * (int)count);
 				this.LastErrorCode = Dongle_Enum(pDongleInfo, out count);
 
 				for (int i = 0; i < count; i++)
 				{
-					IntPtr ptr = new IntPtr(pDongleInfo.ToInt64() + i * size);
-					DONGLE_INFO dongleInfo = (DONGLE_INFO)Marshal.PtrToStructure(ptr, typeof(DONGLE_INFO));
-					keyInfo.Add( CreateAuthenKeyInfo((short)i, dongleInfo));
+					IntPtr ptr = IntPtrUtil.Create(pDongleInfo, i * size);
+					//(DONGLE_INFO)Marshal.PtrToStructure(ptr, typeof(DONGLE_INFO));
+					DONGLE_INFO dongleInfo = IntPtrUtil.CreateObject<DONGLE_INFO>(ptr);
+					keyInfo.Add(CreateAuthenKeyInfo((short)i, dongleInfo));
 				}
 			}
 			catch (Exception ex)
@@ -88,14 +60,10 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			}
 			finally
 			{
-				FreeIntPtr(ref pDongleInfo);
+				IntPtrUtil.Free(ref pDongleInfo);
 			}
-			return keyInfo.ToArray();
+			return keyInfo;
 		}
-
-		#endregion
-
-		#region "--- util ---"
 
 		private AuthenKeyInfo CreateAuthenKeyInfo(short seq, DONGLE_INFO dongleInfo)
 		{
@@ -116,31 +84,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 			return keyInfo;
 		}
-
-		/// <summary>
-		/// convert lastErrorCode to ErrorMsg key
-		/// </summary>
-		protected override String GetErrorMsgKey()
-		{
-			return String.Format("0x{0:X8}", this.LastErrorCode);
-		}
-
-
-
-		#endregion
-
-		#region "--- extension function ---"
-		/// <summary>
-		/// restore to origin
-		/// </summary>
-		public bool Restore()
-		{
-			//if (!Authen(AuthenMode.ADMIN, pin))
-			//	return false;
-			this.LastErrorCode = Dongle_RFS(this.hDongle);
-			return IsSucc();
-		}
-
+		
 		public bool Authen(AuthenMode authenMode, byte[] pin)
 		{
 			uint flag = (authenMode == AuthenMode.ADMIN) ? (uint)1 : (uint)0;
@@ -149,6 +93,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 			return IsSucc();
 		}
+
 
 		/// <summary>
 		/// after invoke SUCC,status of key is anonymous
@@ -172,7 +117,6 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return IsSucc();
 		}
 
-		#endregion
 
 		public override bool Create(AuthenKeyType keyType, byte[] inData, out byte[] outData)
 		{
@@ -303,7 +247,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
 
 			// fill zero
-			cipher = ArrayHelper.CopyFrom<byte>(plain, len);
+			cipher = ArrayUtil.CopyFrom<byte>(plain, len);
 
 			this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
 		}

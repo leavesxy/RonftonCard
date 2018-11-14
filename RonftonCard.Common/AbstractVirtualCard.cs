@@ -1,7 +1,7 @@
 ﻿using RonftonCard.Common.Config;
 using System;
 using System.Reflection;
-using BlueMoon;
+using Bluemoon;
 using RonftonCard.Common.Util;
 
 namespace RonftonCard.Common
@@ -38,7 +38,7 @@ namespace RonftonCard.Common
 
 				if (descriptor != null)
 				{
-					byte[] b = ArrayHelper.CopyFrom(DataTypeHelper.ToByte(p.GetValue(entity), descriptor.DataType), descriptor.Length);
+					byte[] b = ArrayUtil.CopyFrom(DataTypeHelper.ToByte(p.GetValue(entity), descriptor.DataType), descriptor.Length);
 					if (b != null)
 					{
 						Write(descriptor.Offset, b);
