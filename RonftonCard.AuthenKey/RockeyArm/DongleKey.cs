@@ -10,19 +10,35 @@ namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey  : AbstractAuthenKey
 	{
-		private const String errorMsgFile = "ErrorMessage.properties";
+		private const String defaultErrMsgFileName = "ErrorMessage.properties";
 		private List<AuthenKeyInfo> keyInfo;
 
 		// handle for dog
 		private Int64 hDongle;
-		
-		public DongleKey()
-			: base(AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE, errorMsgFile)
+
+		#region "--- Constructor ---"
+
+		public DongleKey( byte[] seed )
+			: this( seed, defaultErrMsgFileName )
+		{
+		}
+
+		public DongleKey( byte[] seed, String errMsgFileName )
+			: this(seed, errMsgFileName, AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE, Encoding.UTF8)
+		{
+
+		}
+
+		public DongleKey(byte[] seed, String errMsgFileName, String adminPin, String userPin, Encoding encoding)
+			: base(seed, errMsgFileName, adminPin, userPin, encoding)
 		{
 			this.hDongle = -1;
 			this.keyInfo = Enumerate();
 		}
 
+		#endregion
+
+		#region "--- util ---"
 		/// <summary>
 		/// enumerate all keys
 		/// </summary>
@@ -98,76 +114,57 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// <summary>
 		/// after invoke SUCC,status of key is anonymous
 		/// </summary>
-		public bool Initialize(byte[] seed, out byte[] newAdminPwd, out byte[] pid)
+		public bool Initialize(out byte[] newAdminPwd, out byte[] pid)
 		{
 			pid = new byte[8];
 			newAdminPwd = new byte[16];
 
-			logger.Debug("Initialize Key , seed = " + BitConverter.ToString(seed));
+			logger.Debug("Initialize Key , seed = " + BitConverter.ToString( this.seed) );
 
 			//unique key, requst admin privilege
-			if (!Authen(AuthenMode.ADMIN, Encoding.Default.GetBytes(this.defaultAdminPin)))
+			if (!Authen(AuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.adminPin)))
 				return false;
 
 			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, pid, newAdminPwd);
 
-			logger.Debug("new pid = " + Encoding.ASCII.GetString(pid));
-			logger.Debug("new admin pwd = " + Encoding.ASCII.GetString(newAdminPwd) );
+			logger.Debug("new pid = " + this.encoding.GetString(pid));
+			logger.Debug("new admin pwd = " + this.encoding.GetString(newAdminPwd) );
 
 			return IsSucc();
 		}
 
-
-		public override bool Create(AuthenKeyType keyType, byte[] inData, out byte[] outData)
+		protected bool SetUserID(uint uid)
 		{
-			outData = null;
-
-			switch(keyType)
-			{
-				case AuthenKeyType.COMPANY_SEED:
-					CreateKeyFile(DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, inData);
-					break;
-
-				case AuthenKeyType.USER_ROOT:
-					CreateKeyFile(DongleKey.USER_ROOT_KEY_DESCRIPTOR, inData);
-					break;
-
-				case AuthenKeyType.AUTHEN:
-					CreateAuthenKeyFile(DongleKey.AUTHEN_KEY_DESCRIPTOR, inData, out outData);
-					break;
-
-				default:
-					break;
-			}
-
+			this.LastErrorCode = Dongle_SetUserID(this.hDongle, uid);
 			return IsSucc();
 		}
+
 
 		/// <summary>
-		/// create company seed key file,and seedKey is request 16 bytes at least
+		/// create User root key file,and Key is request 16 bytes at least
 		/// </summary>
-		private bool CreateKeyFile(ushort descriptor, byte[] seedKey)
+		private bool CreateKeyFile(ushort descriptor, byte[] userRootkey)
 		{
 			KEY_FILE_ATTR keyAttr = new KEY_FILE_ATTR();
 			keyAttr.m_Size = 16;
 			keyAttr.m_Lic.m_Priv_Enc = 0;
 
-			IntPtr ptr = CreateIntPtr(keyAttr);
+			IntPtr ptr = IntPtrUtil.CreateByStru(keyAttr);
 			this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_KEY, descriptor, ptr);
-			FreeIntPtr(ptr);
+			IntPtrUtil.Free(ref ptr);
 
 			if (!IsSucc())
 				return false;
 
 			// dongle key require 16 bytes key
-			// fill zero if seedKey is less than 16 bytes
-			byte[] key = ArrayHelper.CopyFrom<byte>(seedKey, 16);
-			logger.Debug(String.Format("Create Key file, descriptor={0}, key={1}", descriptor, BitConverter.ToString(key)));
+			logger.Debug(String.Format("Create Key file, descriptor={0}, key={1}", descriptor, BitConverter.ToString(userRootkey)));
 
-			this.LastErrorCode = Dongle_WriteFile(hDongle, DongleFileType.FILE_KEY, descriptor, 0, key, 16);
+			this.LastErrorCode = Dongle_WriteFile(hDongle, DongleFileType.FILE_KEY, descriptor, 0, userRootkey, 16);
 
 			return IsSucc();
 		}
+
+		#endregion
 
 		/// <summary>
 		/// create RSA private key
@@ -274,11 +271,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 		}
 
-		//public bool SetUserID(uint uid)
-		//{
-		//	this.LastErrCode = Dongle_SetUserID(this.hDongle, uid);
-		//	return this.LastErrCode == DongleKey.SUCC;
-		//}
+
 
 		private void LogRsaKey(RSA_PUBLIC_KEY rsaPub, RSA_PRIVATE_KEY rsaPri)
 		{

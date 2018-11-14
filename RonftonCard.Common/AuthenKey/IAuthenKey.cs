@@ -42,35 +42,25 @@ namespace RonftonCard.Common.AuthenKey
 		/// <summary>
 		/// restore current key
 		/// </summary>
-		bool Restore(byte[] pin);
+		bool Restore(byte[] adminPin);
 
 
 		/// <summary>
 		/// Create user root key
+		/// and must use default admin pin
 		/// </summary>
-		ResultArgs CreateUserRootKey(String userId, String appId, byte[] seed, byte[] rootPin);
-
+		ResultArgs CreateUserRootKey(String userId, String appId);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////
+		///// <summary>
+		///// Create authen key
+		///// </summary>
+		//ResultArgs CreateAuthenKey();
 
-
-
-		/// <summary>
-		/// initialize key
-		/// </summary>
-		ResultArgs Initialize();
-
-
-
-		/// <summary>
-		/// Create authen key
-		/// </summary>
-		ResultArgs CreateAuthenKey();
-
-		/// <summary>
-		/// encrypt plain text use root key or private key
-		/// </summary>
-		bool Encrypt(byte[] plain, out byte[] cipher);
+		///// <summary>
+		///// encrypt plain text use root key or private key
+		///// </summary>
+		//bool Encrypt(byte[] plain, out byte[] cipher);
 	}
 }

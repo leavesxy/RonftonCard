@@ -14,6 +14,8 @@ namespace RonftonCard.Common.AuthenKey
 		// length of RSA
 		public const int RSA_KEY_LEN = 128;
 
+		public const String SEED_KEY = "0123456789abcdef";
+
 		#region "---descriptor for key file---"
 
 		// company seed key file

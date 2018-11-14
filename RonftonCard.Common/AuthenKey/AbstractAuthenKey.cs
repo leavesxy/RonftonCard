@@ -3,6 +3,7 @@ using Bluemoon.Config;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace RonftonCard.Common.AuthenKey
 {
@@ -14,26 +15,32 @@ namespace RonftonCard.Common.AuthenKey
 		// use log4net logger
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
 
+		// default seed
 		protected readonly byte[] seed;
+
+		// default encoding charset
+		protected Encoding encoding;
 
 		// SUCC flag
 		protected uint succ;
 
 		// default password for admin & user
-		protected String defaultAdminPin;
-		protected String defaultUserPin;
+		protected String adminPin;
+		protected String userPin;
 
 		// error message config
 		private Properties errorMsgProp;
 
 		#region "--- constructor ---"
 
-		protected AbstractAuthenKey(String defaultAdminPin, String defaultUserPin, String errMsgFileName)
+		protected AbstractAuthenKey(byte[] seed, String errMsgFileName, String adminPin, String userPin, Encoding encoding)
 		{
-			this.defaultAdminPin = defaultAdminPin;
-			this.defaultUserPin = defaultUserPin;
+			this.adminPin = adminPin;
+			this.userPin = userPin;
 			this.succ = 0x00000000;
-			this.seed = "0123456789abcdef".getB
+			this.encoding = encoding;
+			this.seed = seed;
+			
 			if ( !String.IsNullOrEmpty(errMsgFileName))
 				this.errorMsgProp = new Properties(errMsgFileName);
 		}
@@ -79,12 +86,14 @@ namespace RonftonCard.Common.AuthenKey
 		public abstract void Close();
 		public abstract bool Open(int seq = 0);
 		
-		//public abstract AuthenKeyInfo[] Enumerate();
 		public abstract List<AuthenKeyInfo> GetAuthenKeys();
-		public abstract ResultArgs Initialize();
-		public abstract ResultArgs CreateRootKey();
-		public abstract ResultArgs CreateAuthenKey();
-		public abstract bool Encrypt(byte[] plain, out byte[] cipher);
+		public abstract bool Restore(byte[] adminPin);
+
+		public abstract ResultArgs CreateUserRootKey(String userId, String appId);
+
+		//public abstract ResultArgs CreateAuthenKey();
+		//public abstract bool Encrypt(byte[] plain, out byte[] cipher);
+
 		protected abstract String GetErrorMsgKey();
 
 		#endregion

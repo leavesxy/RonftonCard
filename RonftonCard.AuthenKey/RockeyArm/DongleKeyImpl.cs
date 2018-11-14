@@ -1,10 +1,7 @@
 ﻿using Bluemoon;
+using RonftonCard.Common.AuthenKey;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.AuthenKey.RockeyArm
 {
@@ -48,12 +45,13 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		}
 
 		/// <summary>
-		/// restore current key
+		/// restore current key, should use admin pin
 		/// </summary>
-		public bool Restore()
+		public override bool Restore(byte[] adminPin)
 		{
-			//if (!Authen(AuthenMode.ADMIN, pin))
-			//	return false;
+			if (!Authen(AuthenMode.ADMIN, adminPin))
+				return false;
+
 			this.LastErrorCode = Dongle_RFS(this.hDongle);
 			return IsSucc();
 		}
@@ -62,7 +60,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// <summary>
 		/// Create user root key
 		/// </summary>
-		public ResultArgs CreateUserRootKey(String userId, String appId, byte[] seed, byte[] rootPin)
+		public override ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey)
 		{
 			/*
 			1、唯一化(seed)
@@ -72,7 +70,31 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			5、修改APP_ID(*)
 			6、修改USER_ID(*)
 			*/
+			byte[] newAdminPin, newAppId;
 
+			if (!Initialize(out newAdminPin, out newAppId))
+				return new ResultArgs(false);
+
+			if (!Authen(AuthenMode.ADMIN, newAdminPin))
+				return new ResultArgs(false);
+
+			if (userId.Length % 2 != 0)
+				userId = "0" + userId;
+
+			// HexString ---> to uint ...
+			// set user id
+
+			// update admin pin
+
+			//CreateKeyFile(AuthenKeyConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey);
+			return new ResultArgs(true)
+			{
+				Result = new UserRootKeyResponse
+				{
+					NewAdminPin = encoding.GetString(newAdminPin),
+					AppId = encoding.GetString(newAppId)
+				}
+			};
 		}
 	}
 }
