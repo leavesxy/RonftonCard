@@ -37,19 +37,19 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnRsaPubDecrypt_Click(object sender, EventArgs e)
 		{
-			byte[] pubKey = Convert.FromBase64String(this.TxtRsaPubKey.Text.Trim());
-			byte[] plain = Convert.FromBase64String(this.TxtPlain.Text.Trim());
-			byte[] cipher;
+			//byte[] pubKey = Convert.FromBase64String(this.TxtRsaPubKey.Text.Trim());
+			//byte[] plain = Convert.FromBase64String(this.TxtPlain.Text.Trim());
+			//byte[] cipher;
 
-			this.key.RsaPubDecrypt(pubKey, plain, out cipher);
-			if (this.key.IsSucc())
-			{
-				this.TxtDbg.Trace("Decrypt OK!", true);
-				this.TxtDbg.Trace("cipher = " + BitConverter.ToString(cipher));
-				this.TxtDbg.Trace("       = " + Encoding.Default.GetString(cipher));
-			}
-			else
-				this.TxtDbg.Trace("Decrypt error!" + this.key.LastErrorMessage );
+			//this.key.RsaPubDecrypt(pubKey, plain, out cipher);
+			//if (this.key.IsSucc())
+			//{
+			//	this.TxtDbg.Trace("Decrypt OK!", true);
+			//	this.TxtDbg.Trace("cipher = " + BitConverter.ToString(cipher));
+			//	this.TxtDbg.Trace("       = " + Encoding.Default.GetString(cipher));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Decrypt error!" + this.key.LastErrorMessage );
 		}
 	}
 }

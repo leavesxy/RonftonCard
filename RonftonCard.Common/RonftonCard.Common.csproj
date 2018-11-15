@@ -57,8 +57,9 @@
     <Compile Include="AuthenKey\AuthenMode.cs" />
     <Compile Include="AuthenKey\UserRootKeyResponse.cs" />
     <Compile Include="CardContext.cs" />
+    <Compile Include="Config\AuthenKeyDescriptor.cs" />
     <Compile Include="Config\CardTemplete.cs" />
-    <Compile Include="CardContextManager.cs" />
+    <Compile Include="ContextManager.cs" />
     <Compile Include="MifareVirtualCard.cs" />
     <Compile Include="Util\DataTypeHelper.cs" />
     <Compile Include="Config\CardReaderDescriptor.cs" />

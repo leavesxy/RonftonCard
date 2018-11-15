@@ -171,10 +171,8 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		static extern uint Dongle_GetUTCTime(Int64 hDongle, ref uint pdwUTCTime);
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_SetDeadline(Int64 hDongle, uint dwTime);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_GenUniqueKey(Int64 hDongle, int nSeedLen, byte[] pSeed, byte[] pPIDstr, byte[] pAdminPINstr);
-		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_ResetState(Int64 hDongle);
+
+
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_ChangePIN(Int64 hDongle, uint nFlags, byte[] pOldPIN, byte[] pNewPIN, int nTryCount);
 

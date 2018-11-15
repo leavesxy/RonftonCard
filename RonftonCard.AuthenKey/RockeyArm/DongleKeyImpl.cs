@@ -1,6 +1,7 @@
 ﻿using Bluemoon;
 using RonftonCard.Common.AuthenKey;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace RonftonCard.AuthenKey.RockeyArm
@@ -55,6 +56,13 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			this.LastErrorCode = Dongle_RFS(this.hDongle);
 			return IsSucc();
 		}
+
+		public override bool Reset()
+		{
+			this.LastErrorCode = Dongle_ResetState(this.hDongle);
+			return IsSucc();
+		}
+
 		#endregion
 
 		/// <summary>
@@ -62,31 +70,27 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// </summary>
 		public override ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey)
 		{
-			/*
-			1、唯一化(seed)
-			2、创建用户文件
-			3、创建用户根密钥文件
-			4、写入用户根密钥(*)
-			5、修改APP_ID(*)
-			6、修改USER_ID(*)
-			*/
 			byte[] newAdminPin, newAppId;
+			ResultArgs ret = new ResultArgs(false);
 
+			// unique key
 			if (!Initialize(out newAdminPin, out newAppId))
-				return new ResultArgs(false);
+				return ret;
 
+			// re-authen
 			if (!Authen(AuthenMode.ADMIN, newAdminPin))
-				return new ResultArgs(false);
+				return ret;
 
-			if (userId.Length % 2 != 0)
-				userId = "0" + userId;
+			// set user_id
+			// 10009 => 0x 00 01 00 09
+			if (!SetUserID(ToUint32(appId)))
+				return ret;
 
-			// HexString ---> to uint ...
-			// set user id
+			// update admin pin??
 
-			// update admin pin
+			if(!CreateKeyFile(AuthenKeyConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey) )
+				return ret;
 
-			//CreateKeyFile(AuthenKeyConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey);
 			return new ResultArgs(true)
 			{
 				Result = new UserRootKeyResponse
@@ -95,6 +99,11 @@ namespace RonftonCard.AuthenKey.RockeyArm
 					AppId = encoding.GetString(newAppId)
 				}
 			};
+		}
+
+		public override List<AuthenKeyInfo> GetAuthenKeys()
+		{
+			return this.keyInfo;
 		}
 	}
 }

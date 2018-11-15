@@ -39,6 +39,17 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_RFS(Int64 hDongle);
 
+		/// <summary>
+		/// reset status as anonymous
+		/// </summary>
+		[DllImport(@"Plugin\Dongle_d.dll")]
+		static extern uint Dongle_ResetState(Int64 hDongle);
+
+		/// <summary>
+		/// unique key, reset app_id
+		/// </summary>
+		[DllImport(@"Plugin\Dongle_d.dll")]
+		static extern uint Dongle_GenUniqueKey(Int64 hDongle, int seedLen, byte[] seed, byte[] appId, byte[] newAdminPin);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_CreateFile(Int64 hDongle, uint fileType, ushort descriptor, IntPtr pFileAttr);

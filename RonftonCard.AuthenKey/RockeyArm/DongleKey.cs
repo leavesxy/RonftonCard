@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Bluemoon;
-using System.Runtime.InteropServices;
 using RonftonCard.Common.AuthenKey;
 
 namespace RonftonCard.AuthenKey.RockeyArm
 {
 	public partial class DongleKey  : AbstractAuthenKey
 	{
-		private const String defaultErrMsgFileName = "ErrorMessage.properties";
+		private const String defaultErrMsgFileName = "AuthenKeyErrorMessage.properties";
 		private List<AuthenKeyInfo> keyInfo;
 
 		// handle for dog
@@ -18,19 +16,30 @@ namespace RonftonCard.AuthenKey.RockeyArm
 
 		#region "--- Constructor ---"
 
-		public DongleKey( byte[] seed )
-			: this( seed, defaultErrMsgFileName )
+		public DongleKey()
+			: this( Encoding.UTF8 )
 		{
 		}
 
-		public DongleKey( byte[] seed, String errMsgFileName )
-			: this(seed, errMsgFileName, AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE, Encoding.UTF8)
+		public DongleKey(Encoding encoding)
+			: this(encoding, encoding.GetBytes(AuthenKeyConst.SEED_KEY))
 		{
 
 		}
 
-		public DongleKey(byte[] seed, String errMsgFileName, String adminPin, String userPin, Encoding encoding)
-			: base(seed, errMsgFileName, adminPin, userPin, encoding)
+		public DongleKey(Encoding encoding, byte[] seed )
+			: this( encoding, seed, defaultErrMsgFileName )
+		{
+		}
+
+		public DongleKey(Encoding encoding, byte[] seed, String errMsgFileName )
+			: this(encoding, seed, errMsgFileName, AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE, AuthenKeyConst.DEFAULT_USER_PIN_DONGLE)
+		{
+
+		}
+
+		public DongleKey(Encoding encoding, byte[] seed, String errMsgFileName, String adminPin, String userPin)
+			: base(encoding, seed, errMsgFileName, adminPin, userPin)
 		{
 			this.hDongle = -1;
 			this.keyInfo = Enumerate();
@@ -67,7 +76,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 					IntPtr ptr = IntPtrUtil.Create(pDongleInfo, i * size);
 					//(DONGLE_INFO)Marshal.PtrToStructure(ptr, typeof(DONGLE_INFO));
 					DONGLE_INFO dongleInfo = IntPtrUtil.CreateObject<DONGLE_INFO>(ptr);
-					keyInfo.Add(CreateAuthenKeyInfo((short)i, dongleInfo));
+					keyInfo.Add(ParseAuthenKeyInfo((short)i, dongleInfo));
 				}
 			}
 			catch (Exception ex)
@@ -81,7 +90,7 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return keyInfo;
 		}
 
-		private AuthenKeyInfo CreateAuthenKeyInfo(short seq, DONGLE_INFO dongleInfo)
+		private AuthenKeyInfo ParseAuthenKeyInfo(short seq, DONGLE_INFO dongleInfo)
 		{
 			AuthenKeyInfo keyInfo = new AuthenKeyInfo()
 			{
@@ -114,9 +123,9 @@ namespace RonftonCard.AuthenKey.RockeyArm
 		/// <summary>
 		/// after invoke SUCC,status of key is anonymous
 		/// </summary>
-		public bool Initialize(out byte[] newAdminPwd, out byte[] pid)
+		public bool Initialize(out byte[] newAdminPwd, out byte[] appId)
 		{
-			pid = new byte[8];
+			appId = new byte[8];
 			newAdminPwd = new byte[16];
 
 			logger.Debug("Initialize Key , seed = " + BitConverter.ToString( this.seed) );
@@ -125,9 +134,9 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			if (!Authen(AuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.adminPin)))
 				return false;
 
-			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, pid, newAdminPwd);
+			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
 
-			logger.Debug("new pid = " + this.encoding.GetString(pid));
+			logger.Debug("new pid = " + this.encoding.GetString(appId));
 			logger.Debug("new admin pwd = " + this.encoding.GetString(newAdminPwd) );
 
 			return IsSucc();
@@ -164,138 +173,153 @@ namespace RonftonCard.AuthenKey.RockeyArm
 			return IsSucc();
 		}
 
+		/// <summary>
+		/// convert String to int,default base 16
+		/// </summary>
+		private uint ToUint32(String str, int fromBase = 16)
+		{
+			uint v = 0;
+
+			try
+			{
+				v = Convert.ToUInt32(str, fromBase);
+			}
+			catch (Exception)
+			{
+			}
+			return v;
+		}
 		#endregion
 
 		/// <summary>
 		/// create RSA private key
 		/// </summary>
-		private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
-		{
-			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
+		//private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
+		//{
+		//	PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
 
-			priAttr.m_Size = RSA_KEY_LEN * 8;
-			priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
-			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
-			priAttr.m_Lic.m_IsDecOnRAM = 0;
-			priAttr.m_Lic.m_IsReset = 0;
-			priAttr.m_Lic.m_Priv = 0;
-			return priAttr;
-		}
+		//	priAttr.m_Size = RSA_KEY_LEN * 8;
+		//	priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
+		//	priAttr.m_Lic.m_Count = 0xFFFFFFFF;
+		//	priAttr.m_Lic.m_IsDecOnRAM = 0;
+		//	priAttr.m_Lic.m_IsReset = 0;
+		//	priAttr.m_Lic.m_Priv = 0;
+		//	return priAttr;
+		//}
 
-		public bool CreateAuthenKeyFile(ushort descriptor, byte[] inData, out byte[] outData)
-		{
-			PRIKEY_FILE_ATTR priAttr = CreatePrikeyFileAttr();
-			IntPtr ptr = CreateIntPtr(priAttr);
+		//public bool CreateAuthenKeyFile(ushort descriptor, byte[] inData, out byte[] outData)
+		//{
+		//	PRIKEY_FILE_ATTR priAttr = CreatePrikeyFileAttr();
+		//	IntPtr ptr = CreateIntPtr(priAttr);
 
-			try
-			{
-				this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_PRIKEY_RSA, descriptor,  ptr);
-			}
-			finally
-			{
-				FreeIntPtr(ptr);
-			}
+		//	try
+		//	{
+		//		this.LastErrorCode = Dongle_CreateFile(hDongle, DongleFileType.FILE_PRIKEY_RSA, descriptor,  ptr);
+		//	}
+		//	finally
+		//	{
+		//		FreeIntPtr(ptr);
+		//	}
 
-			IntPtr pRsaPub = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PUBLIC_KEY)) );
-			IntPtr pRsaPri = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PRIVATE_KEY)));
+		//	IntPtr pRsaPub = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PUBLIC_KEY)) );
+		//	IntPtr pRsaPri = CreateIntPtr(Marshal.SizeOf(typeof(RSA_PRIVATE_KEY)));
 
-			//this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
-			this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, pRsaPub, pRsaPri);
+		//	//this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, ref rsaPub, ref rsaPri);
+		//	this.LastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleKey.AUTHEN_KEY_DESCRIPTOR, pRsaPub, pRsaPri);
 
-			RSA_PUBLIC_KEY rsaPub = (RSA_PUBLIC_KEY)Marshal.PtrToStructure(pRsaPub, typeof(RSA_PUBLIC_KEY));
-			RSA_PRIVATE_KEY rsaPri = (RSA_PRIVATE_KEY)Marshal.PtrToStructure(pRsaPri, typeof(RSA_PRIVATE_KEY));
+		//	RSA_PUBLIC_KEY rsaPub = (RSA_PUBLIC_KEY)Marshal.PtrToStructure(pRsaPub, typeof(RSA_PUBLIC_KEY));
+		//	RSA_PRIVATE_KEY rsaPri = (RSA_PRIVATE_KEY)Marshal.PtrToStructure(pRsaPri, typeof(RSA_PRIVATE_KEY));
 
-			FreeIntPtr(pRsaPub);
-			FreeIntPtr(pRsaPri);
+		//	FreeIntPtr(pRsaPub);
+		//	FreeIntPtr(pRsaPri);
 
-			LogRsaKey(rsaPub, rsaPri);
-			outData = rsaPub.exponent;
+		//	LogRsaKey(rsaPub, rsaPri);
+		//	outData = rsaPub.exponent;
 
-			return IsSucc();
-		}
+		//	return IsSucc();
+		//}
 
-		public override bool Encrypt(AuthenKeyType keyType, byte[]plain, out byte[] cipher)
-		{
-			cipher = null;
+		//public override bool Encrypt(AuthenKeyType keyType, byte[]plain, out byte[] cipher)
+		//{
+		//	cipher = null;
 
-			switch (keyType)
-			{
-				case AuthenKeyType.COMPANY_SEED:
-					TDesEncrypt(DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, plain, out cipher);
-					break;
+		//	switch (keyType)
+		//	{
+		//		case AuthenKeyType.COMPANY_SEED:
+		//			TDesEncrypt(DongleKey.COMPANY_SEED_KEY_DESCRIPTOR, plain, out cipher);
+		//			break;
 
-				case AuthenKeyType.USER_ROOT:
-					TDesEncrypt(DongleKey.USER_ROOT_KEY_DESCRIPTOR, plain, out cipher);
-					break;
+		//		case AuthenKeyType.USER_ROOT:
+		//			TDesEncrypt(DongleKey.USER_ROOT_KEY_DESCRIPTOR, plain, out cipher);
+		//			break;
 
-				case AuthenKeyType.AUTHEN:
-					RsaPriEncrypt(DongleKey.AUTHEN_KEY_DESCRIPTOR, plain, out cipher);
-					break;
+		//		case AuthenKeyType.AUTHEN:
+		//			RsaPriEncrypt(DongleKey.AUTHEN_KEY_DESCRIPTOR, plain, out cipher);
+		//			break;
 
-				default:
-					break;
-			}
+		//		default:
+		//			break;
+		//	}
 
-			return IsSucc();
-		}
+		//	return IsSucc();
+		//}
 
-		private void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
-		{
-			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
+		//private void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
+		//{
+		//	int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
 
-			// fill zero
-			cipher = ArrayUtil.CopyFrom<byte>(plain, len);
+		//	// fill zero
+		//	cipher = ArrayUtil.CopyFrom<byte>(plain, len);
 
-			this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
-		}
+		//	this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
+		//}
 
-		private void RsaPriEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
-		{
-			uint nOutDataLen = RSA_KEY_LEN;
-			cipher = new byte[nOutDataLen];
-			this.LastErrorCode = Dongle_RsaPri(this.hDongle, descriptor, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
-		}
+		//private void RsaPriEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
+		//{
+		//	uint nOutDataLen = RSA_KEY_LEN;
+		//	cipher = new byte[nOutDataLen];
+		//	this.LastErrorCode = Dongle_RsaPri(this.hDongle, descriptor, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+		//}
 
-		public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
-		{
-			uint nOutDataLen = RSA_KEY_LEN;
-			cipher = new byte[nOutDataLen];
+		//public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
+		//{
+		//	uint nOutDataLen = RSA_KEY_LEN;
+		//	cipher = new byte[nOutDataLen];
 
-			RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
+		//	RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
 
-			rsaPub.bits = RSA_KEY_LEN * 8 ;
-			rsaPub.modulus = 65537;
-			rsaPub.exponent = new byte[256];
-			Array.Copy(pubKey, rsaPub.exponent, RSA_KEY_LEN);
+		//	rsaPub.bits = RSA_KEY_LEN * 8 ;
+		//	rsaPub.modulus = 65537;
+		//	rsaPub.exponent = new byte[256];
+		//	Array.Copy(pubKey, rsaPub.exponent, RSA_KEY_LEN);
 
-			this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
-		}
-
-
-
-		private void LogRsaKey(RSA_PUBLIC_KEY rsaPub, RSA_PRIVATE_KEY rsaPri)
-		{
-			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}", rsaPri.bits, rsaPri.modulus));
-			logger.Debug("RSA-PRI : " + Convert.ToBase64String(rsaPri.exponent));
-			logger.Debug("    128 : " + Convert.ToBase64String(rsaPri.exponent, 0, RSA_KEY_LEN));
-			logger.Debug("   -PUB : " + Convert.ToBase64String(rsaPri.publicExponent));
-			logger.Debug("   -128 : " + Convert.ToBase64String(rsaPri.publicExponent, 0, RSA_KEY_LEN));
+		//	this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+		//}
 
 
-			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", rsaPub.bits, rsaPub.modulus));
-			logger.Debug("RSA-PUB : " + Convert.ToBase64String(rsaPub.exponent, 0, RSA_KEY_LEN));
-			logger.Debug("     (*): " + HexString.ToHexString(rsaPub.exponent));
-		}
+		//private void LogRsaKey(RSA_PUBLIC_KEY rsaPub, RSA_PRIVATE_KEY rsaPri)
+		//{
+		//	logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}", rsaPri.bits, rsaPri.modulus));
+		//	logger.Debug("RSA-PRI : " + Convert.ToBase64String(rsaPri.exponent));
+		//	logger.Debug("    128 : " + Convert.ToBase64String(rsaPri.exponent, 0, RSA_KEY_LEN));
+		//	logger.Debug("   -PUB : " + Convert.ToBase64String(rsaPri.publicExponent));
+		//	logger.Debug("   -128 : " + Convert.ToBase64String(rsaPri.publicExponent, 0, RSA_KEY_LEN));
 
-		private byte[] StructToBytes(object structObj)
-		{
-			int size = Marshal.SizeOf(structObj);
-			byte[] _bytes = new byte[size];
-			IntPtr structPtr = Marshal.AllocHGlobal(size);
-			Marshal.StructureToPtr(structObj, structPtr, false);
-			Marshal.Copy(structPtr, _bytes, 0, size);
-			Marshal.FreeHGlobal(structPtr);
-			return _bytes;
-		}
+
+		//	logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", rsaPub.bits, rsaPub.modulus));
+		//	logger.Debug("RSA-PUB : " + Convert.ToBase64String(rsaPub.exponent, 0, RSA_KEY_LEN));
+		//	logger.Debug("     (*): " + HexString.ToHexString(rsaPub.exponent));
+		//}
+
+		//private byte[] StructToBytes(object structObj)
+		//{
+		//	int size = Marshal.SizeOf(structObj);
+		//	byte[] _bytes = new byte[size];
+		//	IntPtr structPtr = Marshal.AllocHGlobal(size);
+		//	Marshal.StructureToPtr(structObj, structPtr, false);
+		//	Marshal.Copy(structPtr, _bytes, 0, size);
+		//	Marshal.FreeHGlobal(structPtr);
+		//	return _bytes;
+		//}
 	}
 }

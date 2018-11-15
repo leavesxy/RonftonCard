@@ -44,13 +44,16 @@ namespace RonftonCard.Common.AuthenKey
 		/// </summary>
 		bool Restore(byte[] adminPin);
 
+		/// <summary>
+		/// set status as anonymous
+		/// </summary>
+		bool Reset();
 
 		/// <summary>
 		/// Create user root key
 		/// and must use default admin pin
 		/// </summary>
-		ResultArgs CreateUserRootKey(String userId, String appId);
-
+		ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey);
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		///// <summary>

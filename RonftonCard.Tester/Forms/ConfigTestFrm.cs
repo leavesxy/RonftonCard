@@ -27,7 +27,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnDbgCardTemplete_Click(object sender, EventArgs e)
 		{
-			CardContext ctx = CardContextManager.CreateContext();
+			CardContext ctx = ContextManager.CreateContext();
 			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgTempleteDataDescriptor(), true);
 			this.TxtDbg.Trace(ctx.ConfigTemplete.DbgTempleteStorageDescriptor());
 		}
@@ -42,7 +42,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnWriteVirtualCard_Click(object sender, EventArgs e)
 		{
-			CardContext ctx = CardContextManager.CreateContext();
+			CardContext ctx = ContextManager.CreateContext();
 
 			AbstractVirtualCard vc = new MifareVirtualCard(ctx);
 			CardEntity entity = CardEntity.CreateTestEntity();
@@ -52,7 +52,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnReaderInit_Click(object sender, EventArgs e)
 		{
-			CardContext ctx = CardContextManager.CreateContext();
+			CardContext ctx = ContextManager.CreateContext();
 			this.TxtDbg.Trace(ctx.ReaderDescriptor.ToString(),true);
 
 			using (ICardReader reader = ctx.GetCardReader())

@@ -2,13 +2,10 @@
 using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
-using BlueMoon.Form;
 using RonftonCard.Common;
-using RonftonCard.Tester.Entity;
-using RonftonCard.Common.Reader;
-using System.Reflection;
-using BlueMoon;
+
 using System.Collections.Generic;
+using Bluemoon.WinForm;
 
 namespace RonftonCard.Tester.Forms
 {
@@ -37,8 +34,8 @@ namespace RonftonCard.Tester.Forms
 
 			try
 			{
-				CardContextManager.LoadCardConfigTemplete("CardTemplete.xml");
-				CardContextManager.LoadCardReaderConfiguration("CardReader.xml");
+				ContextManager.LoadCardConfigTemplete("CardTemplete.xml");
+				ContextManager.LoadCardReaderConfiguration("CardReader.xml");
 			}
 			catch (Exception ex)
 			{
@@ -46,10 +43,10 @@ namespace RonftonCard.Tester.Forms
 				return;
 			}
 
-			this.CbCardTemplete.Items.AddRange(CardContextManager.TempleteNames);
+			this.CbCardTemplete.Items.AddRange(ContextManager.TempleteNames);
 			this.CbCardTemplete.SelectedIndex = 0;
 
-			this.CbCardReader.Items.AddRange(CardContextManager.CardReaderNames);
+			this.CbCardReader.Items.AddRange(ContextManager.CardReaderNames);
 			this.CbCardReader.SelectedIndex = 0;
 
 			InitTabPage();
@@ -92,12 +89,12 @@ namespace RonftonCard.Tester.Forms
 
 		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			CardContextManager.CurrentTempleteName = CbCardTemplete.SelectedItem as String;
+			ContextManager.CurrentTempleteName = CbCardTemplete.SelectedItem as String;
 		}
 
 		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			CardContextManager.CurrentReaderDescriptor = CbCardReader.SelectedItem as String;
+			ContextManager.CurrentReaderDescriptor = CbCardReader.SelectedItem as String;
 		}
 
 		private void TabMainControl_SelectedIndexChanged(object sender, EventArgs e)

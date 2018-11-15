@@ -33,16 +33,18 @@ namespace RonftonCard.Common.AuthenKey
 
 		#region "--- constructor ---"
 
-		protected AbstractAuthenKey(byte[] seed, String errMsgFileName, String adminPin, String userPin, Encoding encoding)
+		protected AbstractAuthenKey(Encoding encoding, byte[] seed, String errMsgFileName, String adminPin, String userPin)
 		{
-			this.adminPin = adminPin;
-			this.userPin = userPin;
-			this.succ = 0x00000000;
 			this.encoding = encoding;
 			this.seed = seed;
-			
-			if ( !String.IsNullOrEmpty(errMsgFileName))
+
+			if (!String.IsNullOrEmpty(errMsgFileName))
 				this.errorMsgProp = new Properties(errMsgFileName);
+
+			this.adminPin = String.IsNullOrEmpty(adminPin) ? AuthenKeyConst.DEFAULT_ADMIN_PIN_DONGLE : adminPin;
+			this.userPin = String.IsNullOrEmpty(userPin) ? AuthenKeyConst.DEFAULT_USER_PIN_DONGLE : userPin;
+
+			this.succ = 0x00000000;
 		}
 
 		#endregion
@@ -85,11 +87,12 @@ namespace RonftonCard.Common.AuthenKey
 
 		public abstract void Close();
 		public abstract bool Open(int seq = 0);
-		
+		public abstract bool Reset();
+
 		public abstract List<AuthenKeyInfo> GetAuthenKeys();
 		public abstract bool Restore(byte[] adminPin);
 
-		public abstract ResultArgs CreateUserRootKey(String userId, String appId);
+		public abstract ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey);
 
 		//public abstract ResultArgs CreateAuthenKey();
 		//public abstract bool Encrypt(byte[] plain, out byte[] cipher);

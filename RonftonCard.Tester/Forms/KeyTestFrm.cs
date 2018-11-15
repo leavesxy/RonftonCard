@@ -1,4 +1,5 @@
-﻿using BlueMoon;
+﻿using Bluemoon;
+using Bluemoon.Converter;
 using log4net;
 using RonftonCard.AuthenKey.RockeyArm;
 using RonftonCard.Common.AuthenKey;
@@ -43,7 +44,7 @@ namespace RonftonCard.Tester.Forms
 			Action action = delegate()
 			{
 				this.CbCurrentKey.Items.Clear();
-				keyInfo = key.Enumerate();
+				keyInfo = key.GetAuthenKeys().ToArray();
 				if (!keyInfo.IsNullOrEmpty())
 				{
 					Array.ForEach(keyInfo,
@@ -95,22 +96,22 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnUniqueKey_Click(object sender, EventArgs e)
 		{
-			byte[] seed = StringConverterManager.ConvertTo<byte[]>(this.TxtSeed.Text.Trim());
-			byte[] pid;
-			byte[] newAdminPwd;
+			//byte[] seed = StringConverterManager.ConvertTo<byte[]>(this.TxtSeed.Text.Trim());
+			//byte[] pid;
+			//byte[] newAdminPwd;
 
-			this.TxtDbg.Trace("UniqueKey with key " + BitConverter.ToString(adminPwd), true);
-			if (key.Initialize(seed, out newAdminPwd, out pid))
-			{
-				this.TxtDbg.Trace("UniqueKey OK !");
-				this.TxtDbg.Trace("seed : " + BitConverter.ToString(seed));
-				this.TxtDbg.Trace("new admin pwd : " + BitConverter.ToString(newAdminPwd));
-				this.TxtDbg.Trace("  --- " + Encoding.ASCII.GetString(newAdminPwd));
-				this.TxtDbg.Trace("pid : " + BitConverter.ToString(pid));
-				this.TxtDbg.Trace("  --- " + Encoding.ASCII.GetString(pid));
-			}
-			else
-				this.TxtDbg.Trace("UniqueKey Failed !");
+			//this.TxtDbg.Trace("UniqueKey with key " + BitConverter.ToString(adminPwd), true);
+			//if (key.Initialize(seed, out newAdminPwd, out pid))
+			//{
+			//	this.TxtDbg.Trace("UniqueKey OK !");
+			//	this.TxtDbg.Trace("seed : " + BitConverter.ToString(seed));
+			//	this.TxtDbg.Trace("new admin pwd : " + BitConverter.ToString(newAdminPwd));
+			//	this.TxtDbg.Trace("  --- " + Encoding.ASCII.GetString(newAdminPwd));
+			//	this.TxtDbg.Trace("pid : " + BitConverter.ToString(pid));
+			//	this.TxtDbg.Trace("  --- " + Encoding.ASCII.GetString(pid));
+			//}
+			//else
+			//	this.TxtDbg.Trace("UniqueKey Failed !");
 		}
 
 		private void BtnAdminAuthen_Click(object sender, EventArgs e)
@@ -137,76 +138,76 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnCreateCompanySeed_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("Create Company seed key ...", true);
+			//this.TxtDbg.Trace("Create Company seed key ...", true);
 
-			byte[] compKey = Encoding.Default.GetBytes(this.TxtTdesKey.Text.Trim());
-			byte[] outData;
+			//byte[] compKey = Encoding.Default.GetBytes(this.TxtTdesKey.Text.Trim());
+			//byte[] outData;
 
-			if( this.key.Create( AuthenKeyType.COMPANY_SEED, compKey, out outData) )
-			{
-				this.TxtDbg.Trace("Create Company seed key OK! " + BitConverter.ToString(compKey));
-			}
-			else
-				this.TxtDbg.Trace("Create 3Des Key failed!" + this.key.LastErrorMessage);
+			//if( this.key.Create( AuthenKeyType.COMPANY_SEED, compKey, out outData) )
+			//{
+			//	this.TxtDbg.Trace("Create Company seed key OK! " + BitConverter.ToString(compKey));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Create 3Des Key failed!" + this.key.LastErrorMessage);
 		}
 
 		private void BtnCreateUserRootKey_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("Create Company seed key ...", true);
+			//this.TxtDbg.Trace("Create Company seed key ...", true);
 
-			// to test, use reverse of company
-			char[] ch = this.TxtTdesKey.Text.Trim().ToCharArray();
-			Array.Reverse(ch);
-			String keyString = new String(ch);
+			//// to test, use reverse of company
+			//char[] ch = this.TxtTdesKey.Text.Trim().ToCharArray();
+			//Array.Reverse(ch);
+			//String keyString = new String(ch);
 
-			byte[] userKey = Encoding.Default.GetBytes(keyString);
-			byte[] outData;
+			//byte[] userKey = Encoding.Default.GetBytes(keyString);
+			//byte[] outData;
 
-			if (this.key.Create(AuthenKeyType.USER_ROOT, userKey, out outData))
-			{
-				this.TxtDbg.Trace("Create User key OK! " + BitConverter.ToString(userKey));
-			}
-			else
-				this.TxtDbg.Trace("Create User Key failed!" + this.key.LastErrorMessage);
+			//if (this.key.Create(AuthenKeyType.USER_ROOT, userKey, out outData))
+			//{
+			//	this.TxtDbg.Trace("Create User key OK! " + BitConverter.ToString(userKey));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Create User Key failed!" + this.key.LastErrorMessage);
 		}
 
 		private void BtnEncryptByCompanySeed_Click(object sender, EventArgs e)
 		{
-			byte[] cipher;
-			this.TxtDbg.Trace("Encrypt By Company seed ...", true);
-			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
-			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
+			//byte[] cipher;
+			//this.TxtDbg.Trace("Encrypt By Company seed ...", true);
+			//this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			//byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
 
-			if (this.key.Encrypt( AuthenKeyType.COMPANY_SEED, plain, out cipher))
-			{
-				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" ,cipher.Length, BitConverter.ToString(cipher)));
-			}
-			else
-				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
+			//if (this.key.Encrypt( AuthenKeyType.COMPANY_SEED, plain, out cipher))
+			//{
+			//	this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" ,cipher.Length, BitConverter.ToString(cipher)));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
 		}
 
 		private void BtnEncryptByUserRoot_Click(object sender, EventArgs e)
 		{
-			byte[] cipher;
-			this.TxtDbg.Trace("Encrypt By User root ...", true);
-			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
-			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
+			//byte[] cipher;
+			//this.TxtDbg.Trace("Encrypt By User root ...", true);
+			//this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			//byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
 
-			if (this.key.Encrypt(AuthenKeyType.USER_ROOT, plain, out cipher))
-			{
-				this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" + cipher.Length, BitConverter.ToString(cipher)));
-			}
-			else
-				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
+			//if (this.key.Encrypt(AuthenKeyType.USER_ROOT, plain, out cipher))
+			//{
+			//	this.TxtDbg.Trace(String.Format("cipher length [{0}] , {1}" + cipher.Length, BitConverter.ToString(cipher)));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
 		}
 
 		private void BtnRestore_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("Restore ...", true);
-			if (this.key.Restore())
-				this.TxtDbg.Trace("Restore OK...");
-			else
-				this.TxtDbg.Trace("Restore failed ! " + this.key.LastErrorMessage);
+			//this.TxtDbg.Trace("Restore ...", true);
+			//if (this.key.Restore())
+			//	this.TxtDbg.Trace("Restore OK...");
+			//else
+			//	this.TxtDbg.Trace("Restore failed ! " + this.key.LastErrorMessage);
 		}
 
 		private void BtnSetUserID_Click(object sender, EventArgs e)
@@ -222,38 +223,38 @@ namespace RonftonCard.Tester.Forms
 
 		private void BtnCreateRsaKeyFile_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("CreateRsaKeyFile ...", true);
-			byte[] rsaPubKey;
+			//this.TxtDbg.Trace("CreateRsaKeyFile ...", true);
+			//byte[] rsaPubKey;
 
-			if (this.key.Create(AuthenKeyType.AUTHEN, null, out rsaPubKey))
-			{
-				this.TxtDbg.Trace("CreateRsaKeyFile OK...pub key :");
-				this.TxtDbg.Trace("RSA-PUB byte : " + BitConverter.ToString(rsaPubKey));
-				this.TxtDbg.Trace("RSA-PUB Base64 : " + Convert.ToBase64String(rsaPubKey));
-			}
-			else
-				this.TxtDbg.Trace("CreateRsaKeyFile failed ! " + this.key.LastErrorMessage);
+			//if (this.key.Create(AuthenKeyType.AUTHEN, null, out rsaPubKey))
+			//{
+			//	this.TxtDbg.Trace("CreateRsaKeyFile OK...pub key :");
+			//	this.TxtDbg.Trace("RSA-PUB byte : " + BitConverter.ToString(rsaPubKey));
+			//	this.TxtDbg.Trace("RSA-PUB Base64 : " + Convert.ToBase64String(rsaPubKey));
+			//}
+			//else
+			//	this.TxtDbg.Trace("CreateRsaKeyFile failed ! " + this.key.LastErrorMessage);
 		}
 
 		private void BtnRsaPriEncrypt_Click(object sender, EventArgs e)
 		{
-			byte[] cipher;
-			this.TxtDbg.Trace("Encrypt By RSA-PRI ...", true);
-			this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
-			byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
+			//byte[] cipher;
+			//this.TxtDbg.Trace("Encrypt By RSA-PRI ...", true);
+			//this.TxtDbg.Trace("plain text = " + this.TxtPlain.Text);
+			//byte[] plain = Encoding.Default.GetBytes(this.TxtPlain.Text.Trim());
 
-			if (this.key.Encrypt(AuthenKeyType.AUTHEN, plain, out cipher))
-			{
-				this.TxtDbg.Trace(String.Format("cipher length [{0}] ", cipher.Length));
-				this.TxtDbg.Trace("hex    : " + HexString.ToHexString(cipher));
-				this.TxtDbg.Trace("base64 : " + Convert.ToBase64String(cipher));
+			//if (this.key.Encrypt(AuthenKeyType.AUTHEN, plain, out cipher))
+			//{
+			//	this.TxtDbg.Trace(String.Format("cipher length [{0}] ", cipher.Length));
+			//	this.TxtDbg.Trace("hex    : " + HexString.ToHexString(cipher));
+			//	this.TxtDbg.Trace("base64 : " + Convert.ToBase64String(cipher));
 
-				logger.Debug("RSA-PRI encrypt [" + this.TxtPlain.Text.Trim() + "]");
-				logger.Debug("   hex String  : " + HexString.ToHexString(cipher));
-				logger.Debug("   base64      : " + Convert.ToBase64String(cipher));
-			}
-			else
-				this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
+			//	logger.Debug("RSA-PRI encrypt [" + this.TxtPlain.Text.Trim() + "]");
+			//	logger.Debug("   hex String  : " + HexString.ToHexString(cipher));
+			//	logger.Debug("   base64      : " + Convert.ToBase64String(cipher));
+			//}
+			//else
+			//	this.TxtDbg.Trace("Encrypt failed !" + this.key.LastErrorMessage);
 		}
 
 		private void BtnRsaPubDecrypt_Click(object sender, EventArgs e)

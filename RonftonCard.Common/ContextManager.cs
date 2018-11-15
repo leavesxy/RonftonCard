@@ -9,10 +9,11 @@ namespace RonftonCard.Common
 	/// <summary>
 	/// manage Card context
 	/// </summary>
-	public class CardContextManager
+	public class ContextManager
 	{
 		private static IDictionary<String, CardTemplete> templetes;
 		private static IDictionary<String, CardReaderDescriptor> readerDescriptors;
+		private static IDictionary<String, AuthenKeyDescriptor> keyDescriptors;
 
 		#region "--- load configuration ---"
 
@@ -26,6 +27,12 @@ namespace RonftonCard.Common
 		{
 			templetes = XmlConfigHelper.CreateEntity<IDictionary<String, CardTemplete>>(configFileName, sectionName);
 			return templetes != null;
+		}
+
+		public static bool LoadKeyConfiguration(String configFileName, String sectionName = null)
+		{
+			keyDescriptors = XmlConfigHelper.CreateEntity<IDictionary<String, AuthenKeyDescriptor>>(configFileName, sectionName);
+			return keyDescriptors != null;
 		}
 
 		#endregion
@@ -58,6 +65,15 @@ namespace RonftonCard.Common
 				return templetes[CurrentTempleteName].SegmentAddr;
 			}
 		}
+
+		public static String[] AuthenKeyModels
+		{
+			get
+			{
+				return keyDescriptors == null ? new String[] { } : keyDescriptors.Keys.ToArray();
+			}
+		}
+
 		#endregion
 
 		public static CardContext CreateContext()

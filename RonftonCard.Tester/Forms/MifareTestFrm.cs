@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BlueMoon;
+using Bluemoon;
 
 namespace RonftonCard.Tester.Forms
 {
@@ -24,7 +24,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void MifareTestFrm_Load(object sender, EventArgs e)
 		{
-			CardContextManager.CurrentCardType = EntityCardType.M1;
+			ContextManager.CurrentCardType = EntityCardType.M1;
 			this.TxtControlBlock.Text = "{1 0 0},{0 1 1}";
 			this.mifareCardBlocks = new List<CheckBox>()
 			{
@@ -43,7 +43,7 @@ namespace RonftonCard.Tester.Forms
 		private void BtnSelectCard_Click(object sender, EventArgs e)
 		{
 			this.TxtDbg.Trace("Begin to Select Card ...", true);
-			CardContext ctx = CardContextManager.CreateContext();
+			CardContext ctx = ContextManager.CreateContext();
 
 			using (ICardReader reader = ctx.GetCardReader())
 			{
@@ -106,7 +106,7 @@ namespace RonftonCard.Tester.Forms
 		/// </summary>
 		private void ResetCardBlock()
 		{
-			int[] sectors = CardContextManager.AddrDescriptors;
+			int[] sectors = ContextManager.AddrDescriptors;
 
 			this.mifareCardBlocks.ForEach(m =>
 			{
@@ -134,7 +134,7 @@ namespace RonftonCard.Tester.Forms
 
 		private void ReadBlock(KeyMode keyMode, byte[] key)
 		{
-			CardContext ctx = CardContextManager.CreateContext();
+			CardContext ctx = ContextManager.CreateContext();
 			this.TxtDbg.Clear();
 
 			this.TxtDbg.Trace("ReadBlock with mode : {0}, Key = {1}",
