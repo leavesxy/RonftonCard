@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.AuthenKey
+namespace RonftonCard.Core.Dongle
 {
-	public class AuthenKeyInfo
+	public class DongleInfo
 	{
 		/// <summary>
 		/// sequence number for enumerate

@@ -135,14 +135,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\AuthenKeyModel.xml" />
-    <Content Include="Config\CardReader.xml">
+    <Content Include="etc\Dongle.xml" />
+    <Content Include="etc\CardReader.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\CardTemplete.xml">
+    <Content Include="etc\CardTemplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\log4net.xml">
+    <Content Include="etc\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Main.ico" />

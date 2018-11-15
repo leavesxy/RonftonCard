@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.AuthenKey
+namespace RonftonCard.Core.Dongle
 {
 	/// <summary>
-	/// define const for authen key
+	/// define const for dongle key
 	/// </summary>
-	public class AuthenKeyConst
+	public class DongleConst
 	{
 		// length of RSA
 		public const int RSA_KEY_LEN = 128;
 
-		public const String SEED_KEY = "0123456789abcdef";
+		public const String DEFAULT_SEED_KEY = "0123456789abcdef";
 
 		#region "---descriptor for key file---"
 

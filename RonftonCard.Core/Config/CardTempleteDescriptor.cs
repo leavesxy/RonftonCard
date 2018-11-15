@@ -1,20 +1,14 @@
-﻿using System;
+﻿using Bluemoon;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bluemoon;
-using System.Xml;
+using System.Threading.Tasks;
 
-
-namespace RonftonCard.Common.Config
+namespace RonftonCard.Core.Config
 {
-	public class CardTemplete
+	public class CardTempleteDescriptor
 	{
-		public CardTemplete()
-		{
-		}
-
-		#region "--- properties ---"
-
 		[Alias("name")]
 		public String TempleteName { get; private set; }
 
@@ -27,15 +21,17 @@ namespace RonftonCard.Common.Config
 		[Alias("storage")]
 		public TempleteStorageDescriptor[] StorageDescriptor { get; set; }
 
+		//////////////////////////////////////////////////////////////////////////////////////////
+
 		/// <summary>
-		/// stroage size for store data
+		/// storage size
 		/// </summary>
-		public int CardSize
+		public int StorageSize
 		{
 			get
 			{
 				int size = 0;
-				this.StorageDescriptor.ToList().ForEach(item => size += item.Size);
+				Array.ForEach(this.StorageDescriptor, item => size += item.Size);
 				return size;
 			}
 		}
@@ -48,13 +44,13 @@ namespace RonftonCard.Common.Config
 			get
 			{
 				int size = 0;
-				this.DataDescriptor.ToList().ForEach(item => size += item.Length);
+				Array.ForEach(this.DataDescriptor, item => size += item.Length);
 				return size;
 			}
 		}
 
 		/// <summary>
-		/// return segment of storage
+		/// segment of storage
 		///		M1 :	sectors
 		///		CPU:	file descriptors
 		///		Flash : segment address
@@ -67,32 +63,21 @@ namespace RonftonCard.Common.Config
 				return result.GroupBy(p => p).Select(p => p.Key).ToArray();
 			}
 		}
-		#endregion
+
+		//////////////////////////////////////////////////////////////////////////////////////////
 
 		public TempleteDataDescriptor GetTempleteDataDescriptor(String name)
 		{
-			if ( this.DataDescriptor.IsNullOrEmpty() )
+			if (this.DataDescriptor.IsNullOrEmpty())
 				return null;
 
 			return this.DataDescriptor.FirstOrDefault(d => d.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
 		}
 
-		//public static CardTemplete Create(XmlNode node)
-		//{
-		//	CardTemplete templete = new CardTemplete();
-		//	templete.TempleteName = ((XmlElement)node).GetAttrValue("name","Unknown");
-		//	templete.TempleteDesc = ((XmlElement)node).GetAttrValue("desc", "");
-
-		//	templete.DataDescriptor = ConfigureUtil.CreateItem<TempleteDataDescriptor>(node.SelectSingleNode("data"), "item").OrderBy(item => item.Offset).ToArray();
-		//	templete.StorageDescriptor = ConfigureUtil.CreateItem<TempleteStorageDescriptor>(node.SelectSingleNode("storage"), "addr").OrderBy(item => item.Address).ToArray();
-
-		//	return templete;
-		//}
-
-		#region "--- debug ---"
+		#region "--- for debug ---"
 		public String DbgTempleteDataDescriptor()
 		{
-			if (this.DataDescriptor.IsNullOrEmpty() )
+			if (this.DataDescriptor.IsNullOrEmpty())
 				return "Card DataDescriptor is null ! please check configuration!";
 
 			StringBuilder sb = new StringBuilder();

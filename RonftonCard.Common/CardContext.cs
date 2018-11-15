@@ -38,24 +38,6 @@ namespace RonftonCard.Common
 			this.Args = new Dictionary<String,Object>();
 		}
 
-		/// <summary>
-		/// create card reader instance
-		/// </summary>
-		/// <returns></returns>
-		public ICardReader GetCardReader()
-		{
-			ICardReader reader = null;
-			try
-			{
-				Type type = TypeUtil.ParseType(this.ReaderDescriptor.DrvType);
 
-				if (type != null)
-					reader = (ICardReader)Activator.CreateInstance(type, new object[] { this.ReaderDescriptor.PortType, this.ReaderDescriptor.Baud });
-			}
-			catch (Exception ex)
-			{
-			}
-			return reader;
-		}
 	}
 }

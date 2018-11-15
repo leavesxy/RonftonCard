@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RonftonCard.Common.Reader
+namespace RonftonCard.Core.CardReader
 {
-	/// <summary>
-	/// interface for IC card reader
-	/// </summary>
 	public interface ICardReader : IDisposable
 	{
 		#region "--- device operation ---"
@@ -28,21 +29,26 @@ namespace RonftonCard.Common.Reader
 		/// <summary>
 		/// turn on or off signal light
 		/// </summary>
-		void Light(bool onOff);
+		void Light(bool flag);
 
 		#endregion
 
 		#region "--- Card operation ---"
-		/// <summary>
-		/// authentication
-		/// </summary>
+
 		bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
 
-		bool Read(int descriptor, out byte[] data);
+		/// <summary>
+		/// for M1,descriptor is sector
+		/// for CPU, descriptor is file_descriptor
+		/// </summary>
+		bool Read(int descriptor, int len, out byte[] data);
+		bool Write(int descriptor, int len, byte[] data);
 
+		/// <summary>
+		/// select card
+		/// </summary>
 		bool Select(out byte[] cardId);
 
-		bool Write(int descriptor, byte[] data);
 		#endregion
 	}
 }

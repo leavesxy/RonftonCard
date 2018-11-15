@@ -1,7 +1,7 @@
 ﻿using System;
 using Bluemoon;
 
-namespace RonftonCard.Common.Config
+namespace RonftonCard.Core.Config
 {
 	/// <summary>
 	/// data description which written to card

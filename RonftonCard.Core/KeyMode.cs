@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.Reader
+namespace RonftonCard.Core
 {
 	/// <summary>
-	/// Card authentication mode,only used for M1
+	/// only for M1
 	/// </summary>
 	public enum KeyMode
 	{
-		KeyA,
-		KeyB
+		KEY_A,
+		KEY_B
 	}
 }

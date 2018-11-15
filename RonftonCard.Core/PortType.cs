@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace RonftonCard.Common.Reader
+namespace RonftonCard.Core
 {
 	/// <summary>
 	///	com			: 0~99

@@ -1,10 +1,13 @@
 ﻿using Bluemoon;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RonftonCard.Common.AuthenKey
+namespace RonftonCard.Core.Dongle
 {
-	public interface IAuthenKey : IDisposable
+	public interface IDongle : IDisposable
 	{
 		/// <summary>
 		/// last error code & message
@@ -15,13 +18,12 @@ namespace RonftonCard.Common.AuthenKey
 		/// <summary>
 		/// last operation is succ or not
 		/// </summary>
-		bool IsSucc();
+		bool Succ();
 
 		/// <summary>
 		/// get all keys
 		/// </summary>
-		/// <returns></returns>
-		List<AuthenKeyInfo> GetAuthenKeys();
+		List<DongleInfo> GetDongleKeys();
 
 
 		/// <summary>

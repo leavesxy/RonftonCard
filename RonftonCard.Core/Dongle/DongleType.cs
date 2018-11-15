@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common.AuthenKey
+namespace RonftonCard.Core.Dongle
 {
-	public enum AuthenMode
+	public enum DongleType
 	{
-		ADMIN,
-		USER,
-		ANONYMOUS
+		COMPANY_SEED,
+
+		USER_ROOT,
+
+		AUTHEN
 	}
 }

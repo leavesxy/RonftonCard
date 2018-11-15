@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<AuthenKeys>
+<Dongles>
 
-	<key name="Rockey-Arm" desc="飞天诚信科技有限公司">
+	<dongle name="Rockey-Arm" desc="飞天诚信科技有限公司">
+		<charset>utf8</charset>
 		<type>RonftonCard.AuthenKey.RockeyArm.DongleKey,RonftonCard.AuthenKey.RockeyArm</type>
-	</key>
+	</dongle>
 
-</AuthenKeys>
+</Dongles>
