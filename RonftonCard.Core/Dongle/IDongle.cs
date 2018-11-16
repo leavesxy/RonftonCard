@@ -21,15 +21,16 @@ namespace RonftonCard.Core.Dongle
 		bool Succ();
 
 		/// <summary>
-		/// get all keys
+		/// all dongle keys
 		/// </summary>
-		List<DongleInfo> GetDongleKeys();
+		DongleInfo[] Dongles { get; }
 
 
 		/// <summary>
 		/// Close device
 		/// </summary>
 		void Close();
+		void Close(int seq);
 
 		/// <summary>
 		/// open device in enumerate sequence
@@ -44,28 +45,17 @@ namespace RonftonCard.Core.Dongle
 		/// <summary>
 		/// restore current key
 		/// </summary>
-		bool Restore(byte[] adminPin);
+		bool Restore(int seq,byte[] adminPin);
 
 		/// <summary>
 		/// set status as anonymous
 		/// </summary>
-		bool Reset();
+		bool Reset(int seq = 0);
 
 		/// <summary>
 		/// Create user root key
 		/// and must use default admin pin
 		/// </summary>
-		ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey);
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		///// <summary>
-		///// Create authen key
-		///// </summary>
-		//ResultArgs CreateAuthenKey();
-
-		///// <summary>
-		///// encrypt plain text use root key or private key
-		///// </summary>
-		//bool Encrypt(byte[] plain, out byte[] cipher);
+		ResultArgs CreateUserRootKey(int seq, String userId, String appId, byte[] userRootKey);
 	}
 }

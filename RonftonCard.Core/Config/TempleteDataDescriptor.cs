@@ -1,5 +1,6 @@
 ﻿using System;
 using Bluemoon;
+using RonftonCard.Core.CardReader;
 
 namespace RonftonCard.Core.Config
 {

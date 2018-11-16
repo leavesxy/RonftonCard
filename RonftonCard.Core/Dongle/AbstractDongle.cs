@@ -11,7 +11,8 @@ namespace RonftonCard.Core.Dongle
 	{
 		// use log4net logger
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
-		public static List<DongleInfo> dongleInfo = new List<DongleInfo>();
+
+		protected DongleInfo[] dongles;
 
 		// seed
 		protected readonly byte[] seed;
@@ -50,6 +51,11 @@ namespace RonftonCard.Core.Dongle
 
 		#region "--- implement IAuthenKey ---"
 
+		public DongleInfo[] Dongles
+		{
+			get { return this.dongles; }
+		}
+
 		public bool Succ()
 		{
 			return this.LastErrorCode == this.succ;
@@ -65,13 +71,20 @@ namespace RonftonCard.Core.Dongle
 			}
 		}
 
+		/// <summary>
+		/// open specified dongle by KEY_ID
+		/// </summary>
 		public bool Open(String keyId)
 		{
-			foreach (DongleInfo key in AbstractDongle.dongleInfo)
+			if (this.Dongles.IsNullOrEmpty())
+				return false;
+
+			for(int i=0; i< this.Dongles.Length; i++)
 			{
-				if (key.KeyId.Equals(keyId))
-					return Open(key.Seq);
+				if ( this.Dongles[i].KeyId.Equals(keyId))
+					return Open(this.Dongles[i].Seq);
 			}
+
 			return false;
 		}
 		#endregion
@@ -79,14 +92,14 @@ namespace RonftonCard.Core.Dongle
 		#region "--- abstract ---"
 
 		public abstract void Close();
+		public abstract void Close(int seq);
+
 		public abstract bool Open(int seq = 0);
-		public abstract bool Reset();
+		public abstract bool Reset(int seq = 0);
 
-		public abstract List<DongleInfo> GetDongleKeys();
+		public abstract bool Restore(int seq, byte[] adminPin);
 
-		public abstract bool Restore(byte[] adminPin);
-
-		public abstract ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey);
+		public abstract ResultArgs CreateUserRootKey(int seq, String userId, String appId, byte[] userRootKey);
 
 		//public abstract ResultArgs CreateAuthenKey();
 		//public abstract bool Encrypt(byte[] plain, out byte[] cipher);

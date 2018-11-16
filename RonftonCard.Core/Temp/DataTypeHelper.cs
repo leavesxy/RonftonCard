@@ -1,8 +1,9 @@
 ﻿using Bluemoon;
+using RonftonCard.Core.CardReader;
 using System;
 using System.Text;
 
-namespace RonftonCard.Common.Util
+namespace RonftonCard.Core.Util
 {
 	public class DataTypeHelper
 	{

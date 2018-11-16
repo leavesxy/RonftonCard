@@ -34,6 +34,10 @@
       <HintPath>..\packages\Bluemoon.Core-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.Core-2.2.0.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,15 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="D8Reader.cs" />
-    <Compile Include="D8ReaderInterface.cs" />
+    <Compile Include="Decard\D8Reader.cs" />
+    <Compile Include="Decard\D8ReaderInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RonftonCard.Common\RonftonCard.Common.csproj">
-      <Project>{6b039d6b-3c12-4ad5-80e3-ff97c01dd48a}</Project>
-      <Name>RonftonCard.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Plugin\dcrf32.dll">
@@ -61,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RonftonCard.Core\RonftonCard.Core.csproj">
+      <Project>{508bb207-c9c8-49c9-8b70-f99185bff1c4}</Project>
+      <Name>RonftonCard.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

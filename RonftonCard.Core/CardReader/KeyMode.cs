@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core
+namespace RonftonCard.Core.CardReader
 {
 	/// <summary>
 	/// only for M1

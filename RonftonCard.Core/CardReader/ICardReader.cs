@@ -41,8 +41,8 @@ namespace RonftonCard.Core.CardReader
 		/// for M1,descriptor is sector
 		/// for CPU, descriptor is file_descriptor
 		/// </summary>
-		bool Read(int descriptor, int len, out byte[] data);
-		bool Write(int descriptor, int len, byte[] data);
+		bool Read(int descriptor, out byte[] data, int len);
+		bool Write(int descriptor, byte[] data, int len);
 
 		/// <summary>
 		/// select card

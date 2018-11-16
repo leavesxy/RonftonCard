@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace RonftonCard.CardReader
+namespace RonftonCard.CardReader.Decard
 {
+	/// <summary>
+	/// interface for card reader device
+	/// </summary>
 	public partial class D8Reader
 	{
 		[DllImport(@"Plugin\dcrf32.dll")]
@@ -18,7 +21,7 @@ namespace RonftonCard.CardReader
 		public static extern short dc_light(int hdev, ushort onOff);
 
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_getver(int hdev, [Out] byte[] ver);
+		public static extern short dc_getver(int hdev, [Out] byte[] version);
 
 
 		/**

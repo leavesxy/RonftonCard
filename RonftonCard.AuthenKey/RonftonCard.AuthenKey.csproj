@@ -50,28 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RockeyArm\DongleFileType.cs" />
     <Compile Include="RockeyArm\DongleKey.cs" />
     <Compile Include="RockeyArm\DongleKeyImpl.cs" />
     <Compile Include="RockeyArm\DongleKeyInterface.cs" />
     <Compile Include="RockeyArm\DongleKeyInterface2.cs" />
-    <Compile Include="RockeyArm\DongleKeyStru.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Plugin\Dongle_d.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RonftonCard.Common\RonftonCard.Common.csproj">
-      <Project>{6b039d6b-3c12-4ad5-80e3-ff97c01dd48a}</Project>
-      <Name>RonftonCard.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config\AuthenKeyErrorMessage.properties">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

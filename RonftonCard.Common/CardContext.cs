@@ -1,7 +1,4 @@
-﻿using Bluemoon;
-using RonftonCard.Common.Config;
-using RonftonCard.Common.Reader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace RonftonCard.Common

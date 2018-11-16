@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.AuthenKey.RockeyArm
+namespace RonftonCard.Dongle.RockeyArm
 {
-	public sealed class DongleFileType
+	/// <summary>
+	/// define file type stored in dongle key
+	/// </summary>
+	public sealed class RockeyArmFileType
 	{
 		//common data file
 		public const ushort FILE_DATA = 1;

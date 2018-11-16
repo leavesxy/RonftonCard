@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Common
+namespace RonftonCard.Core.CardReader
 {
-	/// <summary>
-	/// define type of entity card
-	/// </summary>
-	public enum EntityCardType
+	public enum CardType
 	{
 		M1,
 		CPU

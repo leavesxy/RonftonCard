@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.AuthenKey.RockeyArm
+namespace RonftonCard.Dongle.RockeyArm
 {
-	public partial class DongleKey
+	public partial class RockeyArmDongle
 	{
 		//informat of dog
 		[StructLayout(LayoutKind.Sequential)]

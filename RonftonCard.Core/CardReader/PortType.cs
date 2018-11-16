@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace RonftonCard.Core
+﻿namespace RonftonCard.Core.CardReader
 {
 	/// <summary>
 	///	com			: 0~99

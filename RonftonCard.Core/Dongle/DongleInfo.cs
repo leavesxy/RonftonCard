@@ -34,6 +34,14 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		public String KeyId { get; set; }
 
+		public Int64 hDongle;
+
+		public DongleInfo()
+		{
+			this.hDongle = -1;
+		}
+
+
 		public String GetName()
 		{
 			return this.Seq.ToString() + ": id=[" + this.KeyId + "], pid=[" + AppId + "], uid=[" + UserId + "]";

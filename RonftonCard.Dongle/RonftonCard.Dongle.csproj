@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B039D6B-3C12-4AD5-80E3-FF97C01DD48A}</ProjectGuid>
+    <ProjectGuid>{D10C6A8F-C39C-43D9-9BA4-DF200E59396E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RonftonCard.Common</RootNamespace>
-    <AssemblyName>RonftonCard.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>RonftonCard.Dongle</RootNamespace>
+    <AssemblyName>RonftonCard.Dongle</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,7 +40,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,17 +48,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardContext.cs" />
-    <Compile Include="Util\DataTypeHelper.cs" />
+    <Compile Include="RockeyArm\RockeyArmFileType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RockeyArm\RockeyArmDongle.cs" />
+    <Compile Include="RockeyArm\RockeyArmImpl.cs" />
+    <Compile Include="RockeyArm\RockeyArmInterface.cs" />
+    <Compile Include="RockeyArm\RockeyArmInterface2.cs" />
+    <Compile Include="RockeyArm\RockeyArmStru.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <Content Include="Plugin\Dongle_d.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RonftonCard.Core\RonftonCard.Core.csproj">
+      <Project>{508bb207-c9c8-49c9-8b70-f99185bff1c4}</Project>
+      <Name>RonftonCard.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="etc\DongleErrorMessage.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

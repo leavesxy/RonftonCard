@@ -1,10 +1,10 @@
-﻿using RonftonCard.Common.Config;
-using System;
+﻿using System;
 using System.Reflection;
 using Bluemoon;
-using RonftonCard.Common.Util;
+using RonftonCard.Core.Config;
+using RonftonCard.Core.Util;
 
-namespace RonftonCard.Common
+namespace RonftonCard.Core
 {
 	public abstract class AbstractVirtualCard
 	{
@@ -19,7 +19,7 @@ namespace RonftonCard.Common
 
 		public bool InitVirtualCard()
 		{
-			this.virtualBuffer = new byte[this.cardContext.ConfigTemplete.CardSize];
+			this.virtualBuffer = new byte[this.cardContext.CardTemplete.StorageSize];
 			return true;
 		}
 
@@ -34,7 +34,7 @@ namespace RonftonCard.Common
 			{
 				String name = p.GetAliasName() ?? p.Name;
 
-				TempleteDataDescriptor descriptor = this.cardContext.ConfigTemplete.GetTempleteDataDescriptor(name);
+				TempleteDataDescriptor descriptor = this.cardContext.CardTemplete.GetTempleteDataDescriptor(name);
 
 				if (descriptor != null)
 				{

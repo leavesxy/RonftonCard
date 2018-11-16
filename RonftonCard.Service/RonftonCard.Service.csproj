@@ -108,17 +108,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RonftonCard.AuthenKey\RonftonCard.AuthenKey.csproj">
-      <Project>{51368e69-000d-466a-8a51-7ab70c18b689}</Project>
-      <Name>RonftonCard.AuthenKey</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RonftonCard.CardReader\RonftonCard.CardReader.csproj">
       <Project>{2ea04799-4dda-46b1-a248-0062bae1ceb3}</Project>
       <Name>RonftonCard.CardReader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RonftonCard.Common\RonftonCard.Common.csproj">
-      <Project>{6b039d6b-3c12-4ad5-80e3-ff97c01dd48a}</Project>
-      <Name>RonftonCard.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

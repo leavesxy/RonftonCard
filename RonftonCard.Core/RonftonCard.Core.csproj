@@ -48,13 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardDataType.cs" />
+    <Compile Include="Temp\AbstractVirtualCard.cs" />
+    <Compile Include="CardContext.cs" />
+    <Compile Include="CardReader\CardDataType.cs" />
+    <Compile Include="CardReader\CardType.cs" />
     <Compile Include="Dongle\DongleConst.cs" />
     <Compile Include="Dongle\DongleInfo.cs" />
     <Compile Include="Dongle\DongleType.cs" />
     <Compile Include="Dongle\AuthenMode.cs" />
-    <Compile Include="KeyMode.cs" />
-    <Compile Include="PortType.cs" />
+    <Compile Include="CardReader\KeyMode.cs" />
+    <Compile Include="Temp\MifareVirtualCard.cs" />
+    <Compile Include="CardReader\PortType.cs" />
     <Compile Include="Config\CardReaderDescriptor.cs" />
     <Compile Include="CardReader\AbstractCardReader.cs" />
     <Compile Include="CardReader\ICardReader.cs" />
@@ -62,11 +66,11 @@
     <Compile Include="Config\DongleDescriptor.cs" />
     <Compile Include="Config\TempleteDataDescriptor.cs" />
     <Compile Include="Config\TempleteStorageDescriptor.cs" />
-    <Compile Include="ContextManager.cs" />
+    <Compile Include="ConfigManager.cs" />
     <Compile Include="Dongle\AbstractDongle.cs" />
     <Compile Include="Dongle\IDongle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\DataTypeHelper.cs" />
+    <Compile Include="Temp\DataTypeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
