@@ -1,5 +1,5 @@
 ﻿using Bluemoon.WinForm;
-using RonftonCard.Common;
+using RonftonCard.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +21,7 @@ namespace RonftonCard.Main.Forms
 			{
 				new TabPageDescriptor { PageIndex=0, PageName="配置", TabPageForm = new ConfigForm()},
 				new TabPageDescriptor { PageIndex=1, PageName="IC卡", TabPageForm = new CardForm() },
-				new TabPageDescriptor { PageIndex=2, PageName="授权KEY", TabPageForm = new AuthenKeyForm() },
+				new TabPageDescriptor { PageIndex=2, PageName="授权KEY", TabPageForm = new DongleForm() },
 			};
 		}
 		private void MainFrm_Load(object sender, EventArgs e)
@@ -29,26 +29,10 @@ namespace RonftonCard.Main.Forms
 			this.Text = this.rm.GetFormTextName();
 			this.Icon = (Icon)this.rm.GetObject("Main");
 
-			try
-			{
-				ContextManager.LoadCardConfigTemplete("CardTemplete.xml");
-				ContextManager.LoadCardReaderConfiguration("CardReader.xml");
-				ContextManager.LoadKeyConfiguration("AuthenKeyModel.xml");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-
-			this.CbCardTemplete.Items.AddRange(ContextManager.TempleteNames);
-			this.CbCardTemplete.SelectedIndex = 0;
-
-			this.CbCardReader.Items.AddRange(ContextManager.CardReaderNames);
-			this.CbCardReader.SelectedIndex = 0;
-
 			InitTabPage();
 			this.TabMainControl.SelectedIndex = 0;
+
+			LoadConfiguration();
 		}
 
 		private void InitTabPage()
@@ -74,9 +58,22 @@ namespace RonftonCard.Main.Forms
 			this.tabPageDescriptor.Find(desc => desc.PageIndex == 0).TabPageForm.Show();
 		}
 
-		private void BtnExit_Click(object sender, EventArgs e)
+		private void LoadConfiguration()
 		{
-			Application.Exit();
+			if (!ConfigManager.Init())
+			{
+				MessageBox.Show("初始化配置错误！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			this.CbCardTemplete.Items.AddRange(ConfigManager.TempleteNames);
+			this.CbCardTemplete.SelectedIndex = 0;
+
+			this.CbCardReader.Items.AddRange(ConfigManager.ReaderNames);
+			this.CbCardReader.SelectedIndex = 0;
+
+			this.CbDongle.Items.AddRange(ConfigManager.DongleNames);
+			this.CbDongle.SelectedIndex = 0;
 		}
 
 		#region "--- event handler ---"
@@ -92,16 +89,39 @@ namespace RonftonCard.Main.Forms
 
 		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
+			ConfigManager.ReaderSelected = (String)CbCardReader.Items[CbCardReader.SelectedIndex];
 		}
 
 		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			ConfigManager.TempleteSelected = (String)CbCardTemplete.Items[CbCardTemplete.SelectedIndex];
+		}
 
+		private void CbDongle_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			ConfigManager.DongleSelected = (String)CbDongle.Items[CbDongle.SelectedIndex];
 		}
 
 		#endregion
 
+		#region "--- button click ---"
+
+		/// <summary>
+		/// reload configuration
+		/// </summary>
+		private void BtnRefresh_Click(object sender, EventArgs e)
+		{
+			LoadConfiguration();
+		}
+
+		/// <summary>
+		/// Exit
+		/// </summary>
+		private void BtnExit_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+		#endregion
 
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace RonftonCard.Main.Forms
 {
-	partial class AuthenKeyForm
+	partial class DongleForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.CbKeySelected = new System.Windows.Forms.ComboBox();
-			this.TxtTdesKey = new System.Windows.Forms.TextBox();
+			this.CbDongle = new System.Windows.Forms.ComboBox();
+			this.TxtUserRootKey = new System.Windows.Forms.TextBox();
 			this.TxtAdminPin = new System.Windows.Forms.TextBox();
 			this.TxtUserID = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -39,27 +39,28 @@
 			this.BtnCreateAuthenKey = new System.Windows.Forms.Button();
 			this.BtnRestore = new System.Windows.Forms.Button();
 			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
-			this.BtnEnumKey = new System.Windows.Forms.Button();
+			this.BtnEnumerate = new System.Windows.Forms.Button();
 			this.TxtTrace = new System.Windows.Forms.TextBox();
+			this.BntEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.CbKeyModel = new System.Windows.Forms.ComboBox();
+			this.TxtPlain = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
-			// CbKeySelected
+			// CbDongle
 			// 
-			this.CbKeySelected.FormattingEnabled = true;
-			this.CbKeySelected.Location = new System.Drawing.Point(113, 76);
-			this.CbKeySelected.Name = "CbKeySelected";
-			this.CbKeySelected.Size = new System.Drawing.Size(670, 27);
-			this.CbKeySelected.TabIndex = 33;
-			this.CbKeySelected.SelectedIndexChanged += new System.EventHandler(this.CbKeySelected_SelectedIndexChanged);
+			this.CbDongle.FormattingEnabled = true;
+			this.CbDongle.Location = new System.Drawing.Point(113, 76);
+			this.CbDongle.Name = "CbDongle";
+			this.CbDongle.Size = new System.Drawing.Size(670, 27);
+			this.CbDongle.TabIndex = 33;
+			this.CbDongle.SelectedIndexChanged += new System.EventHandler(this.CbDongleSelected_SelectedIndexChanged);
 			// 
-			// TxtTdesKey
+			// TxtUserRootKey
 			// 
-			this.TxtTdesKey.Location = new System.Drawing.Point(336, 44);
-			this.TxtTdesKey.Name = "TxtTdesKey";
-			this.TxtTdesKey.Size = new System.Drawing.Size(241, 25);
-			this.TxtTdesKey.TabIndex = 32;
+			this.TxtUserRootKey.Location = new System.Drawing.Point(429, 11);
+			this.TxtUserRootKey.Name = "TxtUserRootKey";
+			this.TxtUserRootKey.Size = new System.Drawing.Size(208, 25);
+			this.TxtUserRootKey.TabIndex = 32;
 			// 
 			// TxtAdminPin
 			// 
@@ -106,15 +107,15 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(258, 47);
+			this.label5.Location = new System.Drawing.Point(302, 14);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(86, 20);
+			this.label5.Size = new System.Drawing.Size(121, 20);
 			this.label5.TabIndex = 20;
-			this.label5.Text = "3DES密钥：";
+			this.label5.Text = "用户测试根密钥：";
 			// 
 			// BtnCreateAuthenKey
 			// 
-			this.BtnCreateAuthenKey.Location = new System.Drawing.Point(163, 428);
+			this.BtnCreateAuthenKey.Location = new System.Drawing.Point(306, 398);
 			this.BtnCreateAuthenKey.Name = "BtnCreateAuthenKey";
 			this.BtnCreateAuthenKey.Size = new System.Drawing.Size(148, 29);
 			this.BtnCreateAuthenKey.TabIndex = 17;
@@ -134,7 +135,7 @@
 			// 
 			// BtnCreateUserRootKey
 			// 
-			this.BtnCreateUserRootKey.Location = new System.Drawing.Point(163, 398);
+			this.BtnCreateUserRootKey.Location = new System.Drawing.Point(159, 398);
 			this.BtnCreateUserRootKey.Name = "BtnCreateUserRootKey";
 			this.BtnCreateUserRootKey.Size = new System.Drawing.Size(148, 29);
 			this.BtnCreateUserRootKey.TabIndex = 10;
@@ -142,15 +143,15 @@
 			this.BtnCreateUserRootKey.UseVisualStyleBackColor = true;
 			this.BtnCreateUserRootKey.Click += new System.EventHandler(this.BtnCreateUserRootKey_Click);
 			// 
-			// BtnEnumKey
+			// BtnEnumerate
 			// 
-			this.BtnEnumKey.Location = new System.Drawing.Point(12, 398);
-			this.BtnEnumKey.Name = "BtnEnumKey";
-			this.BtnEnumKey.Size = new System.Drawing.Size(148, 29);
-			this.BtnEnumKey.TabIndex = 18;
-			this.BtnEnumKey.Text = "枚举KEY";
-			this.BtnEnumKey.UseVisualStyleBackColor = true;
-			this.BtnEnumKey.Click += new System.EventHandler(this.BtnEnumKey_Click);
+			this.BtnEnumerate.Location = new System.Drawing.Point(12, 398);
+			this.BtnEnumerate.Name = "BtnEnumerate";
+			this.BtnEnumerate.Size = new System.Drawing.Size(148, 29);
+			this.BtnEnumerate.TabIndex = 18;
+			this.BtnEnumerate.Text = "枚举KEY";
+			this.BtnEnumerate.UseVisualStyleBackColor = true;
+			this.BtnEnumerate.Click += new System.EventHandler(this.BtnEnumerate_Click);
 			// 
 			// TxtTrace
 			// 
@@ -161,51 +162,61 @@
 			this.TxtTrace.Size = new System.Drawing.Size(771, 283);
 			this.TxtTrace.TabIndex = 5;
 			// 
+			// BntEncryptByUserRoot
+			// 
+			this.BntEncryptByUserRoot.Location = new System.Drawing.Point(159, 428);
+			this.BntEncryptByUserRoot.Name = "BntEncryptByUserRoot";
+			this.BntEncryptByUserRoot.Size = new System.Drawing.Size(148, 29);
+			this.BntEncryptByUserRoot.TabIndex = 10;
+			this.BntEncryptByUserRoot.Text = "根密钥加密测试";
+			this.BntEncryptByUserRoot.UseVisualStyleBackColor = true;
+			this.BntEncryptByUserRoot.Click += new System.EventHandler(this.BntEncryptByUserRoot_Click);
+			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(302, 14);
+			this.label1.Location = new System.Drawing.Point(302, 47);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(76, 20);
-			this.label1.TabIndex = 24;
-			this.label1.Text = "KEY类型：";
+			this.label1.Size = new System.Drawing.Size(79, 20);
+			this.label1.TabIndex = 20;
+			this.label1.Text = "测试明文：";
 			// 
-			// CbKeyModel
+			// TxtPlain
 			// 
-			this.CbKeyModel.FormattingEnabled = true;
-			this.CbKeyModel.Location = new System.Drawing.Point(369, 11);
-			this.CbKeyModel.Name = "CbKeyModel";
-			this.CbKeyModel.Size = new System.Drawing.Size(414, 27);
-			this.CbKeyModel.TabIndex = 33;
-			this.CbKeyModel.SelectedIndexChanged += new System.EventHandler(this.CbKeyModel_SelectedIndexChanged);
+			this.TxtPlain.Location = new System.Drawing.Point(429, 47);
+			this.TxtPlain.Name = "TxtPlain";
+			this.TxtPlain.Size = new System.Drawing.Size(354, 25);
+			this.TxtPlain.TabIndex = 32;
 			// 
-			// AuthenKeyForm
+			// DongleForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
-			this.Controls.Add(this.CbKeyModel);
-			this.Controls.Add(this.CbKeySelected);
-			this.Controls.Add(this.TxtTdesKey);
+			this.Controls.Add(this.CbDongle);
+			this.Controls.Add(this.TxtPlain);
+			this.Controls.Add(this.TxtUserRootKey);
 			this.Controls.Add(this.TxtAdminPin);
 			this.Controls.Add(this.TxtUserID);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label7);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.BtnCreateAuthenKey);
 			this.Controls.Add(this.BtnRestore);
+			this.Controls.Add(this.BntEncryptByUserRoot);
 			this.Controls.Add(this.BtnCreateUserRootKey);
-			this.Controls.Add(this.BtnEnumKey);
+			this.Controls.Add(this.BtnEnumerate);
 			this.Controls.Add(this.TxtTrace);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.Name = "AuthenKeyForm";
+			this.Name = "DongleForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AuthenKeyForm";
-			this.Load += new System.EventHandler(this.AuthenKeyForm_Load);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DongleForm_FormClosing);
+			this.Load += new System.EventHandler(this.DongleForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -213,8 +224,8 @@
 
 		#endregion
 
-		private System.Windows.Forms.ComboBox CbKeySelected;
-		private System.Windows.Forms.TextBox TxtTdesKey;
+		private System.Windows.Forms.ComboBox CbDongle;
+		private System.Windows.Forms.TextBox TxtUserRootKey;
 		private System.Windows.Forms.TextBox TxtAdminPin;
 		private System.Windows.Forms.TextBox TxtUserID;
 		private System.Windows.Forms.Label label2;
@@ -224,9 +235,10 @@
 		private System.Windows.Forms.Button BtnCreateAuthenKey;
 		private System.Windows.Forms.Button BtnRestore;
 		private System.Windows.Forms.Button BtnCreateUserRootKey;
-		private System.Windows.Forms.Button BtnEnumKey;
+		private System.Windows.Forms.Button BtnEnumerate;
 		private System.Windows.Forms.TextBox TxtTrace;
+		private System.Windows.Forms.Button BntEncryptByUserRoot;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox CbKeyModel;
+		private System.Windows.Forms.TextBox TxtPlain;
 	}
 }

@@ -95,7 +95,7 @@ namespace RonftonCard.CardReader.Decard
 		public override bool Select(out byte[] cardId)
 		{
 			uint cardIdLen = 0;
-			cardId = ArrayUtil.Malloc<byte>(0x00, 16);
+			cardId = ByteUtil.Malloc(16);
 
 			if (dc_card_n(this.hDev, 0x00, ref cardIdLen, cardId) != SUCC)
 			{

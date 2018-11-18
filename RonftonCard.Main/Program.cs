@@ -1,4 +1,5 @@
-﻿using Bluemoon.WinForm;
+﻿using Bluemoon;
+using Bluemoon.WinForm;
 using RonftonCard.Main.Forms;
 using RonftonCard.Main.Resources;
 using System;
@@ -17,7 +18,12 @@ namespace RonftonCard.Main
 		static void Main()
 		{
 			ResourceManager rm = new ResourceManager(typeof(AppResources).ToString(), typeof(AppResources).Assembly);
-			log4net.Config.XmlConfigurator.Configure(new FileInfo(@"config\log4net.xml"));
+
+			String fullName;
+			if (FileUtil.Lookup("Logger.xml", out fullName))
+			{
+				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
+			}
 
 			if (!ProcessUtil.IsRunning(rm.GetAppName()))
 			{

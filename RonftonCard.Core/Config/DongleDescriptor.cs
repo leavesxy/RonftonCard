@@ -17,6 +17,8 @@ namespace RonftonCard.Core.Config
 
 		public String Seed { get; set; }
 
+		public String ErrorMessageFileName { get; set; }
+
 		[Alias("type")]
 		public String DrvType { get; set; }
 	}

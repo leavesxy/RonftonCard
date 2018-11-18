@@ -3,8 +3,9 @@
 <Dongles>
 
 	<dongle name="Rockey-Arm" desc="飞天诚信科技有限公司">
-		<charset>utf8</charset>
-		<type>RonftonCard.AuthenKey.RockeyArm.DongleKey,RonftonCard.AuthenKey.RockeyArm</type>
+		<charset>utf-8</charset>
+		<errorMessageFileName>RockeyArmErrorMessage.properties</errorMessageFileName>
+		<type>RonftonCard.Dongle.RockeyArm.RockeyArmDongle,RonftonCard.Dongle</type>
 	</dongle>
 
 </Dongles>

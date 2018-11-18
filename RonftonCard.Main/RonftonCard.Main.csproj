@@ -58,11 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\AuthenKeyForm.cs">
+    <Compile Include="Forms\DongleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AuthenKeyForm.Designer.cs">
-      <DependentUpon>AuthenKeyForm.cs</DependentUpon>
+    <Compile Include="Forms\DongleForm.Designer.cs">
+      <DependentUpon>DongleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CardForm.cs">
       <SubType>Form</SubType>
@@ -91,8 +91,8 @@
     </Compile>
     <Compile Include="TabPageDescriptor.cs" />
     <Compile Include="TextBoxExtension.cs" />
-    <EmbeddedResource Include="Forms\AuthenKeyForm.resx">
-      <DependentUpon>AuthenKeyForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DongleForm.resx">
+      <DependentUpon>DongleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainFrm.resx">
       <DependentUpon>MainFrm.cs</DependentUpon>
@@ -125,17 +125,33 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="etc\Dongle.xml" />
+    <Content Include="etc\Dongle.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="etc\CardReader.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="etc\CardTemplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="etc\log4net.xml">
+    <Content Include="etc\Logger.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Main.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RonftonCard.CardReader\RonftonCard.CardReader.csproj">
+      <Project>{2ea04799-4dda-46b1-a248-0062bae1ceb3}</Project>
+      <Name>RonftonCard.CardReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RonftonCard.Core\RonftonCard.Core.csproj">
+      <Project>{508bb207-c9c8-49c9-8b70-f99185bff1c4}</Project>
+      <Name>RonftonCard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RonftonCard.Dongle\RonftonCard.Dongle.csproj">
+      <Project>{d10c6a8f-c39c-43d9-9ba4-df200e59396e}</Project>
+      <Name>RonftonCard.Dongle</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

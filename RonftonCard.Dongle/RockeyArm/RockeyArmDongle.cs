@@ -8,36 +8,32 @@ namespace RonftonCard.Dongle.RockeyArm
 {
 	public partial class RockeyArmDongle  : AbstractDongle
 	{
-		private const String defaultErrMsgFileName = "DongleErrorMessage.properties";
-
-		// handle for dog
-		// private Int64[] hDongle;
+		private const String defaultErrMsgFileName = "RockeyArmErrorMessage.properties";
 
 		#region "--- Constructor ---"
 
 		public RockeyArmDongle()
-			: this( Encoding.UTF8, Encoding.UTF8.GetBytes(DongleConst.DEFAULT_SEED_KEY), defaultErrMsgFileName)
+			: this( Charset.UTF8.GetAliasName(),DongleConst.DEFAULT_SEED_KEY,defaultErrMsgFileName)
 		{
 		}
 
-		public RockeyArmDongle(Encoding encoding, byte[] seed, String errMsgFileName )
-			: this(encoding, seed, errMsgFileName, DongleConst.DEFAULT_ADMIN_PIN_DONGLE, DongleConst.DEFAULT_USER_PIN_DONGLE)
+		public RockeyArmDongle(String encoding, String seed, String errMsgFileName )
+			: this(encoding, seed, errMsgFileName,DongleConst.DEFAULT_ADMIN_PIN_DONGLE,DongleConst.DEFAULT_USER_PIN_DONGLE)
 		{
 		}
 
-		public RockeyArmDongle(Encoding encoding, byte[] seed, String errMsgFileName, String adminPin, String userPin)
+		public RockeyArmDongle(String encoding, String seed, String errMsgFileName, String adminPin, String userPin)
 			: base(encoding, seed, errMsgFileName, adminPin, userPin)
 		{
-			this.dongles = Enumerate();
+			//Enumerate();
 		}
 
 		#endregion
 
-		#region "--- util ---"
 		/// <summary>
 		/// enumerate all dongle keys
 		/// </summary>
-		private DongleInfo[] Enumerate()
+		private DongleInfo[] EnumerateDongle()
 		{
 			long count = 0;
 			this.LastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
@@ -60,8 +56,8 @@ namespace RonftonCard.Dongle.RockeyArm
 				for (int i = 0; i < count; i++)
 				{
 					IntPtr ptr = IntPtrUtil.Create(pDongleInfo, i * size);
-					DONGLE_INFO dongleInfo = IntPtrUtil.CreateObject<DONGLE_INFO>(ptr);
-					keyInfo.Add(ParseAuthenKeyInfo((short)i, dongleInfo));
+					DONGLE_INFO devInfo = IntPtrUtil.ToStructure<DONGLE_INFO>(ptr);
+					keyInfo.Add(ParseDongleInfo((short)i, devInfo));
 				}
 			}
 			catch (Exception ex)
@@ -75,24 +71,22 @@ namespace RonftonCard.Dongle.RockeyArm
 			return keyInfo.ToArray();
 		}
 
-		private DongleInfo ParseAuthenKeyInfo(short seq, DONGLE_INFO dongleInfo)
+		private DongleInfo ParseDongleInfo(short seq, DONGLE_INFO devInfo)
 		{
-			DongleInfo keyInfo = new DongleInfo()
+			DongleInfo dongleInfo = new DongleInfo()
 			{
 				Seq = seq,
 				Version = String.Format("v{0}.{1:d2}-({2:x2},{3})",
-								dongleInfo.m_Ver >> 8 & 0xff,
-								dongleInfo.m_Ver & 0xff,
-								dongleInfo.m_Type,
-								BitConverter.ToString(dongleInfo.m_BirthDay)),
-				UserId = dongleInfo.m_UserID.ToString("X08"),
-				AppId = dongleInfo.m_PID.ToString("X08"),
-				KeyId = BitConverter.ToString(dongleInfo.m_HID)
+								devInfo.m_Ver >> 8 & 0xff,
+								devInfo.m_Ver & 0xff,
+								devInfo.m_Type,
+								BitConverter.ToString(devInfo.m_BirthDay)),
+				UserId = devInfo.m_UserID.ToString("X08"),
+				AppId = devInfo.m_PID.ToString("X08"),
+				KeyId = BitConverter.ToString(devInfo.m_HID)
 			};
-
-			AbstractDongle.logger.Debug(keyInfo.ToString());
-
-			return keyInfo;
+			AbstractDongle.logger.Debug(dongleInfo.ToString());
+			return dongleInfo;
 		}
 		
 		public bool Authen(Int64 hDongle, AuthenMode authenMode, byte[] pin)
@@ -103,7 +97,6 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			return Succ();
 		}
-
 
 		/// <summary>
 		/// after invoke SUCC,status of key is anonymous
@@ -121,8 +114,8 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
 
-			logger.Debug("new pid = " + this.encoding.GetString(appId));
-			logger.Debug("new admin pwd = " + this.encoding.GetString(newAdminPwd) );
+			logger.Debug("new pid = " + this.Encoder.GetString(appId));
+			logger.Debug("new admin pwd = " + this.Encoder.GetString(newAdminPwd) );
 
 			return Succ();
 		}
@@ -174,23 +167,21 @@ namespace RonftonCard.Dongle.RockeyArm
 			}
 			return v;
 		}
-		#endregion
 
-		/// <summary>
-		/// create RSA private key
-		/// </summary>
-		//private PRIKEY_FILE_ATTR CreatePrikeyFileAttr()
+		protected bool IsValidSeq(int seq)
+		{
+			return !(this.dongles.IsNullOrEmpty() || seq > this.dongles.Length - 1);
+		}
+
+		//protected Int64 GetDongleHandler(int seq)
 		//{
-		//	PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
+		//	if (IsValidSeq(seq))
+		//		return this.dongles[seq].hDongle;
 
-		//	priAttr.m_Size = RSA_KEY_LEN * 8;
-		//	priAttr.m_Type = DongleFileType.FILE_PRIKEY_RSA;
-		//	priAttr.m_Lic.m_Count = 0xFFFFFFFF;
-		//	priAttr.m_Lic.m_IsDecOnRAM = 0;
-		//	priAttr.m_Lic.m_IsReset = 0;
-		//	priAttr.m_Lic.m_Priv = 0;
-		//	return priAttr;
+		//	return -1;
 		//}
+
+
 
 		//public bool CreateAuthenKeyFile(ushort descriptor, byte[] inData, out byte[] outData)
 		//{
@@ -247,16 +238,6 @@ namespace RonftonCard.Dongle.RockeyArm
 		//	}
 
 		//	return IsSucc();
-		//}
-
-		//private void TDesEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)
-		//{
-		//	int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
-
-		//	// fill zero
-		//	cipher = ArrayUtil.CopyFrom<byte>(plain, len);
-
-		//	this.LastErrorCode = Dongle_TDES(this.hDongle, descriptor, 0, cipher, cipher, (uint)len);
 		//}
 
 		//private void RsaPriEncrypt(ushort descriptor, byte[] plain, out byte[] cipher)

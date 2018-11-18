@@ -14,6 +14,7 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		String LastErrorMessage { get; }
 		uint LastErrorCode { get; }
+		Encoding Encoder { get; }
 
 		/// <summary>
 		/// last operation is succ or not
@@ -24,7 +25,6 @@ namespace RonftonCard.Core.Dongle
 		/// all dongle keys
 		/// </summary>
 		DongleInfo[] Dongles { get; }
-
 
 		/// <summary>
 		/// Close device
@@ -45,17 +45,25 @@ namespace RonftonCard.Core.Dongle
 		/// <summary>
 		/// restore current key
 		/// </summary>
-		bool Restore(int seq,byte[] adminPin);
+		bool Restore(byte[] adminPin, int seq = 0);
 
 		/// <summary>
 		/// set status as anonymous
 		/// </summary>
 		bool Reset(int seq = 0);
 
+		bool Enumerate();
+
 		/// <summary>
 		/// Create user root key
 		/// and must use default admin pin
 		/// </summary>
-		ResultArgs CreateUserRootKey(int seq, String userId, String appId, byte[] userRootKey);
+		ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey, int seq=0);
+
+		ResultArgs CreateAuthenKey(int seq = 0);
+
+		bool Encrypt(byte[] plain, out byte[] cipher, int seq=0);
+
+		bool PriEncrypt(byte[] plain, out byte[] cipher, int seq=0);
 	}
 }

@@ -1,10 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
-using RonftonCard.AuthenKey.RockeyArm;
-using RonftonCard.Common.AuthenKey;
 using System;
 using System.Web.Http;
-using BlueMoon;
 using RonftonCard.Service.Test;
 
 namespace RonftonCard.Service

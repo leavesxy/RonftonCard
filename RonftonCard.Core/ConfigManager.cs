@@ -1,18 +1,24 @@
 ﻿using Bluemoon;
 using Bluemoon.Config;
+using log4net;
 using RonftonCard.Core.CardReader;
 using RonftonCard.Core.Config;
+using RonftonCard.Core.Dongle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace RonftonCard.Core
 {
 	/// <summary>
 	/// configuration management
 	/// </summary>
+	#pragma warning disable 168
 	public class ConfigManager
 	{
+		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
+
 		private static IDictionary<String, CardTempleteDescriptor> templeteDescriptors;
 		private static IDictionary<String, CardReaderDescriptor> readerDescriptors;
 		private static IDictionary<String, DongleDescriptor> dongleDescriptors;
@@ -36,6 +42,7 @@ namespace RonftonCard.Core
 			return true;
 		}
 
+		#region "--- to show config ---"
 		public static String TempleteSelected { get; set; }
 
 		public static String ReaderSelected { get; set; }
@@ -61,7 +68,7 @@ namespace RonftonCard.Core
 			}
 		}
 
-		public static String[] Dongles
+		public static String[] DongleNames
 		{
 			get
 			{
@@ -73,8 +80,9 @@ namespace RonftonCard.Core
 		{
 			return descriptor == null || descriptor.Keys.Count == 0 ? new String[] { } : descriptor.Keys.ToArray();
 		}
+		#endregion
 
-
+		#region "--- Create instance from config ---"
 		public static CardContext CreateCardContext()
 		{
 			return new CardContext()
@@ -83,11 +91,11 @@ namespace RonftonCard.Core
 				Reader = GetCardReader()
 			};
 		}
-		
+
 		/// <summary>
 		/// create card reader instance
 		/// </summary>
-		private static ICardReader GetCardReader()
+		public static ICardReader GetCardReader()
 		{
 			ICardReader reader = null;
 			try
@@ -100,8 +108,33 @@ namespace RonftonCard.Core
 			}
 			catch (Exception ex)
 			{
+				logger.Error("GetCardReader error ! msg = " + ex.Message);
 			}
 			return reader;
 		}
+
+		/// <summary>
+		/// Create dongle instance
+		/// </summary>
+		public static IDongle GetDongle()
+		{
+			IDongle dongle = null;
+			try
+			{
+				DongleDescriptor desc = dongleDescriptors[DongleSelected];
+				Type type = TypeUtil.ParseType(desc.DrvType);
+
+				if (type != null)
+					dongle = (IDongle)Activator.CreateInstance(
+						type, 
+						new object[] { desc.Charset, desc.Seed,desc.ErrorMessageFileName });
+			}
+			catch (Exception ex)
+			{
+				logger.Error("GetDongle error ! msg = " + ex.Message);
+			}
+			return dongle;
+		}
+		#endregion
 	}
 }

@@ -17,9 +17,6 @@ namespace RonftonCard.Core.Dongle
 		// seed
 		protected readonly byte[] seed;
 
-		// encoding charset
-		protected Encoding encoding;
-
 		// SUCC flag
 		protected uint succ;
 
@@ -32,10 +29,11 @@ namespace RonftonCard.Core.Dongle
 
 		#region "--- constructor ---"
 
-		protected AbstractDongle(Encoding encoding, byte[] seed, String errMsgFileName, String adminPin, String userPin)
+		protected AbstractDongle(String encoding, String seed, String errMsgFileName, String adminPin, String userPin)
 		{
-			this.encoding = encoding;
-			this.seed = seed;
+			this.Encoder = Encoding.GetEncoding(encoding);
+
+			this.seed = String.IsNullOrEmpty(seed) ? this.Encoder.GetBytes(DongleConst.DEFAULT_SEED_KEY) : this.Encoder.GetBytes(seed);
 
 			if (!String.IsNullOrEmpty(errMsgFileName))
 				this.errorMsgProp = new Properties(errMsgFileName);
@@ -49,7 +47,7 @@ namespace RonftonCard.Core.Dongle
 		#endregion
 
 
-		#region "--- implement IAuthenKey ---"
+		#region "--- implement IDongle ---"
 
 		public DongleInfo[] Dongles
 		{
@@ -70,6 +68,9 @@ namespace RonftonCard.Core.Dongle
 				return this.errorMsgProp.Get(GetErrorMsgKey());
 			}
 		}
+
+		// encoding charset
+		public Encoding Encoder { get; protected set; }
 
 		/// <summary>
 		/// open specified dongle by KEY_ID
@@ -96,13 +97,16 @@ namespace RonftonCard.Core.Dongle
 
 		public abstract bool Open(int seq = 0);
 		public abstract bool Reset(int seq = 0);
+		public abstract bool Enumerate();
+		public abstract bool Restore(byte[] adminPin, int seq=0);
 
-		public abstract bool Restore(int seq, byte[] adminPin);
+		public abstract ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey, int seq=0 );
 
-		public abstract ResultArgs CreateUserRootKey(int seq, String userId, String appId, byte[] userRootKey);
+		public abstract bool Encrypt(byte[] plain, out byte[] cipher, int seq=0);
 
-		//public abstract ResultArgs CreateAuthenKey();
-		//public abstract bool Encrypt(byte[] plain, out byte[] cipher);
+
+		public abstract ResultArgs CreateAuthenKey(int seq = 0);
+		public abstract bool PriEncrypt(byte[] plain, out byte[] cipher, int seq=0);
 
 		protected abstract String GetErrorMsgKey();
 

@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\AuthenKeyResponse.cs" />
+    <Compile Include="Entity\UserRootKeyResponse.cs" />
     <Compile Include="Temp\AbstractVirtualCard.cs" />
     <Compile Include="CardContext.cs" />
     <Compile Include="CardReader\CardDataType.cs" />
