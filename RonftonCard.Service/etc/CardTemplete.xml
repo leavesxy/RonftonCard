@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<CardTemplete>
+<CardTempletes>
 	<templete name="RFC" desc="融付通标准卡结构">
 		<data>
 			<!-- 为了避免配置出错，对于offset=0 的项，使用自动配置，即当前offset=上一配置项offset+length-->
@@ -68,4 +68,4 @@
 			<item name="balance" type="INT32" length="4" offset="30" description="余额"/>
 		</data>-->
 	</templete>
-</CardTemplete>
+</CardTempletes>

@@ -9,22 +9,19 @@ namespace RonftonCard.Core.Dongle
 {
 	public interface IDongle : IDisposable
 	{
-		/// <summary>
-		/// last error code & message
-		/// </summary>
+		#region "--- properties ---"
 		String LastErrorMessage { get; }
 		uint LastErrorCode { get; }
 		Encoding Encoder { get; }
+		DongleInfo[] Dongles { get; }
 
+		#endregion
+
+		#region "--- device interface ---"
 		/// <summary>
 		/// last operation is succ or not
 		/// </summary>
 		bool Succ();
-
-		/// <summary>
-		/// all dongle keys
-		/// </summary>
-		DongleInfo[] Dongles { get; }
 
 		/// <summary>
 		/// Close device
@@ -54,16 +51,21 @@ namespace RonftonCard.Core.Dongle
 
 		bool Enumerate();
 
+		#endregion
+
+		#region "--- bizz interface ---"
 		/// <summary>
 		/// Create user root key
 		/// and must use default admin pin
 		/// </summary>
-		ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey, int seq=0);
+		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, int seq=0);
 
-		ResultArgs CreateAuthenKey(int seq = 0);
+		ResultArgs CreateAuthenKey(String userId, int seq = 0);
 
 		bool Encrypt(byte[] plain, out byte[] cipher, int seq=0);
 
 		bool PriEncrypt(byte[] plain, out byte[] cipher, int seq=0);
+
+		#endregion
 	}
 }

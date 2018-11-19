@@ -9,27 +9,18 @@ namespace RonftonCard.Core.Dongle
 {
 	public abstract class AbstractDongle : IDongle
 	{
-		// use log4net logger
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
 
-		protected DongleInfo[] dongles;
-
-		// seed
+		protected DongleInfo[] dongleInfo;
 		protected readonly byte[] seed;
-
-		// SUCC flag
 		protected uint succ;
-
-		// password for admin & user
-		protected String adminPin;
-		protected String userPin;
-
-		// error message config
+		protected String defaultAdminPin;
+		protected String defaultUserPin;
 		private Properties errorMsgProp;
 
 		#region "--- constructor ---"
 
-		protected AbstractDongle(String encoding, String seed, String errMsgFileName, String adminPin, String userPin)
+		protected AbstractDongle(String encoding, String seed, String errMsgFileName, String defaultAdminPin, String defaultUserPin)
 		{
 			this.Encoder = Encoding.GetEncoding(encoding);
 
@@ -38,20 +29,19 @@ namespace RonftonCard.Core.Dongle
 			if (!String.IsNullOrEmpty(errMsgFileName))
 				this.errorMsgProp = new Properties(errMsgFileName);
 
-			this.adminPin = String.IsNullOrEmpty(adminPin) ? DongleConst.DEFAULT_ADMIN_PIN_DONGLE : adminPin;
-			this.userPin = String.IsNullOrEmpty(userPin) ? DongleConst.DEFAULT_USER_PIN_DONGLE : userPin;
+			this.defaultAdminPin = String.IsNullOrEmpty(defaultAdminPin) ? DongleConst.DEFAULT_ADMIN_PIN_DONGLE : defaultAdminPin;
+			this.defaultUserPin = String.IsNullOrEmpty(defaultUserPin) ? DongleConst.DEFAULT_USER_PIN_DONGLE : defaultUserPin;
 
 			this.succ = 0x00000000;
 		}
 
 		#endregion
 
-
-		#region "--- implement IDongle ---"
+		#region "--- public properties ---"
 
 		public DongleInfo[] Dongles
 		{
-			get { return this.dongles; }
+			get { return this.dongleInfo; }
 		}
 
 		public bool Succ()
@@ -69,21 +59,23 @@ namespace RonftonCard.Core.Dongle
 			}
 		}
 
-		// encoding charset
 		public Encoding Encoder { get; protected set; }
 
+		#endregion
+
+		#region "--- device interface implements ---"
 		/// <summary>
 		/// open specified dongle by KEY_ID
 		/// </summary>
 		public bool Open(String keyId)
 		{
-			if (this.Dongles.IsNullOrEmpty())
+			if (this.dongleInfo.IsNullOrEmpty())
 				return false;
 
-			for(int i=0; i< this.Dongles.Length; i++)
+			for(int i=0; i< this.dongleInfo.Length; i++)
 			{
-				if ( this.Dongles[i].KeyId.Equals(keyId))
-					return Open(this.Dongles[i].Seq);
+				if ( this.dongleInfo[i].KeyId.Equals(keyId))
+					return Open(this.dongleInfo[i].Seq);
 			}
 
 			return false;
@@ -94,18 +86,17 @@ namespace RonftonCard.Core.Dongle
 
 		public abstract void Close();
 		public abstract void Close(int seq);
-
 		public abstract bool Open(int seq = 0);
 		public abstract bool Reset(int seq = 0);
 		public abstract bool Enumerate();
 		public abstract bool Restore(byte[] adminPin, int seq=0);
 
-		public abstract ResultArgs CreateUserRootKey(String userId, String appId, byte[] userRootKey, int seq=0 );
+		public abstract ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, int seq = 0);
+
+		public abstract ResultArgs CreateAuthenKey(String userId, int seq = 0);
 
 		public abstract bool Encrypt(byte[] plain, out byte[] cipher, int seq=0);
 
-
-		public abstract ResultArgs CreateAuthenKey(int seq = 0);
 		public abstract bool PriEncrypt(byte[] plain, out byte[] cipher, int seq=0);
 
 		protected abstract String GetErrorMsgKey();

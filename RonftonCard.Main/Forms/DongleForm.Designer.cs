@@ -44,6 +44,7 @@
 			this.BntEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.TxtPlain = new System.Windows.Forms.TextBox();
+			this.BtnEncryptByPri = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// CbDongle
@@ -188,6 +189,16 @@
 			this.TxtPlain.Size = new System.Drawing.Size(354, 25);
 			this.TxtPlain.TabIndex = 32;
 			// 
+			// BtnEncryptByPri
+			// 
+			this.BtnEncryptByPri.Location = new System.Drawing.Point(306, 428);
+			this.BtnEncryptByPri.Name = "BtnEncryptByPri";
+			this.BtnEncryptByPri.Size = new System.Drawing.Size(148, 29);
+			this.BtnEncryptByPri.TabIndex = 17;
+			this.BtnEncryptByPri.Text = "用户私钥加密测试";
+			this.BtnEncryptByPri.UseVisualStyleBackColor = true;
+			this.BtnEncryptByPri.Click += new System.EventHandler(this.BtnEncryptByPri_Click);
+			// 
 			// DongleForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -203,6 +214,7 @@
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
+			this.Controls.Add(this.BtnEncryptByPri);
 			this.Controls.Add(this.BtnCreateAuthenKey);
 			this.Controls.Add(this.BtnRestore);
 			this.Controls.Add(this.BntEncryptByUserRoot);
@@ -240,5 +252,6 @@
 		private System.Windows.Forms.Button BntEncryptByUserRoot;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox TxtPlain;
+		private System.Windows.Forms.Button BtnEncryptByPri;
 	}
 }

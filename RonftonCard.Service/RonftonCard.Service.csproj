@@ -97,11 +97,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenController.cs" />
+    <Compile Include="AuthenDongleController.cs" />
+    <Compile Include="DongleController.cs" />
+    <Compile Include="HelperInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartService.cs" />
-    <Compile Include="Test\TestInfo.cs" />
+    <Compile Include="UserRootDongleController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -112,15 +114,26 @@
       <Project>{2ea04799-4dda-46b1-a248-0062bae1ceb3}</Project>
       <Name>RonftonCard.CardReader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RonftonCard.Core\RonftonCard.Core.csproj">
+      <Project>{508bb207-c9c8-49c9-8b70-f99185bff1c4}</Project>
+      <Name>RonftonCard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RonftonCard.Dongle\RonftonCard.Dongle.csproj">
+      <Project>{d10c6a8f-c39c-43d9-9ba4-df200e59396e}</Project>
+      <Name>RonftonCard.Dongle</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\CardReader.xml">
+    <Content Include="etc\CardReader.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\CardTemplete.xml">
+    <Content Include="etc\CardTemplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\log4net.xml">
+    <Content Include="etc\Dongle.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="etc\Logger.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
