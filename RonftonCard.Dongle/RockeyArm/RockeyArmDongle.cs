@@ -7,6 +7,8 @@ using RonftonCard.Core.Dongle;
 
 namespace RonftonCard.Dongle.RockeyArm
 {
+	using HDONGLE = Int64;
+
 	public partial class RockeyArmDongle  : AbstractDongle
 	{
 		private const String defaultErrMsgFileName = "RockeyArmErrorMessage.properties";
@@ -42,16 +44,32 @@ namespace RonftonCard.Dongle.RockeyArm
 		}
 
 		/// <summary>
+		/// convert String to int,default base 16
+		/// </summary>
+		private uint ToUint32(String str, int fromBase = 16)
+		{
+			uint v = 0;
+
+			try
+			{
+				v = Convert.ToUInt32(str, fromBase);
+			}
+			catch (Exception)
+			{
+			}
+			return v;
+		}
+		#endregion
+
+		#region "--- device interface implements ---"
+
+		/// <summary>
 		/// convert lastErrorCode to ErrorMsg key
 		/// </summary>
 		protected override String GetErrorMsgKey()
 		{
 			return String.Format("0x{0:X8}", this.LastErrorCode);
 		}
-
-		#endregion
-
-		#region "--- device interface implements ---"
 
 		/// <summary>
 		/// open specified key by seq , and first is default
@@ -67,7 +85,7 @@ namespace RonftonCard.Dongle.RockeyArm
 				return true;
 
 			this.LastErrorCode = Dongle_Open(ref this.dongleInfo[seq].hDongle, seq);
-			return Succ();
+			return IsSucc;
 		}
 
 		/// <summary>
@@ -123,7 +141,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.LastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
 
 			//no key found
-			if (!Succ() || count <= 0)
+			if (!IsSucc || count <= 0)
 				return false;
 
 			logger.Debug(String.Format("found {0} Dogs !", count));
@@ -155,7 +173,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			this.dongleInfo = keyInfo.ToArray();
 
-			return Succ();
+			return IsSucc;
 		}
 
 		private DongleInfo ParseDongleInfo(short seq, DONGLE_INFO devInfo)
@@ -215,7 +233,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.LastErrorCode = Dongle_RFS(this.dongleInfo[seq].hDongle);
 
 			Close(seq);
-			return Succ();
+			return IsSucc;
 		}
 		
 		/// <summary>
@@ -229,41 +247,18 @@ namespace RonftonCard.Dongle.RockeyArm
 				return false;
 
 			this.LastErrorCode = Dongle_ResetState(this.dongleInfo[seq].hDongle);
-			return Succ();
+			return IsSucc;
 		}
 
-
-		private bool Authen(Int64 hDongle, AuthenMode authenMode, byte[] pin)
+		private bool Authen(HDONGLE hDongle, AuthenMode authenMode, byte[] pin)
 		{
 			uint flag = (authenMode == AuthenMode.ADMIN) ? (uint)1 : (uint)0;
 			int pRemainCount;
 			this.LastErrorCode = Dongle_VerifyPIN(hDongle, flag, pin, out pRemainCount);
 
-			return Succ();
+			return IsSucc;
 		}
 
-		/// <summary>
-		/// initialize a empty dongle
-		/// after invoke SUCC,status of key is anonymous
-		/// </summary>
-		public bool unique(Int64 hDongle, out byte[] newAdminPwd, out byte[] appId)
-		{
-			appId = new byte[8];
-			newAdminPwd = new byte[16];
-
-			logger.Debug("Initialize Key , seed = " + BitConverter.ToString( this.seed) );
-
-			//unique key, requst admin privilege
-			if (!Authen(hDongle, AuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.defaultAdminPin)))
-				return false;
-
-			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
-
-			logger.Debug("new pid = " + this.Encoder.GetString(appId));
-			logger.Debug("new admin pwd = " + this.Encoder.GetString(newAdminPwd) );
-
-			return Succ();
-		}
 
 		#endregion
 	}

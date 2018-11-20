@@ -10,10 +10,10 @@ namespace RonftonCard.Core.Dongle
 	public abstract class AbstractDongle : IDongle
 	{
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
+		private uint SUCC = 0x00000000;
 
 		protected DongleInfo[] dongleInfo;
 		protected readonly byte[] seed;
-		protected uint succ;
 		protected String defaultAdminPin;
 		protected String defaultUserPin;
 		private Properties errorMsgProp;
@@ -31,8 +31,6 @@ namespace RonftonCard.Core.Dongle
 
 			this.defaultAdminPin = String.IsNullOrEmpty(defaultAdminPin) ? DongleConst.DEFAULT_ADMIN_PIN_DONGLE : defaultAdminPin;
 			this.defaultUserPin = String.IsNullOrEmpty(defaultUserPin) ? DongleConst.DEFAULT_USER_PIN_DONGLE : defaultUserPin;
-
-			this.succ = 0x00000000;
 		}
 
 		#endregion
@@ -42,11 +40,6 @@ namespace RonftonCard.Core.Dongle
 		public DongleInfo[] Dongles
 		{
 			get { return this.dongleInfo; }
-		}
-
-		public bool Succ()
-		{
-			return this.LastErrorCode == this.succ;
 		}
 
 		public uint LastErrorCode { get; protected set; }
@@ -63,10 +56,11 @@ namespace RonftonCard.Core.Dongle
 
 		#endregion
 
-		#region "--- device interface implements ---"
-		/// <summary>
-		/// open specified dongle by KEY_ID
-		/// </summary>
+		public bool IsSucc
+		{
+			get { return (SUCC == this.LastErrorCode); }
+		}
+
 		public bool Open(String keyId)
 		{
 			if (this.dongleInfo.IsNullOrEmpty())
@@ -80,7 +74,6 @@ namespace RonftonCard.Core.Dongle
 
 			return false;
 		}
-		#endregion
 
 		#region "--- abstract ---"
 
@@ -103,7 +96,7 @@ namespace RonftonCard.Core.Dongle
 
 		#endregion
 
-		#region IDisposable Support
+		#region "--- IDisposable implements ---"
 		private bool disposedValue = false; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
@@ -121,7 +114,6 @@ namespace RonftonCard.Core.Dongle
 			}
 		}
 
-		// This code added to correctly implement the disposable pattern.
 		public void Dispose()
 		{
 			Dispose(true);

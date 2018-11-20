@@ -7,29 +7,37 @@ using System.Runtime.CompilerServices;
 
 namespace RonftonCard.Dongle.RockeyArm
 {
+	using HDONGLE = Int64;
 	public partial class RockeyArmDongle
 	{
-		protected bool SetUserID(Int64 hDongle, uint uid)
+		#region "--- initialize dongle ---"
+		protected bool SetUserID(HDONGLE hDongle, uint uid)
 		{
 			this.LastErrorCode = Dongle_SetUserID(hDongle, uid);
-			return Succ();
+			return IsSucc;
 		}
 
 		/// <summary>
-		/// convert String to int,default base 16
+		/// initialize a empty dongle
+		/// after invoke SUCC,status of key is anonymous
 		/// </summary>
-		private uint ToUint32(String str, int fromBase = 16)
+		public bool unique(HDONGLE hDongle, out byte[] newAdminPwd, out byte[] appId)
 		{
-			uint v = 0;
+			appId = new byte[8];
+			newAdminPwd = new byte[16];
 
-			try
-			{
-				v = Convert.ToUInt32(str, fromBase);
-			}
-			catch (Exception)
-			{
-			}
-			return v;
+			logger.Debug("Initialize Key , seed = " + BitConverter.ToString(this.seed));
+
+			//unique key, requst admin privilege
+			if (!Authen(hDongle, AuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.defaultAdminPin)))
+				return false;
+
+			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
+
+			logger.Debug("new pid = " + this.Encoder.GetString(appId));
+			logger.Debug("new admin pwd = " + this.Encoder.GetString(newAdminPwd));
+
+			return IsSucc;
 		}
 
 		private bool Initialize(Int64 hDongle, String userId, out byte[] newAdminPin, out byte[] appId)
@@ -45,6 +53,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			SetUserID(hDongle, ToUint32(userId));
 			return true;
 		}
+		#endregion
 
 		#region "--- User root Key Process ---"
 		/// <summary>
@@ -87,7 +96,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// create User root key file,and Key is request 16 bytes at least
 		/// </summary>
-		private bool CreateKeyFile(Int64 hDongle, ushort descriptor, byte[] userRootkey)
+		private bool CreateKeyFile(HDONGLE hDongle, ushort descriptor, byte[] userRootkey)
 		{
 			KEY_FILE_ATTR keyAttr = new KEY_FILE_ATTR();
 			keyAttr.m_Size = 16;
@@ -97,7 +106,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.LastErrorCode = Dongle_CreateFile(hDongle, RockeyArmFileType.FILE_KEY, descriptor, ptr);
 			IntPtrUtil.Free(ref ptr);
 
-			if (!Succ())
+			if (!IsSucc)
 				return false;
 
 			// dongle key require 16 bytes key
@@ -105,7 +114,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			this.LastErrorCode = Dongle_WriteFile(hDongle, RockeyArmFileType.FILE_KEY, descriptor, 0, userRootkey, 16);
 
-			return Succ();
+			return IsSucc;
 		}
 
 		/// <summary>
@@ -126,7 +135,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			logger.Debug(String.Format("plain = [ {0} ], cipher = [ {1} ]", BitConverter.ToString(plain), BitConverter.ToString(cipher)));
 
 			// donot close dongle
-			return Succ();
+			return IsSucc;
 		}
 
 		#endregion
@@ -139,7 +148,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			if (!IsValidSeq(seq) || !Open(seq))
 				return ret;
 
-			Int64 hDongle = this.dongleInfo[seq].hDongle;
+			HDONGLE hDongle = this.dongleInfo[seq].hDongle;
 
 			byte[] newAdminPin;
 			byte[] appId;
@@ -181,7 +190,6 @@ namespace RonftonCard.Dongle.RockeyArm
 				IntPtrUtil.Free(ref pPubKey);
 				IntPtrUtil.Free(ref pPriKey);
 			}
-
 			return ret;
 		}
 
@@ -217,8 +225,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			{
 				IntPtrUtil.Free(ref ptr);
 			}
-
-			return Succ();
+			return IsSucc;
 		}
 
 		public override bool PriEncrypt(byte[] plain, out byte[] cipher, int seq = 0)
@@ -232,23 +239,9 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.LastErrorCode = Dongle_RsaPri(this.dongleInfo[seq].hDongle, DongleConst.AUTHEN_KEY_DESCRIPTOR, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 
 			// don't close dongle
-			return Succ();
+			return IsSucc;
 		}
 
-		//public void RsaPubDecrypt(byte[] pubKey, byte[] plain, out byte[] cipher)
-		//{
-		//	uint nOutDataLen = RSA_KEY_LEN;
-		//	cipher = new byte[nOutDataLen];
-
-		//	RSA_PUBLIC_KEY rsaPub = new RockeyArm.DongleKey.RSA_PUBLIC_KEY();
-
-		//	rsaPub.bits = RSA_KEY_LEN * 8 ;
-		//	rsaPub.modulus = 65537;
-		//	rsaPub.exponent = new byte[256];
-		//	Array.Copy(pubKey, rsaPub.exponent, RSA_KEY_LEN);
-
-		//	this.LastErrorCode = Dongle_RsaPub(this.hDongle, 1, ref rsaPub, plain, (uint)plain.Length, cipher, ref nOutDataLen);
-		//}
 		#endregion
 	}
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Core.Dongle
 {
+	using HDONGLE = Int64;
 	public class DongleInfo
 	{
 		/// <summary>
@@ -39,17 +40,15 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		public String Description { get; set; }
 
-
 		/// <summary>
 		/// handler of device
 		/// </summary>
-		public Int64 hDongle;
+		public HDONGLE hDongle;
 
 		public DongleInfo()
 		{
 			this.hDongle = -1;
 		}
-
 
 		public String GetInfo()
 		{

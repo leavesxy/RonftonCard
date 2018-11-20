@@ -23,20 +23,11 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		bool Succ();
 
-		/// <summary>
-		/// Close device
-		/// </summary>
 		void Close();
 		void Close(int seq);
 
-		/// <summary>
-		/// open device in enumerate sequence
-		/// </summary>
 		bool Open(int seq = 0);
 
-		/// <summary>
-		/// open device with specified key id
-		/// </summary>
 		bool Open(String keyId);
 
 		/// <summary>
