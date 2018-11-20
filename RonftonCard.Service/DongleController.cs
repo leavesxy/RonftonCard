@@ -1,11 +1,7 @@
 ﻿using log4net;
-using Newtonsoft.Json;
-using System;
 using System.Web.Http;
-using RonftonCard.Service.Test;
 using RonftonCard.Core.Dongle;
 using RonftonCard.Core;
-using RonftonCard.Service.Entity;
 using Bluemoon;
 
 namespace RonftonCard.Service

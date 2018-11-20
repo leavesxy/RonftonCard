@@ -135,6 +135,12 @@ namespace RonftonCard.Core
 			}
 			return dongle;
 		}
+
+		public static CardTempleteDescriptor GetCardTemplete()
+		{
+			return templeteDescriptors[TempleteSelected];
+		}
+
 		#endregion
 	}
 }

@@ -55,6 +55,7 @@
     <Compile Include="RockeyArm\RockeyArmImpl.cs" />
     <Compile Include="RockeyArm\RockeyArmInterface.cs" />
     <Compile Include="RockeyArm\RockeyArmInterface2.cs" />
+    <Compile Include="RockeyArm\RockeyArmModel.cs" />
     <Compile Include="RockeyArm\RockeyArmStru.cs" />
   </ItemGroup>
   <ItemGroup>

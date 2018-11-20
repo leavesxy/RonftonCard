@@ -87,6 +87,8 @@ namespace RonftonCard.Dongle.RockeyArm
 					this.dongleInfo[i].hDongle = -1;
 				}
 			}
+			// set dongleInfo null
+			this.dongleInfo = null;
 		}
 
 		/// <summary>
@@ -105,6 +107,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			}
 		}
 
+
 		/// <summary>
 		/// enumerate dongle device
 		/// </summary>
@@ -112,7 +115,9 @@ namespace RonftonCard.Dongle.RockeyArm
 		{
 			// close all device if have opened!!!
 			if (!this.dongleInfo.IsNullOrEmpty())
+			{
 				Close();
+			}
 
 			long count = 0;
 			this.LastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
@@ -158,19 +163,43 @@ namespace RonftonCard.Dongle.RockeyArm
 			DongleInfo dongleInfo = new DongleInfo()
 			{
 				Seq = seq,
-				Version = String.Format("v{0}.{1:d2}-({2:x2},{3})",
-								devInfo.m_Ver >> 8 & 0xff,
-								devInfo.m_Ver & 0xff,
-								devInfo.m_Type,
+				Version = String.Format("v{0}.{1:d2}-({2})",
+								devInfo.m_Ver >> 8 & 0xff,devInfo.m_Ver & 0xff,
 								BitConverter.ToString(devInfo.m_BirthDay)),
 				UserId = devInfo.m_UserID.ToString("X08"),
 				AppId = devInfo.m_PID.ToString("X08"),
-				KeyId = BitConverter.ToString(devInfo.m_HID)
+				KeyId = BitConverter.ToString(devInfo.m_HID),
+				Description = GetDongleModel( (byte)(devInfo.m_Type & 0x0ff ))
 			};
 			AbstractDongle.logger.Debug(dongleInfo.ToString());
 			return dongleInfo;
 		}
 
+		private String GetDongleModel(byte model)
+		{
+			RockeyArmModel dongleModel;
+
+			switch (model)
+			{
+				case (byte)RockeyArmModel.STANDARD:
+					dongleModel = RockeyArmModel.STANDARD;
+					break;
+
+				case (byte)RockeyArmModel.TIMER:
+					dongleModel = RockeyArmModel.TIMER;
+					break;
+
+				case (byte)RockeyArmModel.UDISK:
+					dongleModel = RockeyArmModel.UDISK;
+					break;
+
+				default:
+					dongleModel = RockeyArmModel.UNKNOWN;
+					break;
+			}
+
+			return dongleModel.GetAliasName();
+		}
 
 		/// <summary>
 		/// restore current key, should use admin pin

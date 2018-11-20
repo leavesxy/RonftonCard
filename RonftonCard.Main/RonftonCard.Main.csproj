@@ -91,6 +91,12 @@
     </Compile>
     <Compile Include="TabPageDescriptor.cs" />
     <Compile Include="TextBoxExtension.cs" />
+    <EmbeddedResource Include="Forms\CardForm.resx">
+      <DependentUpon>CardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigForm.resx">
+      <DependentUpon>ConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DongleForm.resx">
       <DependentUpon>DongleForm.cs</DependentUpon>
     </EmbeddedResource>

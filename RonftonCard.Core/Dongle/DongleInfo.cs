@@ -34,6 +34,15 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		public String KeyId { get; set; }
 
+		/// <summary>
+		/// detail information
+		/// </summary>
+		public String Description { get; set; }
+
+
+		/// <summary>
+		/// handler of device
+		/// </summary>
 		public Int64 hDongle;
 
 		public DongleInfo()
@@ -42,20 +51,22 @@ namespace RonftonCard.Core.Dongle
 		}
 
 
-		public String GetName()
+		public String GetInfo()
 		{
-			return this.Seq.ToString() + ": id=[" + this.KeyId + "], pid=[" + AppId + "], uid=[" + UserId + "]";
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("[" + this.Seq.ToString("d2") +"]").Append(" : ");
+			sb.Append(this.KeyId).Append(",");
+			sb.Append(this.Version).Append(",");
+			sb.Append(this.AppId).Append(",");
+			sb.Append(this.UserId).Append(",");
+			sb.Append(this.Description);
+			return sb.ToString();
 		}
 
 		public override String ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append(this.Seq).Append(" : ");
-			sb.Append(this.Version).Append(",");
-			sb.Append(this.AppId).Append(",");
-			sb.Append(this.UserId).Append(",");
-			sb.Append(this.KeyId);
-			return sb.ToString();
+			return "["+ this.Seq.ToString("d2") + "] : " + "key_id=" + this.KeyId  + ", app_id=" + this.AppId + ",user_id="+ this.UserId ;
 		}
 	}
 }

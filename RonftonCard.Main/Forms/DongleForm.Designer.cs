@@ -60,7 +60,7 @@
 			// 
 			this.TxtUserRootKey.Location = new System.Drawing.Point(429, 11);
 			this.TxtUserRootKey.Name = "TxtUserRootKey";
-			this.TxtUserRootKey.Size = new System.Drawing.Size(208, 25);
+			this.TxtUserRootKey.Size = new System.Drawing.Size(354, 25);
 			this.TxtUserRootKey.TabIndex = 32;
 			// 
 			// TxtAdminPin

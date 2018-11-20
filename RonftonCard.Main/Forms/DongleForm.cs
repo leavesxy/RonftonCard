@@ -6,6 +6,7 @@ using RonftonCard.Core;
 using Bluemoon;
 using RonftonCard.Core.Entity;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace RonftonCard.Main.Forms
 {
@@ -45,9 +46,12 @@ namespace RonftonCard.Main.Forms
 					// refresh dongle
 					this.dongle.Enumerate();
 
-					this.CbDongle.Items.AddRange(this.dongle.Dongles);
-					this.CbDongle.SelectedIndex = 0;
-					ShowDongleInfo(clear);
+					if (!this.dongle.Dongles.IsNullOrEmpty())
+					{
+						this.CbDongle.Items.AddRange(this.dongle.Dongles);
+						this.CbDongle.SelectedIndex = 0;
+						ShowDongleInfo(clear);
+					}
 				}
 			};
 			this.BeginInvoke(action);
@@ -55,14 +59,11 @@ namespace RonftonCard.Main.Forms
 
 		private void ShowDongleInfo(bool clear)
 		{
-			if (this.dongle == null || this.dongle.Dongles == null || this.dongle.Dongles.Length == 0)
-				return;
-
 			this.TxtTrace.Trace("Dongles information : ", clear);
 
 			foreach( DongleInfo info in this.dongle.Dongles )
 			{
-				this.TxtTrace.Trace(info.ToString());
+				this.TxtTrace.Trace(info.GetInfo());
 			}
 		}
 
@@ -79,12 +80,15 @@ namespace RonftonCard.Main.Forms
 			if (this.dongle.Restore(adminPin, selected))
 			{
 				logger.Debug(String.Format("restore {0} ok! dongle info = {1}", selected, this.dongle.Dongles[selected]));
-				this.TxtTrace.Trace(String.Format("restore {0} ok! dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
+				this.TxtTrace.Trace(String.Format("restore {0} ok, old dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
 			}
 			else
 			{
 				this.TxtTrace.Trace(String.Format("restore {0} Error! error msg = {1}", selected, this.dongle.LastErrorMessage), true);
 			}
+
+			Update();
+			Thread.Sleep(5000);
 
 			// refresh dongle
 			RefreshDongle(false);

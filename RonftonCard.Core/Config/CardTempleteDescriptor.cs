@@ -75,14 +75,14 @@ namespace RonftonCard.Core.Config
 		}
 
 		#region "--- for debug ---"
-		public String DbgTempleteDataDescriptor()
+		public String GetDataItemInfo()
 		{
 			if (this.DataDescriptor.IsNullOrEmpty())
 				return "Card DataDescriptor is null ! please check configuration!";
 
 			StringBuilder sb = new StringBuilder();
-			sb.Append("Card data structure :" + Environment.NewLine);
-			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
+			//sb.Append("Card data structure :" + Environment.NewLine);
+			//sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
 
 			int size = 0;
 
@@ -101,19 +101,19 @@ namespace RonftonCard.Core.Config
 				sb.Append(this.DataDescriptor[i].ToString());
 			}
 
-			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
+			//sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
 			sb.Append("Card Structure total Size : " + size.ToString() + Environment.NewLine);
 			return sb.ToString();
 		}
-
-		public String DbgTempleteStorageDescriptor()
+		
+		public String GetStorageInfo()
 		{
 			if (this.StorageDescriptor.IsNullOrEmpty())
 				return "Card StorageDescriptor is null, Please check configuration!";
 
 			StringBuilder sb = new StringBuilder();
-			sb.Append("Card Storage table" + Environment.NewLine);
-			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
+			//sb.Append("Card Storage table" + Environment.NewLine);
+			//sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
 
 			int size = 0;
 
@@ -123,7 +123,7 @@ namespace RonftonCard.Core.Config
 				sb.Append(this.StorageDescriptor[i].ToString());
 			}
 
-			sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
+			//sb.Append("------------------------------------------------------------------------------------" + Environment.NewLine);
 			sb.Append("Card Storage total Size : " + size.ToString() + Environment.NewLine);
 			return sb.ToString();
 		}
