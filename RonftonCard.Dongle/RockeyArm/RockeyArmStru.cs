@@ -5,11 +5,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Dongle.Temp.RockeyArm
+namespace RonftonCard.Dongle.RockeyArm
 {
 	public partial class RockeyArmDongle
 	{
-		//informat of dog
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DONGLE_INFO
 		{

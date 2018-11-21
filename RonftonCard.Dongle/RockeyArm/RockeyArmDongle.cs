@@ -8,83 +8,17 @@ using RonftonCard.Core.Dongle;
 
 namespace RonftonCard.Dongle.RockeyArm
 {
+	using DONGLE_HANDLER = Int64;
+
 	public partial class RockeyArmDongle : IDongle
 	{
-		public DongleInfo[] DongleInfo
+
+		public void Close(DONGLE_HANDLER hDongle)
 		{
-			get
+			if (hDongle != -1)
 			{
-				throw new NotImplementedException();
+				Dongle_Close(hDongle);
 			}
-		}
-
-		public Encoding Encoder
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public bool IsSucc
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public string LastErrorMessage
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public void Close()
-		{
-			throw new NotImplementedException();
-		}
-
-		public ResultArgs CreateAuthenKey(string userId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public ResultArgs CreateUserRootKey(string userId, byte[] userRootKey)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Dispose()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool Encrypt(byte[] plain, out byte[] cipher)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool Open()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool Reset()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool Restore(byte[] adminPin)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool WriteUserInfo(DongleUserInfo userInfo)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

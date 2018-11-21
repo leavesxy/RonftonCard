@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Dongle.Temp.RockeyArm
+namespace RonftonCard.Dongle.RockeyArm
 {
 	/// <summary>
 	/// define file type stored in dongle key
