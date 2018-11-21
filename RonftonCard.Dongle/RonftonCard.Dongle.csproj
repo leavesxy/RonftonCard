@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RockeyArm\RockeyArmDongle.cs" />
+    <Compile Include="RockeyArm\RockeyArmDongleInterface.cs" />
+    <Compile Include="RockeyArm\RockeyArmFactory.cs" />
+    <Compile Include="RockeyArm\RockeyArmDongleImpl.cs" />
     <Compile Include="Temp\RockeyArm\RockeyArmFileType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Temp\RockeyArm\RockeyArmDongle.cs" />

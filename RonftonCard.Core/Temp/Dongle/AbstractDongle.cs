@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RonftonCard.Core.Dongle
+namespace RonftonCard.Core.Temp.Dongle
 {
 	public abstract class AbstractDongle : IDongle
 	{

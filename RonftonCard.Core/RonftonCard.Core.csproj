@@ -48,16 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dongle\DongleUserInfo.cs" />
+    <Compile Include="Dongle\IDongle.cs" />
+    <Compile Include="Dongle\IDongleFactory.cs" />
+    <Compile Include="Dongle\IDongleService.cs" />
     <Compile Include="Entity\AuthenKeyResponse.cs" />
     <Compile Include="Entity\UserRootKeyResponse.cs" />
     <Compile Include="Temp\AbstractVirtualCard.cs" />
     <Compile Include="CardContext.cs" />
     <Compile Include="CardReader\CardDataType.cs" />
     <Compile Include="CardReader\CardType.cs" />
-    <Compile Include="Temp\Dongle\DongleConst.cs" />
-    <Compile Include="Temp\Dongle\DongleInfo.cs" />
-    <Compile Include="Temp\Dongle\DongleType.cs" />
-    <Compile Include="Temp\Dongle\AuthenMode.cs" />
+    <Compile Include="Dongle\DongleConst.cs" />
+    <Compile Include="Dongle\DongleInfo.cs" />
+    <Compile Include="Dongle\DongleType.cs" />
+    <Compile Include="Dongle\DongleAuthenMode.cs" />
     <Compile Include="CardReader\KeyMode.cs" />
     <Compile Include="Temp\MifareVirtualCard.cs" />
     <Compile Include="CardReader\PortType.cs" />

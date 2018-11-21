@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Dongle
+namespace RonftonCard.Dongle.RockeyArm
 {
-	public enum DongleType
+	public partial class RockeyArmDongle
 	{
-		COMPANY_SEED,
-
-		USER_ROOT,
-
-		AUTHEN
 	}
 }

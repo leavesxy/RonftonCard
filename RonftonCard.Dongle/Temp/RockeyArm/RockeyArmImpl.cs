@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace RonftonCard.Dongle.RockeyArm
+namespace RonftonCard.Dongle.Temp.RockeyArm
 {
 	using HDONGLE = Int64;
 	public partial class RockeyArmDongle
@@ -29,7 +29,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			logger.Debug("Initialize Key , seed = " + BitConverter.ToString(this.seed));
 
 			//unique key, requst admin privilege
-			if (!Authen(hDongle, AuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.defaultAdminPin)))
+			if (!Authen(hDongle, DongleAuthenMode.ADMIN, Encoding.UTF8.GetBytes(this.defaultAdminPin)))
 				return false;
 
 			this.LastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
@@ -47,7 +47,7 @@ namespace RonftonCard.Dongle.RockeyArm
 				return false;
 
 			// re-authen
-			if (!Authen(hDongle, AuthenMode.ADMIN, newAdminPin))
+			if (!Authen(hDongle, DongleAuthenMode.ADMIN, newAdminPin))
 				return false;
 
 			SetUserID(hDongle, ToUint32(userId));

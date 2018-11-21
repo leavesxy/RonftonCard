@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Dongle
+namespace RonftonCard.Core.Temp.Dongle
 {
 	public interface IDongle : IDisposable
 	{

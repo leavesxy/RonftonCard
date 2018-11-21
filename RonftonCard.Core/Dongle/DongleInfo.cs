@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Core.Dongle
 {
-	using HDONGLE = Int64;
 	public class DongleInfo
 	{
 		/// <summary>
@@ -15,8 +14,12 @@ namespace RonftonCard.Core.Dongle
 		public short Seq { get; set; }
 
 		/// <summary>
-		/// version of KEY
-		/// Dongle: COS_VER + type + factory_date
+		/// hardware id
+		/// </summary>
+		public String KeyId { get; set; }
+
+		/// <summary>
+		/// COS_VER
 		/// </summary>
 		public String Version { get; set; }
 
@@ -31,24 +34,19 @@ namespace RonftonCard.Core.Dongle
 		public String UserId { get; set; }
 
 		/// <summary>
-		/// hardware id
+		/// date of manufacture
 		/// </summary>
-		public String KeyId { get; set; }
+		public String ManufactureDate { get; set; }
+
+		/// <summary>
+		/// model of this dongle
+		/// </summary>
+		public String Model { get; set; }
 
 		/// <summary>
 		/// detail information
 		/// </summary>
 		public String Description { get; set; }
-
-		/// <summary>
-		/// handler of device
-		/// </summary>
-		public HDONGLE hDongle;
-
-		public DongleInfo()
-		{
-			this.hDongle = -1;
-		}
 
 		public String GetInfo()
 		{
@@ -59,6 +57,8 @@ namespace RonftonCard.Core.Dongle
 			sb.Append(this.Version).Append(",");
 			sb.Append(this.AppId).Append(",");
 			sb.Append(this.UserId).Append(",");
+			sb.Append(this.Model).Append(",");
+			sb.Append(this.ManufactureDate).Append(",");
 			sb.Append(this.Description);
 			return sb.ToString();
 		}

@@ -9,7 +9,7 @@ namespace RonftonCard.Core.Dongle
 	/// <summary>
 	/// authentication mode
 	/// </summary>
-	public enum AuthenMode
+	public enum DongleAuthenMode
 	{
 		/// <summary>
 		/// by admin pin

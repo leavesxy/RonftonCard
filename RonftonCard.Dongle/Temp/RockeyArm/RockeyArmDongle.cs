@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Bluemoon;
-using RonftonCard.Core.Dongle;
+using RonftonCard.Core.Temp.Dongle;
 
-namespace RonftonCard.Dongle.RockeyArm
+namespace RonftonCard.Dongle.Temp.RockeyArm
 {
 	using HDONGLE = Int64;
 

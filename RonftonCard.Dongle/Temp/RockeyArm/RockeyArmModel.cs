@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bluemoon;
 
-namespace RonftonCard.Dongle.RockeyArm
+namespace RonftonCard.Dongle.Temp.RockeyArm
 {
 	/// <summary>
 	/// model of rockey arm dongle
