@@ -15,13 +15,15 @@ namespace RonftonCard.Core.Dongle
 		Encoding Encoder { get; }
 		DongleInfo[] Dongles { get; }
 
+		bool IsSucc { get; }
+
 		#endregion
 
 		#region "--- device interface ---"
 		/// <summary>
 		/// last operation is succ or not
 		/// </summary>
-		bool Succ();
+
 
 		void Close();
 		void Close(int seq);
