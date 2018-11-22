@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
+using System.IO;
 
 namespace RonftonCard.Main.Forms
 {
@@ -123,5 +124,34 @@ namespace RonftonCard.Main.Forms
 		}
 		#endregion
 
+		const int WM_DEVICECHANGE = 0x2190;
+		const int DBT_DEVICEARRIVAL = 0x8000;
+		const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+		protected override void WndProc(ref Message m)
+		{
+			switch (m.Msg)
+			{
+				case DBT_DEVICEARRIVAL:  // U盘插入
+					MessageBox.Show("U盘插入");
+					//DriveInfo[] s = DriveInfo.GetDrives();
+					//foreach (DriveInfo drive in s)
+					//{
+					//	if (drive.DriveType == DriveType.Removable)
+					//	{
+					//		MessageBox.Show("USB插入");
+					//		break;
+					//	}
+					//}
+					break;
+				case DBT_DEVICEREMOVECOMPLETE: //U盘卸载
+					MessageBox.Show("USB卸载");
+					break;
+
+				default:
+					break;
+			}
+
+			base.WndProc(ref m);
+		}
 	}
 }

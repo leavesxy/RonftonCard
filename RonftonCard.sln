@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.Main", "RonftonCard.Main\RonftonCard.Main.csproj", "{5DA539F3-FFAC-446E-A452-564702CC24CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.Tester", "RonftonCard.Tester\RonftonCard.Tester.csproj", "{64050DBF-3ABE-49B6-972F-89AF5476F976}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.CardReader", "RonftonCard.CardReader\RonftonCard.CardReader.csproj", "{2EA04799-4DDA-46B1-A248-0062BAE1CEB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.Service", "RonftonCard.Service\RonftonCard.Service.csproj", "{3E280DE4-F360-4B2A-9352-99AF5B1C4177}"
@@ -25,10 +23,6 @@ Global
 		{5DA539F3-FFAC-446E-A452-564702CC24CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA539F3-FFAC-446E-A452-564702CC24CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DA539F3-FFAC-446E-A452-564702CC24CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64050DBF-3ABE-49B6-972F-89AF5476F976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64050DBF-3ABE-49B6-972F-89AF5476F976}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64050DBF-3ABE-49B6-972F-89AF5476F976}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64050DBF-3ABE-49B6-972F-89AF5476F976}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2EA04799-4DDA-46B1-A248-0062BAE1CEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EA04799-4DDA-46B1-A248-0062BAE1CEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EA04799-4DDA-46B1-A248-0062BAE1CEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU

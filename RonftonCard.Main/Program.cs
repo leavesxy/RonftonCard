@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Resources;
 using System.Windows.Forms;
+using System.Management;
 
 namespace RonftonCard.Main
 {
@@ -25,6 +26,8 @@ namespace RonftonCard.Main
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
 
+			//RegisterUsbWatcher();
+
 			if (!ProcessUtil.IsRunning(rm.GetAppName()))
 			{
 				Application.EnableVisualStyles();
@@ -34,5 +37,30 @@ namespace RonftonCard.Main
 			else
 				ProcessUtil.SetForeground();
 		}
+
+		//public enum EventType
+		//{
+		//	Inserted = 2,
+		//	Removed = 3
+		//}
+
+		//static void RegisterUsbWatcher()
+		//{
+		//	ManagementEventWatcher watcher = new ManagementEventWatcher();
+		//	WqlEventQuery query = new WqlEventQuery("SELECT * FROM Win32_VolumeChangeEvent WHERE EventType = 2 or EventType = 3");
+
+		//	watcher.EventArrived += (s, e) =>
+		//	{
+		//		string driveName = e.NewEvent.Properties["DriveName"].Value.ToString();
+		//		EventType eventType = (EventType)(Convert.ToInt16(e.NewEvent.Properties["EventType"].Value));
+
+		//		string eventName = Enum.GetName(typeof(EventType), eventType);
+
+		//		MessageBox.Show(String.Format("{0}: {1} {2}", DateTime.Now, driveName, eventName));
+		//	};
+
+		//	watcher.Query = query;
+		//	watcher.Start();
+		//}
 	}
 }
