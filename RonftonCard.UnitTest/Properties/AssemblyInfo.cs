@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RonftonCard.Tester")]
+[assembly: AssemblyTitle("RonftonCard.UnitTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RonftonCard.Tester")]
+[assembly: AssemblyProduct("RonftonCard.UnitTest")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ca4cc5a1-bef9-45ce-9415-c39099308a1a")]
+[assembly: Guid("c469d5f4-d06c-4311-9c02-5a73b1c0f24f")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -44,6 +44,8 @@ namespace RonftonCard.Dongle.RockeyArm
 				this.errorMsgProp = new Properties(errMsgFileName);
 
 			this.lastErrorCode = 0;
+
+			//Enumerate();
 		}
 		#endregion
 
@@ -73,6 +75,11 @@ namespace RonftonCard.Dongle.RockeyArm
 		}
 
 		#endregion
+
+		public DONGLE_HANDLER GetDongleHanlder(int seq)
+		{
+			return this.hDongles[seq];
+		}
 
 		#region "--- device operation ---"
 

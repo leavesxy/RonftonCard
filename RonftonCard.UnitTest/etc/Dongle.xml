@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Dongles>
+
+	<dongle name="Rockey-Arm" desc="飞天诚信科技有限公司">
+		<charset>utf-8</charset>
+		<errorMessageFileName>RockeyArmErrorMessage.properties</errorMessageFileName>
+		<type>RonftonCard.Dongle.RockeyArm.RockeyArmDongle,RonftonCard.Dongle</type>
+	</dongle>
+
+</Dongles>

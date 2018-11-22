@@ -145,6 +145,9 @@
     <Content Include="etc\Logger.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Plugin\Dongle_d.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Main.ico" />
   </ItemGroup>
   <ItemGroup>
