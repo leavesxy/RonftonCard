@@ -32,8 +32,7 @@ namespace RonftonCard.Core.Dongle
 		//#region "--- const for dongle pin ---"
 
 		//// default pin for dongle
-		//public const String DEFAULT_ADMIN_PIN_DONGLE = "FFFFFFFFFFFFFFFF";
-		//public const String DEFAULT_USER_PIN_DONGLE = "12345678";
+
 
 		//#endregion
 

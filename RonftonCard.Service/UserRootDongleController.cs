@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using Bluemoon;
 using log4net;
 using RonftonCard.Core;
 using RonftonCard.Core.Dongle;
-using RonftonCard.Core.Entity;
 
 namespace RonftonCard.Service
 {
@@ -18,67 +13,49 @@ namespace RonftonCard.Service
 
 		[HttpPost]
 		[Route("dongle/userRoot/create")]
-		public IHttpActionResult Create(dynamic args)
+		public IHttpActionResult Create(dynamic request)
 		{
-			IDongle dongle = ConfigManager.GetDongle();
-
-			String userId = Convert.ToString(args.userId);
-			String rootKey = Convert.ToString(args.rootKey);
-			int seq = Convert.ToInt32(args.seq);
+			String userId = Convert.ToString(request.userId);
+			String rootKey = Convert.ToString(request.rootKey);
+			int seq = Convert.ToInt32(request.seq);
 
 			byte[] rootKeyBytes = HexString.FromHexString(rootKey);
-
 			ResultArgs ret=null;
 
-			if (dongle.Enumerate())
-			{
-				ret = dongle.CreateUserRootKey(userId, rootKeyBytes, seq);
-			}
+			DongleUtil.dongle.Enumerate();
+			ret = DongleUtil.dongle.CreateUserRootKey(seq,userId, rootKeyBytes);
 
 			return Json<ResultArgs>(ret);
 		}
 
 		[HttpPost]
 		[Route("dongle/userRoot/encrypt")]
-		public IHttpActionResult Encrypt(dynamic args)
+		public IHttpActionResult Encrypt(dynamic request)
 		{
-			IDongle dongle = ConfigManager.GetDongle();
-			String plain = Convert.ToString(args.plain);
-			int seq = Convert.ToInt32(args.seq);
-			byte[] plainBytes = dongle.Encoder.GetBytes(plain);
+			String plain = Convert.ToString(request.plain);
+			int seq = Convert.ToInt32(request.seq);
+			byte[] plainBytes = DongleUtil.dongle.Encoder.GetBytes(plain);
 
 			ResultArgs ret = null;
 			byte[] cipher;
 
-			if (dongle.Enumerate())
-			{
-				ret = dongle.Encrypt(plainBytes, out cipher, seq) ? 
+			DongleUtil.dongle.Enumerate();
+
+			ret = DongleUtil.dongle.Encrypt(seq, DongleType.USER_ROOT, plainBytes, out cipher ) ? 
 					new ResultArgs(true, BitConverter.ToString(cipher), "OK") : 
-					new ResultArgs(false, null, dongle.LastErrorMessage);
-			}
+					new ResultArgs(false, null, DongleUtil.dongle.LastErrorMessage);
 
 			return Json<ResultArgs>(ret);
 		}
 
 		[HttpPost]
 		[Route("dongle/userRoot/restore")]
-		public IHttpActionResult Restore(dynamic args)
+		public IHttpActionResult Restore(dynamic request)
 		{
-			IDongle dongle = ConfigManager.GetDongle();
+			String keyPwd = Convert.ToString(request.keyPwd);
+			int seq = Convert.ToInt32(request.seq);
 
-			String keyPwd = Convert.ToString(args.keyPwd);
-			int seq = Convert.ToInt32(args.seq);
-
-			byte[] keyPwdBytes = dongle.Encoder.GetBytes(keyPwd);
-
-			ResultArgs ret = null;
-
-			if (dongle.Enumerate())
-			{
-				ret = dongle.Restore(keyPwdBytes, seq) ? new ResultArgs(true, null, "OK") : new ResultArgs(false, null, dongle.LastErrorMessage);
-			}
-
-			return Json<ResultArgs>(ret);
+			return Json <ResultArgs>( DongleUtil.Restore(seq, keyPwd));
 		}
 	}
 }

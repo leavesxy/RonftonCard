@@ -77,7 +77,7 @@ namespace RonftonCard.Main.Forms
 			byte[] adminPin = this.dongle.Encoder.GetBytes(this.TxtAdminPin.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.Restore(adminPin, selected))
+			if (this.dongle.Restore(selected, adminPin))
 			{
 				logger.Debug(String.Format("restore {0} ok! dongle info = {1}", selected, this.dongle.Dongles[selected]));
 				this.TxtTrace.Trace(String.Format("restore {0} ok, old dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
@@ -99,7 +99,7 @@ namespace RonftonCard.Main.Forms
 		{
 			int selected = this.CbDongle.SelectedIndex;
 			byte[] userRootKey = HexString.FromHexString(this.TxtUserRootKey.Text.Trim(), "-");
-			ResultArgs arg = this.dongle.CreateUserRootKey(this.TxtUserID.Text.Trim(), userRootKey, selected);
+			ResultArgs arg = this.dongle.CreateUserRootKey(selected,this.TxtUserID.Text.Trim(), userRootKey);
 
 			if (arg.Succ)
 			{
@@ -127,7 +127,7 @@ namespace RonftonCard.Main.Forms
 			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.Encrypt(plain, out cipher, selected))
+			if (this.dongle.Encrypt(selected, DongleType.USER_ROOT, plain, out cipher))
 			{
 				this.TxtTrace.Trace(String.Format("cipher length [{0}] , {1}",cipher.Length, BitConverter.ToString(cipher)));
 			}
@@ -140,7 +140,7 @@ namespace RonftonCard.Main.Forms
 		private void BtnCreateAuthenKey_Click(object sender, EventArgs e)
 		{
 			int selected = this.CbDongle.SelectedIndex;
-			ResultArgs arg = this.dongle.CreateAuthenKey(this.TxtUserID.Text.Trim(), selected);
+			ResultArgs arg = this.dongle.CreateAuthenKey(selected, this.TxtUserID.Text.Trim());
 
 			if (arg.Succ)
 			{
@@ -169,7 +169,7 @@ namespace RonftonCard.Main.Forms
 			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.PriEncrypt(plain, out cipher, selected))
+			if (this.dongle.Encrypt(selected, DongleType.AUTHEN, plain, out cipher))
 			{
 				this.TxtTrace.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToHexString(cipher)));
 			}
@@ -178,7 +178,6 @@ namespace RonftonCard.Main.Forms
 		}
 
 		#endregion
-
 
 
 		#region "--- event handler ---"
@@ -195,15 +194,12 @@ namespace RonftonCard.Main.Forms
 		{
 			if (this.dongle != null)
 			{
-				this.dongle.Close();
+				this.dongle.Dispose();
 				this.dongle = null;
 			}
 		}
 
-
-
 		#endregion
-
 
 	}
 }

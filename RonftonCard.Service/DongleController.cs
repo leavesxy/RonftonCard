@@ -26,13 +26,12 @@ namespace RonftonCard.Service
 		[Route("dongle")]
 		public IHttpActionResult Enumerate()
 		{
-			IDongle dongle = ConfigManager.GetDongle();
 			DongleInfo[] dongleInfo = null;
 
-			if (dongle != null)
+			if (DongleUtil.dongle != null)
 			{
-				dongle.Enumerate();
-				dongleInfo = dongle.Dongles;
+				DongleUtil.dongle.Enumerate();
+				dongleInfo = DongleUtil.dongle.Dongles;
 			}
 
 			return Json<ResultArgs>(

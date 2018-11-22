@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="AuthenDongleController.cs" />
     <Compile Include="DongleController.cs" />
+    <Compile Include="DongleUtil.cs" />
     <Compile Include="HelperInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

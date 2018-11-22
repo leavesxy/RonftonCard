@@ -1,27 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Bluemoon;
+using RonftonCard.Core.Entity;
 
 namespace RonftonCard.Core.Dongle
 {
+	/// <summary>
+	/// interface of Dongle
+	/// </summary>
 	public interface IDongle : IDisposable
 	{
-		void Close();
+		DongleInfo[] Dongles { get; }
+		String LastErrorMessage { get; }
+		Encoding Encoder { get; }
+		bool IsSucc { get; }
 
-		bool Open();
+		/// <summary>
+		/// enumerate all dongles
+		/// </summary>
+		void Enumerate();
 
-		bool Restore(byte[] adminPin);
+		/// <summary>
+		/// erase specified dongle
+		/// </summary>
+		bool Restore(int seq, byte[] adminPin);
 
-		bool Reset();
+		/// <summary>
+		/// reset status of dongle
+		/// </summary>
+		bool Reset(int seq);
 
-		bool WriteUserInfo(DongleUserInfo userInfo);
+		bool CreateUserInfo(int seq, DongleUserInfo userInfo);
 
-		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey);
+		ResultArgs CreateUserRootKey(int seq, String userId, byte[] userRootKey);
 
-		ResultArgs CreateAuthenKey(String userId);
+		ResultArgs CreateAuthenKey(int seq, String userId);
 
+		bool Encrypt(int seq, DongleType dongleType, byte[] plain, out byte[] cipher);
 	}
 }
