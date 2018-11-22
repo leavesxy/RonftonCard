@@ -12,19 +12,6 @@ namespace RonftonCard.Dongle.RockeyArm
 	{
 		#region "--- initialize dongle ---"
 
-		private uint ToUint32(String str, int fromBase = 16)
-		{
-			uint v = 0;
-
-			try
-			{
-				v = Convert.ToUInt32(str, fromBase);
-			}
-			catch (Exception)
-			{
-			}
-			return v;
-		}
 		/// <summary>
 		/// initialize a empty dongle
 		/// after invoke SUCC,status of key is anonymous
@@ -48,7 +35,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			return IsSucc;
 		}
 
-		private bool Initialize(Int64 hDongle, String userId, out byte[] newAdminPin, out byte[] appId)
+		private bool Initialize(DONGLE_HANDLER hDongle, String userId, out byte[] newAdminPin, out byte[] appId)
 		{
 			// unique key
 			if (!unique(hDongle, out newAdminPin, out appId))
@@ -64,7 +51,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		#endregion
 
 		#region "--- Create User information ---"
-		public bool CreateUserInfo(int seq, DongleUserInfo userInfo)
+		public bool CreateUserInfo(DongleUserInfo userInfo)
 		{
 			return true;
 		}
@@ -75,17 +62,17 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// Create user root key
 		/// userRootKey can't less 16 bytes
 		/// </summary>
-		public ResultArgs CreateUserRootKey(int seq, String userId, byte[] userRootKey)
+		public ResultArgs CreateUserRootKey(String userId, byte[] userRootKey)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
-			if (!IsValidSeq(seq) || !Open(seq))
+			if (!Open( this.selectedIndex ))
 				return ret;
 
 			byte[] newAdminPin;
 			byte[] appId;
 
-			Int64 hDongle = this.hDongles[seq];
+			DONGLE_HANDLER hDongle = this.hDongles[this.selectedIndex];
 
 			if (!Initialize(hDongle, userId, out newAdminPin, out appId))
 				return ret;
@@ -94,15 +81,15 @@ namespace RonftonCard.Dongle.RockeyArm
 				return ret;
 
 			// renew appid
-			this.dongleInfo[seq].AppId = this.Encoder.GetString(appId);
+			this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
 
 			ret.Succ = true;
 			ret.Result = new UserRootKeyResponse
 			{
 				KeyPwd = this.Encoder.GetString(newAdminPin),
-				AppId = this.dongleInfo[seq].AppId,
-				KeyId = this.dongleInfo[seq].KeyId,
-				Version = this.dongleInfo[seq].Version,
+				AppId = this.dongleInfo[this.selectedIndex].AppId,
+				KeyId = this.dongleInfo[this.selectedIndex].KeyId,
+				Version = this.dongleInfo[this.selectedIndex].Version,
 				UserId = userId
 			};
 			return ret;
@@ -134,14 +121,14 @@ namespace RonftonCard.Dongle.RockeyArm
 		#endregion
 
 		#region "--- Authen Key Process ---"
-		public ResultArgs CreateAuthenKey(int seq, String userId)
+		public ResultArgs CreateAuthenKey(String userId)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
-			if (!IsValidSeq(seq) || !Open(seq))
+			if (!Open(this.selectedIndex))
 				return ret;
 
-			DONGLE_HANDLER hDongle = this.hDongles[seq];
+			DONGLE_HANDLER hDongle = this.hDongles[this.selectedIndex];
 
 			byte[] newAdminPin;
 			byte[] appId;
@@ -165,17 +152,17 @@ namespace RonftonCard.Dongle.RockeyArm
 				LogKey(pub, pri);
 
 				// renew appid
-				this.dongleInfo[seq].AppId = this.Encoder.GetString(appId);
+				this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
 
 				ret.Succ = true;
 				ret.Result = new AuthenKeyResponse()
 				{
 					PubKey = Convert.ToBase64String(pub.exponent, 0, DongleConst.RSA_KEY_LEN),
-					Version = this.dongleInfo[seq].Version,
-					AppId = this.dongleInfo[seq].AppId,
+					Version = this.dongleInfo[this.selectedIndex].Version,
+					AppId = this.dongleInfo[this.selectedIndex].AppId,
 					UserId = userId,
 					KeyPwd = this.Encoder.GetString(newAdminPin),
-					KeyId = this.dongleInfo[seq].KeyId
+					KeyId = this.dongleInfo[this.selectedIndex].KeyId
 				};
 			}
 			finally
@@ -223,17 +210,17 @@ namespace RonftonCard.Dongle.RockeyArm
 		#endregion
 
 		#region "--- encrypt ---"
-		public bool Encrypt(int seq, DongleType dongleType, byte[] plain, out byte[] cipher)
+		public bool Encrypt(DongleType dongleType, byte[] plain, out byte[] cipher)
 		{
 			cipher = null;
 
 			switch(dongleType)
 			{
 				case DongleType.USER_ROOT:
-					return Encrypt(seq, plain, out cipher);
+					return Encrypt(plain, out cipher);
 
 				case DongleType.AUTHEN:
-					return PriEncrypt(seq, plain, out cipher);
+					return PriEncrypt(plain, out cipher);
 
 				default:
 					break;
@@ -241,34 +228,34 @@ namespace RonftonCard.Dongle.RockeyArm
 			return false;
 		}
 
-		private bool Encrypt(int seq, byte[] plain, out byte[] cipher)
+		private bool Encrypt(byte[] plain, out byte[] cipher)
 		{
 			cipher = null;
 
-			if (!IsValidSeq(seq) || !Open(seq))
+			if (!Open(this.selectedIndex))
 				return false;
 
 			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
 
 			// fill zero
 			cipher = ArrayUtil.CopyFrom<byte>(plain, len);
-			this.lastErrorCode = Dongle_TDES(this.hDongles[seq], DongleConst.USER_ROOT_KEY_DESCRIPTOR, 0, cipher, cipher, (uint)len);
+			this.lastErrorCode = Dongle_TDES(this.hDongles[this.selectedIndex], DongleConst.USER_ROOT_KEY_DESCRIPTOR, 0, cipher, cipher, (uint)len);
 			logger.Debug(String.Format("plain = [ {0} ], cipher = [ {1} ]", BitConverter.ToString(plain), BitConverter.ToString(cipher)));
 
 			// donot close dongle
 			return IsSucc;
 		}
 
-		public bool PriEncrypt(int seq, byte[] plain, out byte[] cipher)
+		public bool PriEncrypt(byte[] plain, out byte[] cipher)
 		{
 			uint nOutDataLen = DongleConst.RSA_KEY_LEN;
 
 			cipher = new byte[nOutDataLen];
 
-			if (!IsValidSeq(seq) || !Open(seq))
+			if (!Open(this.selectedIndex))
 				return false;
 
-			this.lastErrorCode = Dongle_RsaPri(this.hDongles[seq], DongleConst.AUTHEN_KEY_DESCRIPTOR, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+			this.lastErrorCode = Dongle_RsaPri(this.hDongles[this.selectedIndex], DongleConst.AUTHEN_KEY_DESCRIPTOR, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 
 			// don't close dongle
 			return IsSucc;

@@ -24,6 +24,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		private readonly byte[] seed;
 		private Encoding encoder;
 		private uint lastErrorCode;
+		private int selectedIndex;
 
 		#region "--- Contructor ---"
 		public RockeyArmDongle()
@@ -44,12 +45,13 @@ namespace RonftonCard.Dongle.RockeyArm
 				this.errorMsgProp = new Properties(errMsgFileName);
 
 			this.lastErrorCode = 0;
+			this.selectedIndex = -1;
 
-			//Enumerate();
+			Enumerate();
 		}
 		#endregion
 
-		#region "--- public properties ---"
+		#region "--- properties ---"
 
 		public DongleInfo[] Dongles
 		{
@@ -74,19 +76,40 @@ namespace RonftonCard.Dongle.RockeyArm
 			get { return this.lastErrorCode == SUCC; }
 		}
 
-		#endregion
-
-		public DONGLE_HANDLER GetDongleHanlder(int seq)
+		public int SelectedIndex
 		{
-			return this.hDongles[seq];
+			get { return this.selectedIndex; }
 		}
 
-		#region "--- device operation ---"
+		#endregion
+
+
+		public DONGLE_HANDLER[] GetDongleHandler()
+		{
+			return this.hDongles;
+		}
 
 		protected bool IsValidSeq(int seq)
 		{
-			return !(this.hDongles.IsNullOrEmpty() || seq > this.hDongles.Length - 1);
+			return !(this.hDongles.IsNullOrEmpty() || seq > this.hDongles.Length - 1 || seq < 0 );
 		}
+
+		private uint ToUint32(String str, int fromBase = 16)
+		{
+			uint v = 0;
+
+			try
+			{
+				v = Convert.ToUInt32(str, fromBase);
+			}
+			catch (Exception)
+			{
+			}
+			return v;
+		}
+
+
+		#region "--- device operation ---"
 
 		/// <summary>
 		/// open specified key by seq , and first is default
@@ -96,11 +119,29 @@ namespace RonftonCard.Dongle.RockeyArm
 			if (!IsValidSeq(seq))
 				return false;
 
-			//avoid to re-open again
-			if (this.hDongles[seq] > 0)
-				return true;
+			if (seq != this.selectedIndex)
+			{
+				// turn off old
+				if (this.selectedIndex != -1 && this.hDongles[this.selectedIndex] > 0)
+				{
+					Dongle_LEDControl(this.hDongles[selectedIndex], (int)RockeyArmLedFlag.OFF);
+				}
+				this.selectedIndex = seq;
+			}
 
-			this.lastErrorCode = Dongle_Open(ref this.hDongles[seq], seq);
+			// avoid to re-open again
+			// and blink selected
+			if (this.hDongles[this.selectedIndex] > 0)
+			{
+				Dongle_LEDControl(this.hDongles[this.selectedIndex], (int)RockeyArmLedFlag.BLINK);
+				return true;
+			}
+
+			this.lastErrorCode = Dongle_Open(ref this.hDongles[this.selectedIndex], seq);
+
+			if(this.hDongles[this.selectedIndex] > 0)
+				Dongle_LEDControl(this.hDongles[this.selectedIndex], (int)RockeyArmLedFlag.BLINK);
+
 			return IsSucc;
 		}
 
@@ -111,6 +152,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			if (this.hDongles[seq] > 0 )
 			{
+				Dongle_LEDControl(this.hDongles[seq], (int)RockeyArmLedFlag.OFF);
 				Dongle_Close(this.hDongles[seq]);
 				this.hDongles[seq] = -1;
 			}
@@ -123,11 +165,13 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			for (int i = 0; i < this.hDongles.Length; i++)
 			{
-				if (this.hDongles[i] > 0 )
-				{
-					Dongle_Close(this.hDongles[i]);
-					this.hDongles[i] = -1;
-				}
+				Close(i);
+				//if (this.hDongles[i] > 0 )
+				//{
+				//	Dongle_LEDControl(this.hDongles[i], (int)RockeyArmLedFlag.OFF);
+				//	Dongle_Close(this.hDongles[i]);
+				//	this.hDongles[i] = -1;
+				//}
 			}
 			// set dongleInfo null
 			this.dongleInfo = null;
@@ -136,14 +180,14 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// reset dongle status to anonymous
 		/// </summary>
-		public bool Reset(int seq)
+		public bool Reset()
 		{
-			if (!IsValidSeq(seq))
+			if (!IsValidSeq(this.selectedIndex))
 				return false;
 
-			if (this.hDongles[seq] > 0)
+			if (this.hDongles[this.selectedIndex] > 0)
 			{
-				this.lastErrorCode = Dongle_ResetState(this.hDongles[seq]);
+				this.lastErrorCode = Dongle_ResetState(this.hDongles[this.selectedIndex]);
 			}
 			return IsSucc;
 		}
@@ -151,21 +195,20 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// restore current key, should use admin pin
 		/// </summary>
-		public bool Restore(int seq, byte[] adminPin)
+		public bool Restore(byte[] adminPin)
 		{
-			if (!Open(seq))
+			if (!Open(this.selectedIndex))
 				return false;
 
-			if (!Authen(this.hDongles[seq], DongleAuthenMode.ADMIN, adminPin))
+			if (!Authen(this.hDongles[this.selectedIndex], DongleAuthenMode.ADMIN, adminPin))
 				return false;
 
-			this.lastErrorCode = Dongle_RFS(this.hDongles[seq]);
+			this.lastErrorCode = Dongle_RFS(this.hDongles[this.selectedIndex]);
 
-			Close(seq);
+			Close(this.selectedIndex);
 			return IsSucc;
 		}
-
-
+		
 		private bool Authen(DONGLE_HANDLER hDongle, DongleAuthenMode authenMode, byte[] pin)
 		{
 			uint flag = (authenMode == DongleAuthenMode.ADMIN) ? (uint)1 : (uint)0;
@@ -182,14 +225,17 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// enumerate dongle device
 		/// </summary>
-		public void Enumerate()
+		public bool Enumerate()
 		{
 			// close all device if have opened!!!
 			CloseAll();
 
+			//!!! set selectIndex=-1 !!!
+			this.selectedIndex = -1;
 			long count = 0;
+
 			if (Dongle_Enum(IntPtr.Zero, out count) != SUCC || count <= 0)
-				return;
+				return false;
 
 			logger.Debug(String.Format("found {0} Dogs !", count));
 
@@ -212,6 +258,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			catch (Exception ex)
 			{
 				logger.Error(ex.Message);
+				return false;
 			}
 			finally
 			{
@@ -220,6 +267,10 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			this.dongleInfo = keyInfo.ToArray();
 			this.hDongles = new DONGLE_HANDLER[this.dongleInfo.Length];
+
+			//open first as default
+			this.selectedIndex = 0;
+			return Open(this.selectedIndex);
 		}
 
 		private DongleInfo ParseDongleInfo(short seq, DONGLE_INFO devInfo)

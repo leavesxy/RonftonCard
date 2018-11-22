@@ -45,6 +45,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.TxtPlain = new System.Windows.Forms.TextBox();
 			this.BtnEncryptByPri = new System.Windows.Forms.Button();
+			this.BtnShowOpenedDongle = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// CbDongle
@@ -199,6 +200,16 @@
 			this.BtnEncryptByPri.UseVisualStyleBackColor = true;
 			this.BtnEncryptByPri.Click += new System.EventHandler(this.BtnEncryptByPri_Click);
 			// 
+			// BtnShowOpenedDongle
+			// 
+			this.BtnShowOpenedDongle.Location = new System.Drawing.Point(635, 398);
+			this.BtnShowOpenedDongle.Name = "BtnShowOpenedDongle";
+			this.BtnShowOpenedDongle.Size = new System.Drawing.Size(148, 29);
+			this.BtnShowOpenedDongle.TabIndex = 17;
+			this.BtnShowOpenedDongle.Text = "显示已打开的设备";
+			this.BtnShowOpenedDongle.UseVisualStyleBackColor = true;
+			this.BtnShowOpenedDongle.Click += new System.EventHandler(this.BtnShowOpenedDongle_Click);
+			// 
 			// DongleForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -215,6 +226,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.BtnEncryptByPri);
+			this.Controls.Add(this.BtnShowOpenedDongle);
 			this.Controls.Add(this.BtnCreateAuthenKey);
 			this.Controls.Add(this.BtnRestore);
 			this.Controls.Add(this.BntEncryptByUserRoot);
@@ -253,5 +265,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox TxtPlain;
 		private System.Windows.Forms.Button BtnEncryptByPri;
+		private System.Windows.Forms.Button BtnShowOpenedDongle;
 	}
 }

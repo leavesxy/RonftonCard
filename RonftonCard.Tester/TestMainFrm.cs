@@ -12,7 +12,7 @@ namespace RonftonCard.Tester
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_GetUTCTime(Int64 hDongle, ref uint pdwUTCTime);
-		[DllImport("Dongle_d.dll")]
+		[DllImport(@"Plugin\Dongle_d.dll")]
 		static extern uint Dongle_LEDControl(Int64 hDongle, uint nFlag);
 
 		public TestMainFrm()
@@ -23,7 +23,7 @@ namespace RonftonCard.Tester
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			this.dongle = new RockeyArmDongle();
-			this.dongle.Enumerate();
+			//this.dongle.Enumerate();
 		}
 		
 		private void BtnExit_Click(object sender, EventArgs e)
@@ -34,20 +34,19 @@ namespace RonftonCard.Tester
 		private void BtnGetUTCTime_Click(object sender, EventArgs e)
 		{
 			dongle.Open(0);
-			Int64 hDongle = dongle.GetDongleHanlder(0);
 
 			uint utcTime = 0;
 
-			if (Dongle_GetUTCTime(hDongle, ref utcTime) == 0)
-			{
-				this.TxtTrace.Trace(String.Format("Read time ok ! utcTime = {0}", utcTime), true);
+			//if (dongle.Dongle_GetUTCTime(hDongle, ref utcTime) == 0)
+			//{
+			//	this.TxtTrace.Trace(String.Format("Read time ok ! utcTime = {0}", utcTime), true);
 
-				// local time
-				DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-				DateTime dt = startTime.AddSeconds(utcTime);
+			//	// local time
+			//	DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+			//	DateTime dt = startTime.AddSeconds(utcTime);
 
-				this.TxtTrace.Trace("Date time = {0}", dt.ToString("yyyy-MM-dd HH:mm:ss"));
-			}
+			//	this.TxtTrace.Trace("Date time = {0}", dt.ToString("yyyy-MM-dd HH:mm:ss"));
+			//}
 		}
 
 		private void RbLedOff_CheckedChanged(object sender, EventArgs e)
@@ -67,10 +66,10 @@ namespace RonftonCard.Tester
 
 		private void BtnLedControl_Click(object sender, EventArgs e)
 		{
-			dongle.Open(0);
-			Int64 hDongle = dongle.GetDongleHanlder(0);
+			//dongle.Open(0);
+			//Int64 hDongle = dongle.GetDongleHanlder(0);
 
-			Dongle_LEDControl(hDongle, (uint)this.ledFlag);
+			//Dongle_LEDControl(hDongle, (uint)this.ledFlag);
 		}
 	}
 }

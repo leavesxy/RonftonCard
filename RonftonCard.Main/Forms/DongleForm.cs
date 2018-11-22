@@ -7,6 +7,7 @@ using Bluemoon;
 using RonftonCard.Core.Entity;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using RonftonCard.Dongle.RockeyArm;
 
 namespace RonftonCard.Main.Forms
 {
@@ -77,7 +78,7 @@ namespace RonftonCard.Main.Forms
 			byte[] adminPin = this.dongle.Encoder.GetBytes(this.TxtAdminPin.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.Restore(selected, adminPin))
+			if (this.dongle.Restore(adminPin))
 			{
 				logger.Debug(String.Format("restore {0} ok! dongle info = {1}", selected, this.dongle.Dongles[selected]));
 				this.TxtTrace.Trace(String.Format("restore {0} ok, old dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
@@ -99,7 +100,7 @@ namespace RonftonCard.Main.Forms
 		{
 			int selected = this.CbDongle.SelectedIndex;
 			byte[] userRootKey = HexString.FromHexString(this.TxtUserRootKey.Text.Trim(), "-");
-			ResultArgs arg = this.dongle.CreateUserRootKey(selected,this.TxtUserID.Text.Trim(), userRootKey);
+			ResultArgs arg = this.dongle.CreateUserRootKey(this.TxtUserID.Text.Trim(), userRootKey);
 
 			if (arg.Succ)
 			{
@@ -127,7 +128,7 @@ namespace RonftonCard.Main.Forms
 			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.Encrypt(selected, DongleType.USER_ROOT, plain, out cipher))
+			if (this.dongle.Encrypt(DongleType.USER_ROOT, plain, out cipher))
 			{
 				this.TxtTrace.Trace(String.Format("cipher length [{0}] , {1}",cipher.Length, BitConverter.ToString(cipher)));
 			}
@@ -140,7 +141,7 @@ namespace RonftonCard.Main.Forms
 		private void BtnCreateAuthenKey_Click(object sender, EventArgs e)
 		{
 			int selected = this.CbDongle.SelectedIndex;
-			ResultArgs arg = this.dongle.CreateAuthenKey(selected, this.TxtUserID.Text.Trim());
+			ResultArgs arg = this.dongle.CreateAuthenKey(this.TxtUserID.Text.Trim());
 
 			if (arg.Succ)
 			{
@@ -169,12 +170,31 @@ namespace RonftonCard.Main.Forms
 			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
 			int selected = this.CbDongle.SelectedIndex;
 
-			if (this.dongle.Encrypt(selected, DongleType.AUTHEN, plain, out cipher))
+			if (this.dongle.Encrypt(DongleType.AUTHEN, plain, out cipher))
 			{
 				this.TxtTrace.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToHexString(cipher)));
 			}
 			else
 				this.TxtTrace.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
+		}
+
+		private void BtnShowOpenedDongle_Click(object sender, EventArgs e)
+		{
+			this.TxtTrace.Trace("Dongles have been opened ...", true);
+			RockeyArmDongle __dongle = this.dongle as RockeyArmDongle;
+
+			Int64[] hDongles = __dongle.GetDongleHandler();
+
+			if( hDongles.IsNullOrEmpty())
+			{
+				this.TxtTrace.Trace("no dongles has been opened ...");
+				return;
+			}
+
+			for(int i=0;i<hDongles.Length;i++)
+			{
+				this.TxtTrace.Trace(String.Format("[{0}] : handler = {1}, key_id = {2}", i, hDongles[i], this.dongle.Dongles[i].KeyId));
+			}
 		}
 
 		#endregion
@@ -184,7 +204,7 @@ namespace RonftonCard.Main.Forms
 
 		private void CbDongleSelected_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
+			this.dongle.Open(this.CbDongle.SelectedIndex);
 		}
 
 		/// <summary>
@@ -200,6 +220,7 @@ namespace RonftonCard.Main.Forms
 		}
 
 		#endregion
+
 
 	}
 }

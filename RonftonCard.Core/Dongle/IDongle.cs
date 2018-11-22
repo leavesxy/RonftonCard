@@ -10,32 +10,58 @@ namespace RonftonCard.Core.Dongle
 	/// </summary>
 	public interface IDongle : IDisposable
 	{
+		/// <summary>
+		/// all dongle information
+		/// </summary>
 		DongleInfo[] Dongles { get; }
+
+		/// <summary>
+		/// last error message
+		/// </summary>
 		String LastErrorMessage { get; }
+
+		/// <summary>
+		/// encoding
+		/// </summary>
 		Encoding Encoder { get; }
+
+		/// <summary>
+		/// last invoke is SUCC or not
+		/// </summary>
 		bool IsSucc { get; }
+
+		/// <summary>
+		/// index of active dongle
+		/// </summary>
+		int SelectedIndex { get; }
+
+		/// <summary>
+		/// open specified dongle,and set select index
+		/// </summary>
+		bool Open(int seq);
 
 		/// <summary>
 		/// enumerate all dongles
 		/// </summary>
-		void Enumerate();
+		bool Enumerate();
 
 		/// <summary>
-		/// erase specified dongle
+		/// erase selected dongle
 		/// </summary>
-		bool Restore(int seq, byte[] adminPin);
+		bool Restore(byte[] adminPin);
 
 		/// <summary>
-		/// reset status of dongle
+		/// reset status of selected dongle
 		/// </summary>
-		bool Reset(int seq);
+		bool Reset();
 
-		bool CreateUserInfo(int seq, DongleUserInfo userInfo);
 
-		ResultArgs CreateUserRootKey(int seq, String userId, byte[] userRootKey);
+		bool CreateUserInfo(DongleUserInfo userInfo);
 
-		ResultArgs CreateAuthenKey(int seq, String userId);
+		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey);
 
-		bool Encrypt(int seq, DongleType dongleType, byte[] plain, out byte[] cipher);
+		ResultArgs CreateAuthenKey(String userId);
+
+		bool Encrypt(DongleType dongleType, byte[] plain, out byte[] cipher);
 	}
 }
