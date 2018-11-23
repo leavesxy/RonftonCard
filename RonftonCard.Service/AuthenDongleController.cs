@@ -19,8 +19,8 @@ namespace RonftonCard.Service
 			int seq = Convert.ToInt32(request.seq);
 			ResultArgs ret = null;
 
-			DongleUtil.dongle.Enumerate();
-			ret = DongleUtil.dongle.CreateAuthenKey(seq, userId);
+			ret = DongleUtil.dongle.CreateAuthenKey(userId);
+			ret.Msg = DongleUtil.dongle.LastErrorMessage;
 
 			return Json<ResultArgs>(ret);
 		}
@@ -36,9 +36,7 @@ namespace RonftonCard.Service
 			ResultArgs ret = null;
 			byte[] cipher;
 
-			DongleUtil.dongle.Enumerate();
-
-			ret = DongleUtil.dongle.Encrypt(seq, DongleType.AUTHEN, plainBytes, out cipher) ?
+			ret = DongleUtil.dongle.Encrypt(DongleType.AUTHEN, plainBytes, out cipher) ?
 					new ResultArgs(true, BitConverter.ToString(cipher), "OK") :
 					new ResultArgs(false, null, DongleUtil.dongle.LastErrorMessage);
 
@@ -52,7 +50,7 @@ namespace RonftonCard.Service
 			String keyPwd = Convert.ToString(request.keyPwd);
 			int seq = Convert.ToInt32(request.seq);
 
-			return Json<ResultArgs>(DongleUtil.Restore(seq, keyPwd));
+			return Json<ResultArgs>(DongleUtil.Restore(keyPwd));
 		}
 	}
 }

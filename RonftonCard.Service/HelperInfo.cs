@@ -10,14 +10,15 @@ namespace RonftonCard.Service
 	{
 		private static IDictionary<String, String> helperInfo = new Dictionary<String, String>()
 		{
-			{"http://localhost:9000/dongle                  ",	"[GET] : 枚举所有的加密狗" },
+			{"http://localhost:9000/dongle                  ",  "[GET] : 枚举所有的加密锁" },
 			{"http://localhost:9000/dongle/test             ",	"[GET] : 服务测试"},
-			{"http://localhost:9000/dongle/userRoot/create  ",	"[POST]: 创建用户根密钥卡" },
-			{"http://localhost:9000/dongle/userRoot/encrypt ",  "[POST]: -- 根密钥卡加密" },
-			{"http://localhost:9000/dongle/userRoot/restore ",  "[POST]: -- 还原根密钥卡" },
-			{"http://localhost:9000/dongle/authen/create    ",	"[POST]: 创建应用授权卡"},
-			{"http://localhost:9000/dongle/authen/encrypt   ",	"[POST]: -- 应用授权卡加密"},
-			{"http://localhost:9000/dongle/authen/restore   ",  "[POST]: -- 还原应用授权卡"},
+			{"http://localhost:9000/dongle/open             ",  "[POST]: 打开指定的加密锁"},
+			{"http://localhost:9000/dongle/userRoot/create  ",  "[POST]: 创建用户根密钥锁" },
+			{"http://localhost:9000/dongle/userRoot/encrypt ",  "[POST]: -- 根密钥锁加密" },
+			{"http://localhost:9000/dongle/userRoot/restore ",  "[POST]: -- 还原根密钥锁" },
+			{"http://localhost:9000/dongle/authen/create    ",  "[POST]: 创建应用授权锁"},
+			{"http://localhost:9000/dongle/authen/encrypt   ",  "[POST]: -- 应用授权锁加密"},
+			{"http://localhost:9000/dongle/authen/restore   ",  "[POST]: -- 还原应用授权锁"},
 		};
 		
 		public static void DbgHelperInfo()
@@ -36,9 +37,11 @@ namespace RonftonCard.Service
 		{
 			Console.WriteLine("---------------------------------------------------------------------");
 			Console.WriteLine("操作步骤说明：");
-			Console.WriteLine("1、只有创建用户根密钥后，才能进行还原或者加密");
-			Console.WriteLine("2、只有创建授权密钥卡后，才能进行还原或者加密");
-			Console.WriteLine("3、如果有多个加密狗，则在操作时，需要指定其序号，这个序号在枚举时获得");
+			Console.WriteLine("1、首先通过GET方式获取所有的加密锁信息");
+			Console.WriteLine("2、打开指定的加密锁，同时传递的序号为1中的顺序(新插入或拔出都会影响顺序)");
+			Console.WriteLine("3、创建用户根密钥锁或者应用授权锁");
+			Console.WriteLine("4、只有创建后，才能进行还原或者加密");
+			Console.WriteLine("5、当打开选定的加密锁后，对应的锁会闪烁");
 		}
 	}
 }

@@ -123,7 +123,10 @@ namespace RonftonCard.Dongle.RockeyArm
 		#region "--- Authen Key Process ---"
 		public ResultArgs CreateAuthenKey(String userId)
 		{
-			ResultArgs ret = new ResultArgs(false);
+			ResultArgs ret = new ResultArgs(false)
+			{
+				Msg = this.LastErrorMessage
+			};
 
 			if (!Open(this.selectedIndex))
 				return ret;

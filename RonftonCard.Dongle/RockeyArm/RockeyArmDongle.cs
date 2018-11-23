@@ -47,7 +47,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.lastErrorCode = 0;
 			this.selectedIndex = -1;
 
-			Enumerate();
+			//Enumerate();
 		}
 		#endregion
 
@@ -166,12 +166,6 @@ namespace RonftonCard.Dongle.RockeyArm
 			for (int i = 0; i < this.hDongles.Length; i++)
 			{
 				Close(i);
-				//if (this.hDongles[i] > 0 )
-				//{
-				//	Dongle_LEDControl(this.hDongles[i], (int)RockeyArmLedFlag.OFF);
-				//	Dongle_Close(this.hDongles[i]);
-				//	this.hDongles[i] = -1;
-				//}
 			}
 			// set dongleInfo null
 			this.dongleInfo = null;

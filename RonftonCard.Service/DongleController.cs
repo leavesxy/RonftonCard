@@ -3,6 +3,7 @@ using System.Web.Http;
 using RonftonCard.Core.Dongle;
 using RonftonCard.Core;
 using Bluemoon;
+using System;
 
 namespace RonftonCard.Service
 {
@@ -42,31 +43,34 @@ namespace RonftonCard.Service
 				});
 		}
 
+		[HttpPost]
+		[Route("dongle/open")]
+		public IHttpActionResult Open(dynamic request)
+		{
+			int seq = Convert.ToInt32(request.seq);
+			bool ret = DongleUtil.dongle.Open(seq);
 
-		//[HttpPost]
-		//[Route("api/send")]
-		//public IHttpActionResult Send(TestInfo testInfo)
-		//{
-		//	logger.Debug(JsonConvert.SerializeObject(testInfo));
-		//	TestInfo t = new TestInfo()
-		//	{
-		//		Id = "1111",
-		//		Desc = "Description",
-		//		Price = 99
-		//	};
+			return Json<ResultArgs>(
+				new ResultArgs(ret)
+				{
+					Result = null,
+					Msg = DongleUtil.dongle.LastErrorMessage
+				});
+		}
 
-		//	return Json< TestInfo>(t);
-		//}
+		[HttpPost]
+		[Route("dongle/close")]
+		public IHttpActionResult Close(dynamic request)
+		{
+			int seq = Convert.ToInt32(request.seq);
+			DongleUtil.dongle.Close(seq);
 
-		//private String EnumerateKey()
-		//{
-		//	DongleKey key = new DongleKey();
-		//	AuthenKeyInfo[] keyInfo = key.Enumerate();
-
-		//	if (keyInfo.IsNullOrEmpty())
-		//		return "no key found !";
-
-		//	return JsonConvert.SerializeObject(keyInfo);
-		//}
+			return Json<ResultArgs>(
+				new ResultArgs( DongleUtil.dongle.IsSucc )
+				{
+					Result = null,
+					Msg = DongleUtil.dongle.LastErrorMessage
+				});
+		}
 	}
 }
