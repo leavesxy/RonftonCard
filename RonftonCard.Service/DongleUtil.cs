@@ -21,8 +21,9 @@ namespace RonftonCard.Service
 		public static ResultArgs Restore(String keyPwd)
 		{
 			byte[] keyPwdBytes = dongle.Encoder.GetBytes(keyPwd);
-			ResultArgs ret = null;
-			ret = dongle.Restore(keyPwdBytes) ? new ResultArgs(true, null, "OK") : new ResultArgs(false, null, dongle.LastErrorMessage);
+			ResultArgs ret = dongle.Restore(keyPwdBytes) 
+				? new ResultArgs(true, null, "OK")
+				: new ResultArgs(false, null, dongle.LastErrorMessage);
 
 			return ret;
 		}

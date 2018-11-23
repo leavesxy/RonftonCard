@@ -178,25 +178,6 @@ namespace RonftonCard.Main.Forms
 				this.TxtTrace.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
 		}
 
-		private void BtnShowOpenedDongle_Click(object sender, EventArgs e)
-		{
-			this.TxtTrace.Trace("Dongles have been opened ...", true);
-			RockeyArmDongle __dongle = this.dongle as RockeyArmDongle;
-
-			Int64[] hDongles = __dongle.GetDongleHandler();
-
-			if( hDongles.IsNullOrEmpty())
-			{
-				this.TxtTrace.Trace("no dongles has been opened ...");
-				return;
-			}
-
-			for(int i=0;i<hDongles.Length;i++)
-			{
-				this.TxtTrace.Trace(String.Format("[{0}] : handler = {1}, key_id = {2}", i, hDongles[i], this.dongle.Dongles[i].KeyId));
-			}
-		}
-
 		#endregion
 
 

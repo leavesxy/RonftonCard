@@ -25,7 +25,10 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			//unique key, requst admin privilege
 			if (!Authen(hDongle, DongleAuthenMode.ADMIN, this.encoder.GetBytes(this.defaultAdminPin)))
+			{
+				logger.Debug("Authen failed use default admin pin!");
 				return false;
+			}
 
 			this.lastErrorCode = Dongle_GenUniqueKey(hDongle, seed.Length, seed, appId, newAdminPwd);
 
@@ -66,19 +69,27 @@ namespace RonftonCard.Dongle.RockeyArm
 		{
 			ResultArgs ret = new ResultArgs(false);
 
-			if (!Open( this.selectedIndex ))
+			if (!IsActive())
+			{
+				ret.Msg = "Create user root key failed -- no dongle opened!";
+				logger.Debug(ret.Msg);
 				return ret;
+			}
 
 			byte[] newAdminPin;
 			byte[] appId;
 
-			DONGLE_HANDLER hDongle = this.hDongles[this.selectedIndex];
-
-			if (!Initialize(hDongle, userId, out newAdminPin, out appId))
+			if (!Initialize(this.hDongle, userId, out newAdminPin, out appId))
+			{
+				ret.Msg = "initialize dongle failed ";
 				return ret;
+			}
 
-			if (!CreateKeyFile(hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
+			if (!CreateKeyFile(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
+			{
+				ret.Msg = "Create Key file failed ";
 				return ret;
+			}
 
 			// renew appid
 			this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
@@ -123,24 +134,29 @@ namespace RonftonCard.Dongle.RockeyArm
 		#region "--- Authen Key Process ---"
 		public ResultArgs CreateAuthenKey(String userId)
 		{
-			ResultArgs ret = new ResultArgs(false)
+			ResultArgs ret = new ResultArgs(false);
+
+			if (!IsActive())
 			{
-				Msg = this.LastErrorMessage
-			};
-
-			if (!Open(this.selectedIndex))
+				ret.Msg = "Create authen key failed -- no dongle opened!";
+				logger.Debug(ret.Msg);
 				return ret;
-
-			DONGLE_HANDLER hDongle = this.hDongles[this.selectedIndex];
+			}
 
 			byte[] newAdminPin;
 			byte[] appId;
 
-			if (!Initialize(hDongle, userId, out newAdminPin, out appId))
+			if (!Initialize(this.hDongle, userId, out newAdminPin, out appId))
+			{
+				ret.Msg = "initialize dongle failed ";
 				return ret;
+			}
 
-			if (!CreatePrikeyFileAttr(hDongle))
+			if (!CreatePrikeyFile(this.hDongle))
+			{
+				ret.Msg = "Create private key file failed !";
 				return ret;
+			}
 
 			IntPtr pPubKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PUBLIC_KEY)));
 			IntPtr pPriKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PRIVATE_KEY)));
@@ -187,7 +203,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// create RSA private key file
 		/// </summary>
-		private bool CreatePrikeyFileAttr(DONGLE_HANDLER hDongle)
+		private bool CreatePrikeyFile(DONGLE_HANDLER hDongle)
 		{
 			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
 
@@ -235,32 +251,35 @@ namespace RonftonCard.Dongle.RockeyArm
 		{
 			cipher = null;
 
-			if (!Open(this.selectedIndex))
+			if (!IsActive())
+			{
+				logger.Debug("Create authen key failed -- no dongle opened!");
 				return false;
+			}
 
 			int len = (plain.Length % 16 == 0) ? plain.Length : (plain.Length / 16 + 1) * 16;
 
 			// fill zero
 			cipher = ArrayUtil.CopyFrom<byte>(plain, len);
-			this.lastErrorCode = Dongle_TDES(this.hDongles[this.selectedIndex], DongleConst.USER_ROOT_KEY_DESCRIPTOR, 0, cipher, cipher, (uint)len);
+			this.lastErrorCode = Dongle_TDES(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, 0, cipher, cipher, (uint)len);
 			logger.Debug(String.Format("plain = [ {0} ], cipher = [ {1} ]", BitConverter.ToString(plain), BitConverter.ToString(cipher)));
 
-			// donot close dongle
 			return IsSucc;
 		}
 
 		public bool PriEncrypt(byte[] plain, out byte[] cipher)
 		{
 			uint nOutDataLen = DongleConst.RSA_KEY_LEN;
-
 			cipher = new byte[nOutDataLen];
 
-			if (!Open(this.selectedIndex))
+			if (!IsActive())
+			{
+				logger.Debug("Create authen key failed -- no dongle opened!");
 				return false;
+			}
 
-			this.lastErrorCode = Dongle_RsaPri(this.hDongles[this.selectedIndex], DongleConst.AUTHEN_KEY_DESCRIPTOR, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
+			this.lastErrorCode = Dongle_RsaPri(this.hDongle, DongleConst.AUTHEN_KEY_DESCRIPTOR, 0, plain, (uint)plain.Length, cipher, ref nOutDataLen);
 
-			// don't close dongle
 			return IsSucc;
 		}
 		#endregion

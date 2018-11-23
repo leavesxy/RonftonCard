@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Bluemoon;
-using RonftonCard.Core.Dongle;
 
 namespace RonftonCard.Dongle.RockeyArm
 {
+	using Bluemoon;
 	using Bluemoon.Config;
 	using log4net;
+	using Core.Dongle;
 	using DONGLE_HANDLER = Int64;
 
 	public partial class RockeyArmDongle : IDongle
@@ -18,13 +18,21 @@ namespace RonftonCard.Dongle.RockeyArm
 		private readonly String defaultUserPin = "12345678";
 		private const uint SUCC = 0x00000000;
 
+		/// <summary>
+		/// dongles information
+		/// </summary>
 		private DongleInfo[] dongleInfo;
-		private DONGLE_HANDLER[] hDongles;
+
+		/// <summary>
+		/// current active dongle
+		/// </summary>
+		private DONGLE_HANDLER hDongle;
+		private int selectedIndex;
+
 		private Properties errorMsgProp;
 		private readonly byte[] seed;
 		private Encoding encoder;
 		private uint lastErrorCode;
-		private int selectedIndex;
 
 		#region "--- Contructor ---"
 		public RockeyArmDongle()
@@ -46,8 +54,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			this.lastErrorCode = 0;
 			this.selectedIndex = -1;
-
-			//Enumerate();
+			this.hDongle = -1;
 		}
 		#endregion
 
@@ -83,15 +90,20 @@ namespace RonftonCard.Dongle.RockeyArm
 
 		#endregion
 
-
-		public DONGLE_HANDLER[] GetDongleHandler()
+		protected bool IsActive()
 		{
-			return this.hDongles;
+			bool ret = this.selectedIndex != -1 && this.hDongle > 0 ;
+			if (!ret)
+				this.lastErrorCode = 0xF0000001;
+			return ret;
 		}
 
 		protected bool IsValidSeq(int seq)
 		{
-			return !(this.hDongles.IsNullOrEmpty() || seq > this.hDongles.Length - 1 || seq < 0 );
+			bool ret =  seq >= 0 && seq < this.dongleInfo.Length;
+			if (!ret)
+				this.lastErrorCode = 0xF0000002;
+			return ret;
 		}
 
 		private uint ToUint32(String str, int fromBase = 16)
@@ -112,63 +124,56 @@ namespace RonftonCard.Dongle.RockeyArm
 		#region "--- device operation ---"
 
 		/// <summary>
-		/// open specified key by seq , and first is default
+		/// open specified dongle by sequence number
+		/// and close dongle which has been opened
 		/// </summary>
 		public bool Open(int seq)
 		{
+			// invliad sequence number
 			if (!IsValidSeq(seq))
 				return false;
 
-			if (seq != this.selectedIndex)
+			// opened already
+			if (seq == this.selectedIndex && this.hDongle > 0)
+				return true;
+
+			// turn off old
+			if ( this.hDongle > 0 )
 			{
-				// turn off old
-				if (this.selectedIndex != -1 && this.hDongles[this.selectedIndex] > 0)
-				{
-					Dongle_LEDControl(this.hDongles[selectedIndex], (int)RockeyArmLedFlag.OFF);
-				}
+				Dongle_LEDControl(this.hDongle, (int)RockeyArmLedFlag.OFF);
+				Close();
+			}
+
+			// open new dongle
+			this.lastErrorCode = Dongle_Open(ref this.hDongle, seq);
+
+			// blink
+			if (this.hDongle > 0)
+			{
+				Dongle_LEDControl(this.hDongle, (int)RockeyArmLedFlag.BLINK);
 				this.selectedIndex = seq;
 			}
-
-			// avoid to re-open again
-			// and blink selected
-			if (this.hDongles[this.selectedIndex] > 0)
-			{
-				Dongle_LEDControl(this.hDongles[this.selectedIndex], (int)RockeyArmLedFlag.BLINK);
-				return true;
-			}
-
-			this.lastErrorCode = Dongle_Open(ref this.hDongles[this.selectedIndex], seq);
-
-			if(this.hDongles[this.selectedIndex] > 0)
-				Dongle_LEDControl(this.hDongles[this.selectedIndex], (int)RockeyArmLedFlag.BLINK);
 
 			return IsSucc;
 		}
 
-		public void Close(int seq)
+		/// <summary>
+		/// close current active dongle
+		/// </summary>
+		public void Close()
 		{
-			if (!IsValidSeq(seq))
-				return;
-
-			if (this.hDongles[seq] > 0 )
+			if (this.hDongle > 0 )
 			{
-				Dongle_LEDControl(this.hDongles[seq], (int)RockeyArmLedFlag.OFF);
-				Dongle_Close(this.hDongles[seq]);
-				this.hDongles[seq] = -1;
+				try
+				{
+					Dongle_LEDControl(this.hDongle, (int)RockeyArmLedFlag.OFF);
+					Dongle_Close(this.hDongle);
+					this.hDongle = -1;
+				}
+				catch (Exception)
+				{ }
 			}
-		}
-
-		public void CloseAll()
-		{
-			if (this.hDongles.IsNullOrEmpty())
-				return;
-
-			for (int i = 0; i < this.hDongles.Length; i++)
-			{
-				Close(i);
-			}
-			// set dongleInfo null
-			this.dongleInfo = null;
+			this.selectedIndex = -1;
 		}
 
 		/// <summary>
@@ -176,13 +181,11 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// </summary>
 		public bool Reset()
 		{
-			if (!IsValidSeq(this.selectedIndex))
+			if (!IsActive())
 				return false;
 
-			if (this.hDongles[this.selectedIndex] > 0)
-			{
-				this.lastErrorCode = Dongle_ResetState(this.hDongles[this.selectedIndex]);
-			}
+			this.lastErrorCode = Dongle_ResetState(this.hDongle);
+
 			return IsSucc;
 		}
 
@@ -191,15 +194,15 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// </summary>
 		public bool Restore(byte[] adminPin)
 		{
-			if (!Open(this.selectedIndex))
+			if (!IsActive())
 				return false;
 
-			if (!Authen(this.hDongles[this.selectedIndex], DongleAuthenMode.ADMIN, adminPin))
+			if (!Authen(this.hDongle, DongleAuthenMode.ADMIN, adminPin))
 				return false;
 
-			this.lastErrorCode = Dongle_RFS(this.hDongles[this.selectedIndex]);
+			this.lastErrorCode = Dongle_RFS(this.hDongle);
 
-			Close(this.selectedIndex);
+			Close();
 			return IsSucc;
 		}
 		
@@ -207,8 +210,8 @@ namespace RonftonCard.Dongle.RockeyArm
 		{
 			uint flag = (authenMode == DongleAuthenMode.ADMIN) ? (uint)1 : (uint)0;
 
-			int pRemainCount;
-			this.lastErrorCode = Dongle_VerifyPIN(hDongle, flag, pin, out pRemainCount);
+			int remainCount;
+			this.lastErrorCode = Dongle_VerifyPIN(hDongle, flag, pin, out remainCount);
 
 			return IsSucc;
 		}
@@ -221,13 +224,9 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// </summary>
 		public bool Enumerate()
 		{
-			// close all device if have opened!!!
-			CloseAll();
+			Close();
 
-			//!!! set selectIndex=-1 !!!
-			this.selectedIndex = -1;
 			long count = 0;
-
 			if (Dongle_Enum(IntPtr.Zero, out count) != SUCC || count <= 0)
 				return false;
 
@@ -235,7 +234,6 @@ namespace RonftonCard.Dongle.RockeyArm
 
 			List<DongleInfo> keyInfo = new List<DongleInfo>();
 			IntPtr pDongleInfo = IntPtr.Zero;
-
 			try
 			{
 				int size = IntPtrUtil.SizeOf(typeof(DONGLE_INFO));
@@ -260,11 +258,10 @@ namespace RonftonCard.Dongle.RockeyArm
 			}
 
 			this.dongleInfo = keyInfo.ToArray();
-			this.hDongles = new DONGLE_HANDLER[this.dongleInfo.Length];
+			this.selectedIndex = -1;
+			this.hDongle = -1;
 
-			//open first as default
-			this.selectedIndex = 0;
-			return Open(this.selectedIndex);
+			return IsSucc;
 		}
 
 		private DongleInfo ParseDongleInfo(short seq, DONGLE_INFO devInfo)
@@ -314,7 +311,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 		public void Dispose()
 		{
-			CloseAll();
+			Close();
 		}
 	}
 }

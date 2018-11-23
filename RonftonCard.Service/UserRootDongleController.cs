@@ -20,11 +20,8 @@ namespace RonftonCard.Service
 			int seq = Convert.ToInt32(request.seq);
 
 			byte[] rootKeyBytes = HexString.FromHexString(rootKey);
-			ResultArgs ret=null;
 
-			ret = DongleUtil.dongle.CreateUserRootKey(userId, rootKeyBytes);
-			ret.Msg = DongleUtil.dongle.LastErrorMessage;
-
+			ResultArgs ret = DongleUtil.dongle.CreateUserRootKey(userId, rootKeyBytes);
 			return Json<ResultArgs>(ret);
 		}
 
@@ -33,13 +30,11 @@ namespace RonftonCard.Service
 		public IHttpActionResult Encrypt(dynamic request)
 		{
 			String plain = Convert.ToString(request.plain);
-			int seq = Convert.ToInt32(request.seq);
 			byte[] plainBytes = DongleUtil.dongle.Encoder.GetBytes(plain);
 
-			ResultArgs ret = null;
 			byte[] cipher;
 
-			ret = DongleUtil.dongle.Encrypt(DongleType.USER_ROOT, plainBytes, out cipher ) ? 
+			ResultArgs ret = DongleUtil.dongle.Encrypt(DongleType.USER_ROOT, plainBytes, out cipher ) ? 
 					new ResultArgs(true, BitConverter.ToString(cipher), "OK") : 
 					new ResultArgs(false, null, DongleUtil.dongle.LastErrorMessage);
 
@@ -51,8 +46,6 @@ namespace RonftonCard.Service
 		public IHttpActionResult Restore(dynamic request)
 		{
 			String keyPwd = Convert.ToString(request.keyPwd);
-			int seq = Convert.ToInt32(request.seq);
-
 			return Json <ResultArgs>( DongleUtil.Restore(keyPwd));
 		}
 	}

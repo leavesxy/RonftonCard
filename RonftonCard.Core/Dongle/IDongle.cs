@@ -39,8 +39,7 @@ namespace RonftonCard.Core.Dongle
 		/// open specified dongle,and set select index
 		/// </summary>
 		bool Open(int seq);
-		void Close(int seq);
-		void CloseAll();
+		void Close();
 
 		/// <summary>
 		/// enumerate all dongles

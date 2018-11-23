@@ -27,18 +27,12 @@ namespace RonftonCard.Service
 		[Route("dongle")]
 		public IHttpActionResult Enumerate()
 		{
-			DongleInfo[] dongleInfo = null;
-
-			if (DongleUtil.dongle != null)
-			{
-				DongleUtil.dongle.Enumerate();
-				dongleInfo = DongleUtil.dongle.Dongles;
-			}
+			DongleUtil.dongle.Enumerate();
 
 			return Json<ResultArgs>(
 				new ResultArgs(true)
 				{
-					Result = dongleInfo,
+					Result = DongleUtil.dongle.Dongles,
 					Msg = "OK"
 				});
 		}
@@ -60,10 +54,9 @@ namespace RonftonCard.Service
 
 		[HttpPost]
 		[Route("dongle/close")]
-		public IHttpActionResult Close(dynamic request)
+		public IHttpActionResult Close()
 		{
-			int seq = Convert.ToInt32(request.seq);
-			DongleUtil.dongle.Close(seq);
+			DongleUtil.dongle.Close();
 
 			return Json<ResultArgs>(
 				new ResultArgs( DongleUtil.dongle.IsSucc )
