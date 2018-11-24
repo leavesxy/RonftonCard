@@ -48,10 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\DongleUserInfo.cs" />
+    <Compile Include="DTO\DongleUserInfo.cs" />
     <Compile Include="Dongle\IDongle.cs" />
-    <Compile Include="Entity\AuthenKeyResponse.cs" />
-    <Compile Include="Entity\UserRootKeyResponse.cs" />
+    <Compile Include="DTO\AuthenKeyResponse.cs" />
+    <Compile Include="DTO\UserRootKeyResponse.cs" />
     <Compile Include="CardContext.cs" />
     <Compile Include="CardReader\CardDataType.cs" />
     <Compile Include="CardReader\CardType.cs" />

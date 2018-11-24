@@ -4,13 +4,13 @@ using System.Windows.Forms;
 using RonftonCard.Core.Dongle;
 using RonftonCard.Core;
 using Bluemoon;
-using RonftonCard.Core.Entity;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using RonftonCard.Dongle.RockeyArm;
 
 namespace RonftonCard.Main.Forms
 {
+    using Core.DTO;
+
 	public partial class DongleForm : Form
 	{
 		private static ILog logger = LogManager.GetLogger("RonftonCardLog");

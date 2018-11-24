@@ -1,7 +1,7 @@
 ﻿using System;
 using RonftonCard.Core.Dongle;
 
-namespace RonftonCard.Core.Entity
+namespace RonftonCard.Core.DTO
 {
 	public class DongleUserInfo
 	{

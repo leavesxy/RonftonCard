@@ -191,6 +191,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 		/// <summary>
 		/// restore current key, should use admin pin
+        /// after restore,should re-enumerate dongle again
 		/// </summary>
 		public bool Restore(byte[] adminPin)
 		{

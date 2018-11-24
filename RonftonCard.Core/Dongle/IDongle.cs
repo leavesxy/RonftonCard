@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text;
 using Bluemoon;
-using RonftonCard.Core.Entity;
 
 namespace RonftonCard.Core.Dongle
 {
+    using Core.DTO;
+
 	/// <summary>
 	/// interface of Dongle
 	/// </summary>

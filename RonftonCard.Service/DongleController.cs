@@ -27,14 +27,14 @@ namespace RonftonCard.Service
 		[Route("dongle")]
 		public IHttpActionResult Enumerate()
 		{
-			DongleUtil.dongle.Enumerate();
+			bool ret = DongleUtil.dongle.Enumerate();
 
 			return Json<ResultArgs>(
-				new ResultArgs(true)
+				new ResultArgs(ret)
 				{
 					Result = DongleUtil.dongle.Dongles,
-					Msg = "OK"
-				});
+					Msg = DongleUtil.dongle.LastErrorMessage
+                });
 		}
 
 		[HttpPost]

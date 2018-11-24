@@ -42,7 +42,7 @@ namespace RonftonCard.Core
 			return true;
 		}
 
-		#region "--- to show config ---"
+		#region "--- selected ---"
 		public static String TempleteSelected { get; set; }
 
 		public static String ReaderSelected { get; set; }

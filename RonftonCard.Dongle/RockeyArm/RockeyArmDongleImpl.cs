@@ -5,7 +5,7 @@ namespace RonftonCard.Dongle.RockeyArm
 {
 	using Bluemoon;
 	using Core.Dongle;
-	using Core.Entity;
+	using Core.DTO;
 	using DONGLE_HANDLER = Int64;
 
 	public partial class RockeyArmDongle

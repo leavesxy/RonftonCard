@@ -17,7 +17,6 @@ namespace RonftonCard.Service
 		{
 			String userId = Convert.ToString(request.userId);
 			String rootKey = Convert.ToString(request.rootKey);
-			int seq = Convert.ToInt32(request.seq);
 
 			byte[] rootKeyBytes = HexString.FromHexString(rootKey);
 
