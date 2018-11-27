@@ -167,7 +167,7 @@ namespace RonftonCard.Dongle.RockeyArm
 				try
 				{
 					Dongle_LEDControl(this.hDongle, (int)RockeyArmLedFlag.OFF);
-					Dongle_Close(this.hDongle);
+					this.lastErrorCode = Dongle_Close(this.hDongle);
 					this.hDongle = -1;
 				}
 				catch (Exception)
@@ -228,7 +228,8 @@ namespace RonftonCard.Dongle.RockeyArm
 			Close();
 
 			long count = 0;
-			if (Dongle_Enum(IntPtr.Zero, out count) != SUCC || count <= 0)
+			this.lastErrorCode = Dongle_Enum(IntPtr.Zero, out count);
+			if ( !this.IsSucc || count <= 0)
 				return false;
 
 			logger.Debug(String.Format("found {0} Dogs !", count));
@@ -239,7 +240,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			{
 				int size = IntPtrUtil.SizeOf(typeof(DONGLE_INFO));
 				pDongleInfo = IntPtrUtil.Create(size * (int)count);
-				Dongle_Enum(pDongleInfo, out count);
+				this.lastErrorCode = Dongle_Enum(pDongleInfo, out count);
 
 				for (int i = 0; i < count; i++)
 				{
