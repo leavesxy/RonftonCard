@@ -83,14 +83,6 @@ namespace RonftonCard.Core
 		#endregion
 
 		#region "--- Create instance from config ---"
-		public static CardContext CreateCardContext()
-		{
-			return new CardContext()
-			{
-				CardTemplete = templeteDescriptors[TempleteSelected],
-				Reader = GetCardReader()
-			};
-		}
 
 		/// <summary>
 		/// create card reader instance
