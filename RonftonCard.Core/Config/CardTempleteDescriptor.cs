@@ -55,7 +55,7 @@ namespace RonftonCard.Core.Config
 		///		CPU:	file descriptors
 		///		Flash : segment address
 		/// </summary>
-		public int[] SegmentAddr
+		public UInt16[] SegmentAddr
 		{
 			get
 			{

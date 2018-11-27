@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{508BB207-C9C8-49C9-8B70-F99185BFF1C4}</ProjectGuid>
+    <ProjectGuid>{CF92F4D6-6F1B-4346-A585-B3378EDF6276}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RonftonCard.Core</RootNamespace>
-    <AssemblyName>RonftonCard.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>RonftonCard.KeyService</RootNamespace>
+    <AssemblyName>RonftonCard.KeyService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,38 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card\ICard.cs" />
-    <Compile Include="Card\MifareCard.cs" />
-    <Compile Include="DTO\CardKeyRequest.cs" />
-    <Compile Include="DTO\CardKeyResponse.cs" />
-    <Compile Include="DTO\DongleUserInfo.cs" />
-    <Compile Include="Dongle\IDongle.cs" />
-    <Compile Include="DTO\AuthenKeyResponse.cs" />
-    <Compile Include="DTO\UserRootKeyResponse.cs" />
-    <Compile Include="CardContext.cs" />
-    <Compile Include="CardReader\CardDataType.cs" />
-    <Compile Include="CardReader\CardType.cs" />
-    <Compile Include="Dongle\DongleConst.cs" />
-    <Compile Include="Dongle\DongleInfo.cs" />
-    <Compile Include="Dongle\DongleType.cs" />
-    <Compile Include="Dongle\DongleAuthenMode.cs" />
-    <Compile Include="CardReader\KeyMode.cs" />
-    <Compile Include="CardReader\PortType.cs" />
-    <Compile Include="Config\CardReaderDescriptor.cs" />
-    <Compile Include="CardReader\AbstractCardReader.cs" />
-    <Compile Include="CardReader\ICardReader.cs" />
-    <Compile Include="Config\CardTempleteDescriptor.cs" />
-    <Compile Include="Config\DongleDescriptor.cs" />
-    <Compile Include="Config\TempleteDataDescriptor.cs" />
-    <Compile Include="Config\TempleteStorageDescriptor.cs" />
-    <Compile Include="ConfigManager.cs" />
-    <Compile Include="IKeyService.cs" />
+    <Compile Include="LocalTestKeyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RonftonCard.Core\RonftonCard.Core.csproj">
+      <Project>{508bb207-c9c8-49c9-8b70-f99185bff1c4}</Project>
+      <Name>RonftonCard.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

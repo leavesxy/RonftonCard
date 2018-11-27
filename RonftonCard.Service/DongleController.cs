@@ -42,6 +42,9 @@ namespace RonftonCard.Service
 		public IHttpActionResult Open(dynamic request)
 		{
 			int seq = Convert.ToInt32(request.seq);
+
+			logger.Debug(String.Format("Open {0} dongle.", seq));
+
 			bool ret = DongleUtil.dongle.Open(seq);
 
 			return Json<ResultArgs>(

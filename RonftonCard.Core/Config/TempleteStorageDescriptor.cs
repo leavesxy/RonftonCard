@@ -14,7 +14,7 @@ namespace RonftonCard.Core.Config
 		///		for CPU:	file descriptor
 		///		for flash : physical address
 		/// </summary>
-		public int Address { get; set; }
+		public UInt16 Address { get; set; }
 
 		/// <summary>
 		/// block number
