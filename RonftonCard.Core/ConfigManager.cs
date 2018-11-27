@@ -4,6 +4,7 @@ using log4net;
 using RonftonCard.Core.CardReader;
 using RonftonCard.Core.Config;
 using RonftonCard.Core.Dongle;
+using RonftonCard.Core.KeyService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,6 +134,10 @@ namespace RonftonCard.Core
 			return templeteDescriptors[TempleteSelected];
 		}
 
+		public static IKeyService GetKeyService()
+		{
+			return new LocalTestKeyService();
+		}
 		#endregion
 	}
 }

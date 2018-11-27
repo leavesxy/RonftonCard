@@ -13,14 +13,14 @@ namespace RonftonCard.Core.DTO
 		public UInt16 Sector { get; set; }
 
 		/// <summary>
-		/// for CPU, this is key for reading
+		/// for M1, is KeyA
 		/// </summary>
-		public byte[] KeyA { get; set; }
+		public byte[] ReadKey { get; set; }
 
 		/// <summary>
-		/// for CPU, this is key for writing
+		/// for M1, is KeyB
 		/// </summary>
-		public byte[] KeyB { get; set; }
+		public byte[] WriteKey { get; set; }
 
 		/// <summary>
 		/// for CPU, this is MF root

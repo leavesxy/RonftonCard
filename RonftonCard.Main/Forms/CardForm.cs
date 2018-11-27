@@ -56,12 +56,21 @@ namespace RonftonCard.Main.Forms
 		#region "--- button handler ---"
 		private void BtnSelectCard_Click(object sender, EventArgs e)
 		{
+			byte[] card_id;
 
+			if( this.reader.Select(out card_id))
+			{
+				this.TxtDbg.Trace("Select card id =" + BitConverter.ToString(card_id));
+			}
 		}
 
 		private void BtnReadBlockA_Click(object sender, EventArgs e)
 		{
-
+			byte[] buffer;
+			if (this.reader.Read(0, out buffer, 16))
+			{
+				this.TxtDbg.Trace("read byte =" + BitConverter.ToString(buffer));
+			}
 		}
 
 		private void BtnReadBlockB_Click(object sender, EventArgs e)
@@ -112,33 +121,31 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnInitialize_Click(object sender, EventArgs e)
 		{
-			byte[] cardid;
-			if( !reader.Select( out cardid ))
+			byte[] card_id;
+			if( !reader.Select( out card_id))
 			{
 				this.TxtDbg.Trace("no card found !", true);
 				return;
 			}
 
-			this.TxtDbg.Trace("Select Card" + BitConverter.ToString(cardid));
+			this.TxtDbg.Trace("Select Card" + BitConverter.ToString(card_id));
 
-			UInt16[] descriptor = ConfigManager.GetCardTemplete().SegmentAddr;
+			ResultArgs result = CardManager.Initialize(card_id);
 
-			List<CardKeyRequest> request = new List<CardKeyRequest>();
-			for( int i=0; i<descriptor.Length; i++)
+			if (result.Succ)
 			{
-				CardKeyRequest req = new CardKeyRequest()
+				CardKeyResponse[] response = result.Result as CardKeyResponse[];
+
+				for (int i = 0; i < response.Length; i++)
 				{
-					CardId = cardid,
-					Sector = descriptor[i],
-					CardType = '5',
-					SectorType = 'I'
-				};
-				request.Add(req);
+					this.TxtDbg.Trace(String.Format("CardId = {0}, Sector = {1},KeyA={2}, KeyB={3}, Control={4}",
+						BitConverter.ToString(response[i].CardId),
+						response[i].Sector,
+						BitConverter.ToString(response[i].ReadKey),
+						BitConverter.ToString(response[i].WriteKey),
+						BitConverter.ToString(response[i].ControlBlock)));
+				}
 			}
-
-			IKeyService keyService = new LocalTestKeyService();
-			ResultArgs result = keyService.ComputeKey(request.ToArray());
-
 		}
 	}
 }

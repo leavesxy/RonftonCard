@@ -74,6 +74,7 @@
     <Compile Include="Config\TempleteStorageDescriptor.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="IKeyService.cs" />
+    <Compile Include="KeyService\LocalTestKeyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@ namespace RonftonCard.CardReader.Decard
 		 * @brief  寻卡请求、防卡冲突、选卡操作。
 		 * 内部包含了 ::dc_request ::dc_anticoll ::dc_select ::dc_anticoll2 ::dc_select2 的功能。
 		 * @param[in] icdev 设备标识符。
-		 * @param[in] _Mode 模式，同 ::dc_request 的 @a _Mode 。
+		 * _Mode 模式，0x00表示对空闲卡进行操作，0x01表示对所有卡操作 
 		 * @param[out] SnrLen 返回卡序列号的长度。
 		 * @param[out] _Snr 返回的卡序列号，请至少分配8个字节。
 		 */
