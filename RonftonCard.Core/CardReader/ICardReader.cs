@@ -33,7 +33,7 @@ namespace RonftonCard.Core.CardReader
 
 		#endregion
 
-		#region "--- Card operation ---"
+		#region "--- M1 Card operation ---"
 
 		bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
 
@@ -41,8 +41,10 @@ namespace RonftonCard.Core.CardReader
 		/// for M1,descriptor is sector
 		/// for CPU, descriptor is file_descriptor
 		/// </summary>
-		bool Read(int descriptor, out byte[] data, int len);
-		bool Write(int descriptor, byte[] data, int len);
+		bool ReadBlock(int blockNum, out byte[] data, int len);
+		bool ReadSector(int sectorNum, out byte[] data, int len);
+
+		bool WriteBlock(int blockNum, byte[] data, int len);
 
 		/// <summary>
 		/// select card

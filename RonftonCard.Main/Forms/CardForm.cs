@@ -10,13 +10,14 @@ namespace RonftonCard.Main.Forms
 	using Core.CardReader;
 	using Core.DTO;
 	using KeyService;
+	using System.Text;
 
 	public partial class CardForm : Form
 	{
 		private List<CheckBox> cardSectorSelected;
 
-		private const String DEFAULT_KEY_A = "01-01-01-01-01-01";
-		private const String DEFAULT_KEY_B = "0f-0f-0f-0f-0f-0f";
+		private const String DEFAULT_KEY_A = "b0-b1-b2-b3-b4-b5";
+		private const String DEFAULT_KEY_B = "ff-ff-ff-ff-ff-ff";
 
 		private ICardReader reader;
 
@@ -64,18 +65,82 @@ namespace RonftonCard.Main.Forms
 			}
 		}
 
-		private void BtnReadBlockA_Click(object sender, EventArgs e)
+		private void BtnTestKeyA_Click(object sender, EventArgs e)
 		{
-			byte[] buffer;
-			if (this.reader.Read(0, out buffer, 16))
+			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
+
+			this.TxtDbg.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
+			TestKey(KeyMode.KEY_A, keyA);
+		}
+
+		private void BtnTestKeyB_Click(object sender, EventArgs e)
+		{
+			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
+
+			this.TxtDbg.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
+			TestKey(KeyMode.KEY_B, keyB);
+		}
+
+		private void TestKey(KeyMode keyMode, byte[] key)
+		{
+			foreach (CheckBox cb in this.cardSectorSelected)
 			{
-				this.TxtDbg.Trace("read byte =" + BitConverter.ToString(buffer));
+				if (!cb.Checked)
+					continue;
+
+				int sector = int.Parse(cb.Text.Trim());
+				if (!this.reader.Authen(keyMode, sector, key))
+					this.TxtDbg.Trace("Authen sector {0} failed !", sector);
+				else
+					this.TxtDbg.Trace("Authen sector {0} OK !", sector);
 			}
 		}
 
+		private void BtnReadBlockA_Click(object sender, EventArgs e)
+		{
+			this.TxtDbg.Trace("Read Card ...", true);
+			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
+			foreach (CheckBox cb in this.cardSectorSelected)
+			{
+				if (!cb.Checked)
+					continue;
+
+				int sector = int.Parse(cb.Text.Trim());
+				ReadSector(KeyMode.KEY_A, sector, keyA);
+			}
+		}
+
+
 		private void BtnReadBlockB_Click(object sender, EventArgs e)
 		{
+			this.TxtDbg.Trace("Read Card by KeyB...", true);
+			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
 
+			foreach (CheckBox cb in this.cardSectorSelected)
+			{
+				if (!cb.Checked)
+					continue;
+
+				int sector = int.Parse(cb.Text.Trim());
+				ReadSector(KeyMode.KEY_B, sector, keyB);
+			}
+		}
+		
+		private void ReadSector(KeyMode keyMode, int sector, byte[] key)
+		{
+			if (!this.reader.Authen(keyMode, sector*4, key))
+			{
+				this.TxtDbg.Trace("Auth sector {0} failed !", sector);
+				return;
+			}
+
+
+			byte[] buffer;
+
+			if (this.reader.ReadSector(sector, out buffer, 64))
+			{
+				this.TxtDbg.Trace("Sector {0} : {1}", sector , BitConverter.ToString(buffer));
+			}
 		}
 
 		private void BtnUpdateKeyA_Click(object sender, EventArgs e)
@@ -147,5 +212,7 @@ namespace RonftonCard.Main.Forms
 				}
 			}
 		}
+
+
 	}
 }

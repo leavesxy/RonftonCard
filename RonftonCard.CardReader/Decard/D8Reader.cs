@@ -81,15 +81,32 @@ namespace RonftonCard.CardReader.Decard
 			return dc_authentication_passaddr(this.hDev, mode, (byte)(descriptor & 0xff), pwd) == SUCC;
 		}
 
-		public override bool Read(int descriptor, out byte[] data, int len)
+		public override bool ReadBlock(int blockNum, out byte[] data, int len)
 		{
 			data = new byte[len];
-			return dc_read(this.hDev, (byte)(descriptor & 0xff), data) == SUCC;
+			return dc_read(this.hDev, (byte)(blockNum & 0xff), data) == SUCC;
 		}
 
-		public override bool Write(int descriptor, byte[] data, int len)
+		public override bool ReadSector(int sectorNum, out byte[] data, int len)
 		{
-			return dc_write(this.hDev, (byte)(descriptor & 0xff), data) == SUCC;
+			data = new byte[len];
+
+			byte[] buffer;
+			for (int i = 0; i < 4; i++)
+			{
+				if (ReadBlock(sectorNum * 4 + i, out buffer, 16))
+				{
+					Array.Copy(buffer, 0, data, i * 16, 16);
+				}
+				else
+					return false;
+			}
+			return true;
+		}
+
+		public override bool WriteBlock(int blockNum, byte[] data, int len)
+		{
+			return dc_write(this.hDev, (byte)(blockNum & 0xff), data) == SUCC;
 		}
 
 		public override bool Select(out byte[] cardId)

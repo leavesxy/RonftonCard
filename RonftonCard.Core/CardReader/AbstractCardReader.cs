@@ -57,8 +57,10 @@ namespace RonftonCard.Core.CardReader
 
 		public abstract bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
 		public abstract bool Select(out byte[] cardId);
-		public abstract bool Read(int descriptor, out byte[] data, int len);
-		public abstract bool Write(int descriptor, byte[] data, int len);
+		public abstract bool ReadBlock(int blockNum, out byte[] data, int len);
+		public abstract bool ReadSector(int sectorNum, out byte[] data, int len);
+
+		public abstract bool WriteBlock(int blockNum, byte[] data, int len);
 		#endregion
 
 	}

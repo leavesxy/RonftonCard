@@ -43,8 +43,8 @@ namespace RonftonCard.KeyService
 				{
 					CardId = request[i].CardId,
 					Sector = request[i].Sector,
-					KeyA = ComputeKeyA(buffer.ToArray()),
-					KeyB = ComputeKeyA(buffer.ToArray()),
+					ReadKey = ComputeKeyA(buffer.ToArray()),
+					WriteKey = ComputeKeyA(buffer.ToArray()),
 					ControlBlock = ComputeControlBlock()
 				};
 
