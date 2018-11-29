@@ -3,37 +3,40 @@ using System.Runtime.InteropServices;
 
 namespace RonftonCard.CardReader.Decard
 {
+	using DEV_HANDLER = System.Int32;
+
 	/// <summary>
 	/// interface for card reader device
 	/// </summary>
 	public partial class D8Reader
 	{
+		#region "--- device interface ---"
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_init(Int16 port, int baud);
+		static extern short dc_init(Int16 port, int baud);
 
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_exit(int hdev);
+		static extern short dc_exit(DEV_HANDLER hReader);
 
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_beep(int hdev, ushort duration);
+		static extern short dc_beep(DEV_HANDLER hReader, ushort duration);
 
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_light(int hdev, ushort onOff);
+		static extern short dc_light(DEV_HANDLER hReader, ushort onOff);
 
+		/// <summary>
+		/// verstion allocate 128 bytes at least 
+		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_getver(int hdev, [Out] byte[] version);
+		static extern short dc_getver(DEV_HANDLER hReader, [Out] byte[] version);
 
+		#endregion
 
-		/**
-		 * @brief  寻卡请求、防卡冲突、选卡操作。
-		 * 内部包含了 ::dc_request ::dc_anticoll ::dc_select ::dc_anticoll2 ::dc_select2 的功能。
-		 * @param[in] icdev 设备标识符。
-		 * _Mode 模式，0x00表示对空闲卡进行操作，0x01表示对所有卡操作 
-		 * @param[out] SnrLen 返回卡序列号的长度。
-		 * @param[out] _Snr 返回的卡序列号，请至少分配8个字节。
-		 */
+		/// <summary>
+		/// include dc_request,dc_anticol1,dc_select,dc_anticoll2,dc_select2
+		/// mode : 0x00 -- for free card, 0x01 for all card
+		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_card_n(int hdev, byte mode, ref uint cardIdLen, [Out]byte[] cardId);
+		static extern short dc_card_n(DEV_HANDLER hReader, byte mode, ref uint cardIdLen, [Out]byte[] cardId);
 
 		/**
 		 * 修改M1卡密码配置块数据，M1卡密码配置块也就是每个扇区的最后一块，包含密码A、控制字节、密码B数据。
@@ -48,38 +51,25 @@ namespace RonftonCard.CardReader.Decard
 		 * @param[in] _KeyB 密码B，固定为6个字节。
 		 */
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_changeb3(int hdev, byte sector, [In]byte[] keyA, byte b0, byte b1, byte b2, byte b3, byte bk, [In]byte[] keyB);
+		static extern short dc_changeb3(DEV_HANDLER hReader, byte sector, [In]byte[] keyA, byte b0, byte b1, byte b2, byte b3, byte bk, [In]byte[] keyB);
 
-		/**
-		 * 读取卡内数据，对于M1卡，一次读取一个块的数据，为16个字节；对于ML卡，一次读取相同属性的两页，为8个字节。
-		 * @param[in] icdev 设备标识符。
-		 * @param[in] _Adr 地址。
-		 * @n M1卡 - S50块地址（0~63），S70块地址（0~255）。
-		 * @n ML卡 - 页地址（0~11）。
-		 * @param[out] _Data 固定返回16个字节数据，真实数据可能小于16个字节。
-		 */
+		/// <summary>
+		/// read block data
+		/// block : block number
+		/// M1: S50(0~63), S70(0~255)
+		/// ML: 0~11
+		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_read(int hdev, byte addr, [Out] byte[] data);
+		static extern short dc_read(DEV_HANDLER hReader, byte block, [Out] byte[] outData);
 
-		/**
-		 * 写入数据到卡片内，对于M1卡，一次必须写入一个块的数据，为16个字节；对于ML卡，一次必须写入一个页的数据，为4个字节。
-		 * @param[in] icdev 设备标识符。
-		 * @param[in] _Adr 地址。
-		 * @n M1卡 - S50块地址（1~63），S70块地址（1~255）。
-		 * @n ML卡 - 页地址（2~11）。
-		 * @param[out] _Data 固定传入16个字节数据，真实数据可能小于16个字节。
-		 */
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_write(int hdev, byte addr, [In] byte[] data);
+		static extern short dc_write(DEV_HANDLER hReader, byte block, [In] byte[] inData);
 
-		/**
-		 * 使用传入的密码来验证M1卡密码。
-		 * @param[in] icdev 设备标识符。
-		 * @param[in] _Mode 模式，0x00表示验证A密码，0x04表示验证B密码。
-		 * @param[in] _Addr 要验证密码的块号。
-		 * @param[in] passbuff 密码，固定为6个字节。
-		 */
+		/// <summary>
+		/// verify pin
+		/// mode : 0x00--KeyA; 0x04--KeyB
+		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
-		public static extern short dc_authentication_passaddr(int hdev, byte mode, byte addr, [In]byte[] pwd);
+		static extern short dc_authentication_passaddr(DEV_HANDLER hReader, byte mode, byte block, [In]byte[] pin);
 	}
 }

@@ -66,7 +66,6 @@
     <Compile Include="CardReader\KeyMode.cs" />
     <Compile Include="CardReader\PortType.cs" />
     <Compile Include="Config\CardReaderDescriptor.cs" />
-    <Compile Include="CardReader\AbstractCardReader.cs" />
     <Compile Include="CardReader\ICardReader.cs" />
     <Compile Include="Config\CardTempleteDescriptor.cs" />
     <Compile Include="Config\DongleDescriptor.cs" />

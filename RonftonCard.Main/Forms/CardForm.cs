@@ -40,6 +40,7 @@ namespace RonftonCard.Main.Forms
 			ResetCardBlock();
 
 			this.reader = ConfigManager.GetCardReader();
+			this.reader.Open();
 		}
 
 		private void ResetCardBlock()
@@ -213,6 +214,10 @@ namespace RonftonCard.Main.Forms
 			}
 		}
 
-
+		private void CardForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (this.reader != null)
+				this.reader.Close();
+		}
 	}
 }

@@ -11,14 +11,17 @@ namespace RonftonCard.Core.CardReader
 		#region "--- device operation ---"
 
 		/// <summary>
+		/// open & close device
+		/// </summary>
+		/// <returns></returns>
+		bool Open();
+		void Close();
+				
+		/// <summary>
 		/// get device information,maybe is null!
 		/// </summary>
 		String GetVersion();
-
-		/// <summary>
-		/// close device
-		/// </summary>
-		void Close();
+		
 
 		/// <summary>
 		/// control to beep
@@ -35,21 +38,24 @@ namespace RonftonCard.Core.CardReader
 
 		#region "--- M1 Card operation ---"
 
+		/// <summary>
+		/// select card
+		/// </summary>
+		bool Select(out byte[] cardId);
+
 		bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
 
 		/// <summary>
 		/// for M1,descriptor is sector
 		/// for CPU, descriptor is file_descriptor
 		/// </summary>
-		bool ReadBlock(int blockNum, out byte[] data, int len);
-		bool ReadSector(int sectorNum, out byte[] data, int len);
+		bool ReadBlock(int block, out byte[] outData);
 
-		bool WriteBlock(int blockNum, byte[] data, int len);
+		bool ReadSector(int sector, out byte[] outData, out int len);
 
-		/// <summary>
-		/// select card
-		/// </summary>
-		bool Select(out byte[] cardId);
+		bool WriteBlock(int block, byte[] inData);
+
+		bool WriteSector(int sector, byte[] inData, int len);
 
 		#endregion
 	}

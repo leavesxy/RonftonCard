@@ -467,6 +467,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "CardForm";
 			this.Activated += new System.EventHandler(this.CardForm_Activated);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CardForm_FormClosing);
 			this.Load += new System.EventHandler(this.CardForm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
