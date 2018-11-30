@@ -71,7 +71,7 @@ namespace RonftonCard.Main.Forms
 			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
 
 			this.TxtDbg.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
-			TestKey(KeyMode.KEY_A, keyA);
+			TestKey(M1KeyMode.KEY_A, keyA);
 		}
 
 		private void BtnTestKeyB_Click(object sender, EventArgs e)
@@ -79,10 +79,10 @@ namespace RonftonCard.Main.Forms
 			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
 
 			this.TxtDbg.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
-			TestKey(KeyMode.KEY_B, keyB);
+			TestKey(M1KeyMode.KEY_B, keyB);
 		}
 
-		private void TestKey(KeyMode keyMode, byte[] key)
+		private void TestKey(M1KeyMode keyMode, byte[] key)
 		{
 			foreach (CheckBox cb in this.cardSectorSelected)
 			{
@@ -107,7 +107,7 @@ namespace RonftonCard.Main.Forms
 					continue;
 
 				int sector = int.Parse(cb.Text.Trim());
-				ReadSector(KeyMode.KEY_A, sector, keyA);
+				ReadSector(M1KeyMode.KEY_A, sector, keyA);
 			}
 		}
 
@@ -123,11 +123,11 @@ namespace RonftonCard.Main.Forms
 					continue;
 
 				int sector = int.Parse(cb.Text.Trim());
-				ReadSector(KeyMode.KEY_B, sector, keyB);
+				ReadSector(M1KeyMode.KEY_B, sector, keyB);
 			}
 		}
 		
-		private void ReadSector(KeyMode keyMode, int sector, byte[] key)
+		private void ReadSector(M1KeyMode keyMode, int sector, byte[] key)
 		{
 			if (!this.reader.Authen(keyMode, sector*4, key))
 			{
@@ -137,8 +137,8 @@ namespace RonftonCard.Main.Forms
 
 
 			byte[] buffer;
-
-			if (this.reader.ReadSector(sector, out buffer, 64))
+			int len=0;
+			if (this.reader.ReadSector(sector, out buffer, out len))
 			{
 				this.TxtDbg.Trace("Sector {0} : {1}", sector , BitConverter.ToString(buffer));
 			}

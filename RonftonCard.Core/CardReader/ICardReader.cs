@@ -10,13 +10,10 @@ namespace RonftonCard.Core.CardReader
 	{
 		#region "--- device operation ---"
 
-		/// <summary>
-		/// open & close device
-		/// </summary>
-		/// <returns></returns>
 		bool Open();
 		void Close();
-				
+		void Reset();
+
 		/// <summary>
 		/// get device information,maybe is null!
 		/// </summary>
@@ -38,23 +35,20 @@ namespace RonftonCard.Core.CardReader
 
 		#region "--- M1 Card operation ---"
 
-		/// <summary>
-		/// select card
-		/// </summary>
 		bool Select(out byte[] cardId);
 
-		bool Authen(KeyMode keyMode, int descriptor, byte[] pwd);
+		bool Authen(M1KeyMode keyMode, int descriptor, byte[] pwd);
 
 		/// <summary>
-		/// for M1,descriptor is sector
-		/// for CPU, descriptor is file_descriptor
+		/// block is 0-63 for M1_S50, and 0-255 for M1_S70 
 		/// </summary>
 		bool ReadBlock(int block, out byte[] outData);
-
-		bool ReadSector(int sector, out byte[] outData, out int len);
-
 		bool WriteBlock(int block, byte[] inData);
 
+		/// <summary>
+		/// sector is 0-15 for M1_S50, and 0-39 for M1_S70
+		/// </summary>
+		bool ReadSector(int sector, out byte[] outData, out int len);
 		bool WriteSector(int sector, byte[] inData, int len);
 
 		#endregion

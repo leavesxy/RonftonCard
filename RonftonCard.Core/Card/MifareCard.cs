@@ -1,22 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Core.Card
 {
+	using CardReader;
+	using Config;
+
 	public class MifareCard : ICard
 	{
-		public MifareCard()
-		{
+		private IKeyService keyService;
+		private ICardReader reader;
+		private CardTempleteDescriptor cardTemplete;
 
+		public MifareCard(CardTempleteDescriptor cardTemplete, IKeyService keyService, ICardReader reader)
+		{
+			this.cardTemplete = cardTemplete;
+			this.reader = reader;
+			this.keyService = keyService;
+
+			if (!this.reader.Open())
+				throw new Exception("Can't open reader !");
 		}
 
 
 		public bool Initialize()
 		{
-			throw new NotImplementedException();
+			// get sectors
+			// select card id
+			// get keyA & keyB
+			// for loop
+			//	use default pin to authen
+			//	update KeyA,KeyB
+			//	update Control block
+			// reset
+			// beep 
+
+			return true;
 		}
 
 		public bool Personalize()

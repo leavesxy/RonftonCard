@@ -14,14 +14,26 @@ namespace RonftonCard.Core
 		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
 
 		/// <summary>
-		/// initialize card
+		/// initialize M1 card
 		/// </summary>
-		public static ResultArgs Initialize(byte[] cardId)
+		public static ResultArgs MifareInitialize()
 		{
-			//ICardReader reader = ConfigManager.GetCardReader();
+			ICardReader reader = ConfigManager.GetCardReader();
 			IKeyService keyService = ConfigManager.GetKeyService();
-
 			UInt16 [] sectors = ConfigManager.GetCardTemplete().SegmentAddr;
+
+			if (!reader.Open())
+				return new ResultArgs(false, null, "Can't open card reader !");
+
+			if (!keyService.IsOK())
+				return new ResultArgs(false, null, "Can't get key service !");
+
+			if (sectors.IsNullOrEmpty())
+				return new ResultArgs(false, null, "Sectors config error !");
+
+			byte[] cardId;
+			if (!reader.Select(out cardId))
+				return new ResultArgs(false, null, "not card selected !");
 
 			List<CardKeyRequest> request = new List<CardKeyRequest>();
 			for(int i=0; i<sectors.Length; i++)
@@ -35,24 +47,25 @@ namespace RonftonCard.Core
 				});
 			}
 
-			return keyService.ComputeKey(request.ToArray());
+			ResultArgs ret = keyService.ComputeKey(request.ToArray());
 
-			//if( result.Succ )
-			//{
-			//	CardKeyResponse[] response = result.Result as CardKeyResponse[];
+			if (ret.Succ)
+			{
+				CardKeyResponse[] response = ret.Result as CardKeyResponse[];
 
-			//	for (int i = 0; i < response.Length; i++)
-			//	{
-			//		logger.Debug(String.Format("CardId = {0}, Sector = {1},KeyA={2}, KeyB={3}, Control={4}",
-			//			BitConverter.ToString(response[i].CardId),
-			//			response[i].Sector,
-			//			BitConverter.ToString(response[i].KeyA),
-			//			BitConverter.ToString(response[i].KeyB),
-			//			BitConverter.ToString(response[i].ControlBlock)));
-			//	}
-			//}
+				for (int i = 0; i < response.Length; i++)
+				{
+					// write card
+					logger.Debug(String.Format("CardId = {0}, Sector = {1},KeyA={2}, KeyB={3}, Control={4}",
+						BitConverter.ToString(response[i].CardId),
+						response[i].Sector,
+						BitConverter.ToString(response[i].ReadKey),
+						BitConverter.ToString(response[i].WriteKey),
+						BitConverter.ToString(response[i].ControlBlock)));
+				}
+			}
 
-			//return result.Succ;
+			return ret;
 		}
 	}
 }

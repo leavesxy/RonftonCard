@@ -11,6 +11,8 @@ namespace RonftonCard.Core
 
 	public interface IKeyService
 	{
+		bool IsOK();
+
 		ResultArgs ComputeKey(CardKeyRequest[] request );
 	}
 }

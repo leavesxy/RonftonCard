@@ -6,7 +6,7 @@
 	///	PCSC		: 200~299
 	///	Bluetooth	: 300~399
 	/// </summary>
-	public enum PortType : int
+	public enum ReaderPortType : int
 	{
 		COM=0,
 		USB=100,

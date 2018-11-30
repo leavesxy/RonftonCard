@@ -21,7 +21,7 @@ namespace RonftonCard.CardReader.Decard
 		static extern short dc_beep(DEV_HANDLER hReader, ushort duration);
 
 		[DllImport(@"Plugin\dcrf32.dll")]
-		static extern short dc_light(DEV_HANDLER hReader, ushort onOff);
+		static extern short dc_light(DEV_HANDLER hReader, ushort flag);
 
 		/// <summary>
 		/// verstion allocate 128 bytes at least 
@@ -29,7 +29,28 @@ namespace RonftonCard.CardReader.Decard
 		[DllImport(@"Plugin\dcrf32.dll")]
 		static extern short dc_getver(DEV_HANDLER hReader, [Out] byte[] version);
 
+		/// <summary>
+		/// msec : millisecond, it is recommanded to set 10 msec
+		/// </summary>
+		[DllImport(@"Plugin\dcrf32.dll")]
+		static extern short dc_reset(DEV_HANDLER hReader, ushort msec);
+
 		#endregion
+
+		#region "--- M1 Card interface ---"
+
+		[DllImport(@"Plugin\dcrf32.dll")]
+		static extern short dc_request(DEV_HANDLER hReader, byte mode, ref ushort atqa);
+
+		/// <summary>
+		/// bcnt : 0x00
+		/// </summary>
+		[DllImport(@"Plugin\dcrf32.dll")]
+		static extern short dc_anticoll(DEV_HANDLER hReader, byte bcnt, [Out]byte[] cardId);
+
+		[DllImport(@"Plugin\dcrf32.dll")]
+		static extern short dc_select(DEV_HANDLER hReader, byte[] cardId, ref byte sak);
+
 
 		/// <summary>
 		/// include dc_request,dc_anticol1,dc_select,dc_anticoll2,dc_select2
@@ -38,18 +59,17 @@ namespace RonftonCard.CardReader.Decard
 		[DllImport(@"Plugin\dcrf32.dll")]
 		static extern short dc_card_n(DEV_HANDLER hReader, byte mode, ref uint cardIdLen, [Out]byte[] cardId);
 
-		/**
-		 * 修改M1卡密码配置块数据，M1卡密码配置块也就是每个扇区的最后一块，包含密码A、控制字节、密码B数据。
-		 * @param[in] icdev 设备标识符。
-		 * @param[in] _SecNr 扇区号。
-		 * @param[in] _KeyA 密码A，固定为6个字节。
-		 * @param[in] _B0 块0控制字（当一扇区有16块时，对应为块0~4的控制字），低3位（D2D1D0）对应C10、C20、C30。
-		 * @param[in] _B1 块1控制字（当一扇区有16块时，对应为块5~9的控制字），低3位（D2D1D0）对应C11、C21、C31。
-		 * @param[in] _B2 块2控制字（当一扇区有16块时，对应为块10~14的控制字），低3位（D2D1D0）对应C12、C22、C32。
-		 * @param[in] _B3 块3控制字（当一扇区有16块时，对应为块15的控制字），低3位（D2D1D0）对应C13、C23、C33。
-		 * @param[in] _Bk 保留，固定为0x00。
-		 * @param[in] _KeyB 密码B，固定为6个字节。
-		 */
+		/// <summary>
+		/// update control block,include KeyA,control block,KeyB
+		/// keyA & keyB are six bytes
+		/// b0 --- bit for controlling block 0 (or 0~4),
+		/// the low three bit (D2D1D0) equal 
+		/// b0 --- C10,C20,C30
+		/// b1 --- C11,C21,C31
+		/// b2 --- C12,C22,C32
+		/// b3 --- C13,C23,C33
+		/// bk reserved, 0x00 default
+		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
 		static extern short dc_changeb3(DEV_HANDLER hReader, byte sector, [In]byte[] keyA, byte b0, byte b1, byte b2, byte b3, byte bk, [In]byte[] keyB);
 
@@ -71,5 +91,6 @@ namespace RonftonCard.CardReader.Decard
 		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
 		static extern short dc_authentication_passaddr(DEV_HANDLER hReader, byte mode, byte block, [In]byte[] pin);
+		#endregion
 	}
 }

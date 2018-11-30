@@ -12,7 +12,7 @@ namespace RonftonCard.Core.Config
 	{
 		public String Name { get; set; }
 		public String Desc { get; set; }
-		public PortType Port { get; set; }
+		public ReaderPortType Port { get; set; }
 
 		/// <summary>
 		/// only for com

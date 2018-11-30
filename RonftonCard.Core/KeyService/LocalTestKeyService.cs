@@ -14,9 +14,16 @@ namespace RonftonCard.Core.KeyService
 
 		private const String KEY_SALT = "RF";
 
-		// RootKey  TDes( CardID + UserId + Sector + SectorType + CardType + KEY_SALT )
-		//                  4        6        2        1(I|W)     1(5|7|C)      2
+		public bool IsOK()
+		{
+			return true;
+		}
 
+
+		/// <summary>
+		/// RootKey  TDes( CardID + UserId + Sector + SectorType + CardType + KEY_SALT )
+		///                  4        6        2        1(I|W)     1(5|7|C)      2
+		/// </summary>
 		public ResultArgs ComputeKey(CardKeyRequest[] request)
 		{
 			if (request.IsNullOrEmpty())
@@ -45,7 +52,7 @@ namespace RonftonCard.Core.KeyService
 					Sector = request[i].Sector,
 					ReadKey = ComputeReadKey(buffer.ToArray()),
 					WriteKey = ComputeWriteKey(buffer.ToArray()),
-					ControlBlock = ComputeControlBlock()
+					ControlBlock = GetControlBlock()
 				};
 
 				response.Add(res);
@@ -63,7 +70,7 @@ namespace RonftonCard.Core.KeyService
 			return new byte[] { 0xef, 0xef, 0xef, 0xef, 0xef, 0xef };
 		}
 
-		private byte[] ComputeControlBlock()
+		private byte[] GetControlBlock()
 		{
 			return new byte[] { 0x78, 0x77, 0x88, 0x69 };
 		}
