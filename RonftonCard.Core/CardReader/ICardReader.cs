@@ -36,7 +36,7 @@ namespace RonftonCard.Core.CardReader
 		#region "--- M1 Card operation ---"
 
 		bool Select(out byte[] cardId);
-
+		bool Select2(out byte[] cardId);
 		bool Authen(M1KeyMode keyMode, int descriptor, byte[] pwd);
 
 		/// <summary>

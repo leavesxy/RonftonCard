@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bluemoon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,10 @@ namespace RonftonCard.Core.CardReader
 {
 	public enum CardType
 	{
-		M1,
-		CPU
+		[Alias("A")]
+		TYPE_A,
+
+		[Alias("B")]
+		TYPE_B
 	}
 }

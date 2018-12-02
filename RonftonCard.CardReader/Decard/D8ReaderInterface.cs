@@ -35,6 +35,13 @@ namespace RonftonCard.CardReader.Decard
 		[DllImport(@"Plugin\dcrf32.dll")]
 		static extern short dc_reset(DEV_HANDLER hReader, ushort msec);
 
+		/// <summary>
+		/// initialize,
+		/// cardType : 'A' --- TypeA, 'B' --- TypeB
+		/// </summary>
+		[DllImport("dcrf32.dll")]
+		static extern short dc_config_card(DEV_HANDLER hReader, char cardType);
+
 		#endregion
 
 		#region "--- M1 Card interface ---"

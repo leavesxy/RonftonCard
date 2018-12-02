@@ -18,6 +18,7 @@ namespace RonftonCard.CardReader.Decard
 		protected DEV_HANDLER hReader;
 		protected int port;
 		protected int baud;
+		protected CardType cardType;
 
 		///Com: 0~99,USB:100~199,PCSC:200~299,Bluetooth:300~399
 		public D8Reader()
@@ -26,10 +27,17 @@ namespace RonftonCard.CardReader.Decard
 		}
 
 		public D8Reader(int port, int baud)
+			: this(port,baud, CardType.TYPE_A)
+		{
+
+		}
+
+		public D8Reader(int port, int baud, CardType cardType)
 		{
 			this.port = port;
 			this.baud = baud;
 			this.hReader = -1;
+			this.cardType = cardType;
 		}
 
 		#region "--- device operation ---"
@@ -41,6 +49,9 @@ namespace RonftonCard.CardReader.Decard
 			{
 				return false;
 			}
+
+			dc_reset(this.hReader, 10);
+			dc_config_card(this.hReader, (char)this.cardType.GetAliasName()[0]);
 
 			// if init ok, beep to prompt
 			Beep();
@@ -112,9 +123,12 @@ namespace RonftonCard.CardReader.Decard
 			if (this.hReader == -1)
 				return false;
 
+			//atqa :: M1_S50: 0x0004; M1_S70: 0x0002
 			ushort atqa = 0;
 			if (dc_request(this.hReader, 0x00, ref atqa) != SUCC)
 				return false;
+
+			logger.Debug(String.Format("dc_request atqa = 0x{0}", atqa.ToString("X4")));
 
 			byte[] __cardId = ByteUtil.Malloc(16);
 			if (dc_anticoll(this.hReader, 0x00, __cardId) != SUCC)
@@ -125,6 +139,8 @@ namespace RonftonCard.CardReader.Decard
 			byte sak = 0;
 			if (dc_select(this.hReader, __cardId, ref sak) != SUCC)
 				return false;
+
+			logger.Debug(String.Format("dc_select sak = 0x{0}", sak.ToString("X2")));
 
 			cardId = new byte[__cardId.Length];
 			Array.Copy(__cardId, 0, cardId, 0, __cardId.Length);

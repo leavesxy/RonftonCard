@@ -14,6 +14,12 @@ namespace RonftonCard.KeyService
 
 		private const String KEY_SALT = "RF";
 
+		public bool IsOK()
+		{
+			return true;
+		}
+
+
 		// RootKey  TDes( CardID + UserId + Sector + SectorType + CardType + KEY_SALT )
 		//                  4        6        2        1(I|W)     1(5|7|C)      2
 

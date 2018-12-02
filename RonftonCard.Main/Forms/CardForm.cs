@@ -66,6 +66,16 @@ namespace RonftonCard.Main.Forms
 			}
 		}
 
+		private void BtnSelectCard2_Click(object sender, EventArgs e)
+		{
+			byte[] card_id;
+
+			if (this.reader.Select2(out card_id))
+			{
+				this.TxtDbg.Trace("Select card id =" + BitConverter.ToString(card_id));
+			}
+		}
+
 		private void BtnTestKeyA_Click(object sender, EventArgs e)
 		{
 			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
@@ -144,6 +154,8 @@ namespace RonftonCard.Main.Forms
 			}
 		}
 
+
+
 		private void BtnUpdateKeyA_Click(object sender, EventArgs e)
 		{
 
@@ -183,41 +195,45 @@ namespace RonftonCard.Main.Forms
 
 		}
 
-		#endregion
-
-		private void BtnInitialize_Click(object sender, EventArgs e)
-		{
-			byte[] card_id;
-			if( !reader.Select( out card_id))
-			{
-				this.TxtDbg.Trace("no card found !", true);
-				return;
-			}
-
-			this.TxtDbg.Trace("Select Card" + BitConverter.ToString(card_id));
-
-			ResultArgs result = CardManager.Initialize(card_id);
-
-			if (result.Succ)
-			{
-				CardKeyResponse[] response = result.Result as CardKeyResponse[];
-
-				for (int i = 0; i < response.Length; i++)
-				{
-					this.TxtDbg.Trace(String.Format("CardId = {0}, Sector = {1},KeyA={2}, KeyB={3}, Control={4}",
-						BitConverter.ToString(response[i].CardId),
-						response[i].Sector,
-						BitConverter.ToString(response[i].ReadKey),
-						BitConverter.ToString(response[i].WriteKey),
-						BitConverter.ToString(response[i].ControlBlock)));
-				}
-			}
-		}
-
 		private void CardForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (this.reader != null)
 				this.reader.Close();
 		}
+
+		#endregion
+
+		private void BtnInitialize_Click(object sender, EventArgs e)
+		{
+			//byte[] card_id;
+			//if( !reader.Select( out card_id))
+			//{
+			//	this.TxtDbg.Trace("no card found !", true);
+			//	return;
+			//}
+
+			//this.TxtDbg.Trace("Select Card" + BitConverter.ToString(card_id));
+
+			//ResultArgs result = CardManager.MifareInitialize(card_id);
+
+			//if (result.Succ)
+			//{
+			//	CardKeyResponse[] response = result.Result as CardKeyResponse[];
+
+			//	for (int i = 0; i < response.Length; i++)
+			//	{
+			//		this.TxtDbg.Trace(String.Format("CardId = {0}, Sector = {1},KeyA={2}, KeyB={3}, Control={4}",
+			//			BitConverter.ToString(response[i].CardId),
+			//			response[i].Sector,
+			//			BitConverter.ToString(response[i].ReadKey),
+			//			BitConverter.ToString(response[i].WriteKey),
+			//			BitConverter.ToString(response[i].ControlBlock)));
+			//	}
+			//}
+		}
+
+
+
+
 	}
 }

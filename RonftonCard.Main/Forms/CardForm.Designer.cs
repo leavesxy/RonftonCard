@@ -63,6 +63,7 @@
 			this.BtnInitialize = new System.Windows.Forms.Button();
 			this.BtnTestKeyA = new System.Windows.Forms.Button();
 			this.BtnTestKeyB = new System.Windows.Forms.Button();
+			this.BtnSelectCard2 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -436,6 +437,17 @@
 			this.BtnTestKeyB.UseVisualStyleBackColor = true;
 			this.BtnTestKeyB.Click += new System.EventHandler(this.BtnTestKeyB_Click);
 			// 
+			// BtnSelectCard2
+			// 
+			this.BtnSelectCard2.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnSelectCard2.Location = new System.Drawing.Point(24, 427);
+			this.BtnSelectCard2.Name = "BtnSelectCard2";
+			this.BtnSelectCard2.Size = new System.Drawing.Size(110, 32);
+			this.BtnSelectCard2.TabIndex = 35;
+			this.BtnSelectCard2.Text = "寻卡2";
+			this.BtnSelectCard2.UseVisualStyleBackColor = true;
+			this.BtnSelectCard2.Click += new System.EventHandler(this.BtnSelectCard2_Click);
+			// 
 			// CardForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -450,6 +462,7 @@
 			this.Controls.Add(this.BtnReadBlockA);
 			this.Controls.Add(this.BtnTestKeyB);
 			this.Controls.Add(this.BtnTestKeyA);
+			this.Controls.Add(this.BtnSelectCard2);
 			this.Controls.Add(this.BtnSelectCard);
 			this.Controls.Add(this.TxtDbg);
 			this.Controls.Add(this.CbAll);
@@ -513,5 +526,6 @@
 		private System.Windows.Forms.Button BtnInitialize;
 		private System.Windows.Forms.Button BtnTestKeyA;
 		private System.Windows.Forms.Button BtnTestKeyB;
+		private System.Windows.Forms.Button BtnSelectCard2;
 	}
 }
