@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CardTempletes>
 	<templete name="RFC" desc="融付通标准卡结构">
+		<storage>
+			<!-- 相同的物理地址所对应的block+size不应该重合！-->
+			<!-- 对于CPU卡，物理地址就是文件描述号，对M1卡来说就是扇区号 -->
+			<!-- 对于线性flash，则是其物理地址 -->
+			<addr address="0x000d" block="1" size="16"  desc="0扇区"/>
+			<addr address="0x000d" block="2" size="16"  />
+			<addr address="0x000e" block="0" size="16"  desc="1扇区"/>
+			<addr address="0x000e" block="1" size="16"  />
+			<addr address="0x000e" block="2" size="16"  />
+			<addr address="0x000f" block="0" size="16"  desc="2扇区"/>
+			<addr address="0x000f" block="1" size="16"  />
+			<addr address="0x000f" block="2" size="16"  />
+		</storage>
+		
 		<data>
 			<!-- 为了避免配置出错，对于offset=0 的项，使用自动配置，即当前offset=上一配置项offset+length-->
 			<item name="version" 		type="BYTE" 	length="1"	offset="0"		description="卡片版本号"/>
@@ -24,19 +38,7 @@
 			<item name="sumLmtMeal" 	type="INT16" 	length="2"	offset="90"		description="餐次最高消费限额"/>
 		</data>
 		
-		<storage>
-			<!-- 相同的物理地址所对应的block+size不应该重合！-->
-			<!-- 对于CPU卡，物理地址就是文件描述号，对M1卡来说就是扇区号 -->
-			<!-- 对于线性flash，则是其物理地址 -->
-			<addr address="0x0000" block="1" size="16"  desc="0扇区"/>
-			<addr address="0x0000" block="2" size="16"  />
-			<addr address="0x0001" block="0" size="16"  desc="1扇区"/>
-			<addr address="0x0001" block="1" size="16"  />
-			<addr address="0x0001" block="2" size="16"  />
-			<addr address="0x0002" block="0" size="16"  desc="2扇区"/>
-			<addr address="0x0002" block="1" size="16"  />
-			<addr address="0x0002" block="2" size="16"  />
-		</storage>
+
 	</templete>
 
 	<templete name="errorTest" desc="错误测试">

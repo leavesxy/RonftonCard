@@ -13,7 +13,9 @@ namespace RonftonCard.Main.Forms
 	{
 		private ResourceManager rm;
 		private List<TabPageDescriptor> tabPageDescriptor;
+		private static String[] cardType = new String[] { "Type_A", "Type_B" };
 
+		#region "--- init ---"
 		public MainFrm(ResourceManager rm)
 		{
 			InitializeComponent();
@@ -25,6 +27,7 @@ namespace RonftonCard.Main.Forms
 				new TabPageDescriptor { PageIndex=2, PageName="授权KEY", TabPageForm = new DongleForm() },
 			};
 		}
+
 		private void MainFrm_Load(object sender, EventArgs e)
 		{
 			this.Text = this.rm.GetFormTextName();
@@ -32,6 +35,9 @@ namespace RonftonCard.Main.Forms
 
 			InitTabPage();
 			this.TabMainControl.SelectedIndex = 0;
+
+			this.CbCardType.Items.AddRange(cardType);
+			this.CbCardType.SelectedIndex = 0;
 
 			LoadConfiguration();
 		}
@@ -76,6 +82,7 @@ namespace RonftonCard.Main.Forms
 			this.CbDongle.Items.AddRange(ConfigManager.DongleNames);
 			this.CbDongle.SelectedIndex = 0;
 		}
+		#endregion
 
 		#region "--- event handler ---"
 
@@ -103,6 +110,11 @@ namespace RonftonCard.Main.Forms
 			ConfigManager.DongleSelected = (String)CbDongle.Items[CbDongle.SelectedIndex];
 		}
 
+		private void CbCardType_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			ConfigManager.CardType = (CardType)Enum.Parse(typeof(CardType), (String)CbCardType.Items[CbCardType.SelectedIndex], true);
+		}
+
 		#endregion
 
 		#region "--- button click ---"
@@ -124,6 +136,8 @@ namespace RonftonCard.Main.Forms
 		}
 		#endregion
 
+
+		#region "--- intercept USB event ---"
 		const int WM_DEVICECHANGE = 0x2190;
 		const int DBT_DEVICEARRIVAL = 0x8000;
 		const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
@@ -153,5 +167,7 @@ namespace RonftonCard.Main.Forms
 
 			base.WndProc(ref m);
 		}
+
+		#endregion
 	}
 }

@@ -54,7 +54,6 @@
 			this.CbAll = new System.Windows.Forms.CheckBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.Cb6 = new System.Windows.Forms.CheckBox();
-			this.TxtControlBlock = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.TxtKeyA = new System.Windows.Forms.TextBox();
 			this.label7 = new System.Windows.Forms.Label();
@@ -64,6 +63,9 @@
 			this.BtnTestKeyA = new System.Windows.Forms.Button();
 			this.BtnTestKeyB = new System.Windows.Forms.Button();
 			this.BtnSelectCard2 = new System.Windows.Forms.Button();
+			this.BtnReadlBlock = new System.Windows.Forms.Button();
+			this.BtnWriteCardTest = new System.Windows.Forms.Button();
+			this.CbAuthenKey = new System.Windows.Forms.ComboBox();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -348,23 +350,15 @@
 			this.Cb6.Text = "6";
 			this.Cb6.UseVisualStyleBackColor = true;
 			// 
-			// TxtControlBlock
-			// 
-			this.TxtControlBlock.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.TxtControlBlock.Location = new System.Drawing.Point(496, 10);
-			this.TxtControlBlock.Name = "TxtControlBlock";
-			this.TxtControlBlock.Size = new System.Drawing.Size(233, 25);
-			this.TxtControlBlock.TabIndex = 27;
-			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.label3.Location = new System.Drawing.Point(419, 13);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(87, 20);
+			this.label3.Size = new System.Drawing.Size(107, 20);
 			this.label3.TabIndex = 26;
-			this.label3.Text = "M1控制块：";
+			this.label3.Text = "认证密钥类型：";
 			// 
 			// TxtKeyA
 			// 
@@ -448,15 +442,49 @@
 			this.BtnSelectCard2.UseVisualStyleBackColor = true;
 			this.BtnSelectCard2.Click += new System.EventHandler(this.BtnSelectCard2_Click);
 			// 
+			// BtnReadlBlock
+			// 
+			this.BtnReadlBlock.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnReadlBlock.Location = new System.Drawing.Point(464, 427);
+			this.BtnReadlBlock.Name = "BtnReadlBlock";
+			this.BtnReadlBlock.Size = new System.Drawing.Size(110, 32);
+			this.BtnReadlBlock.TabIndex = 32;
+			this.BtnReadlBlock.Text = "读控制块";
+			this.BtnReadlBlock.UseVisualStyleBackColor = true;
+			this.BtnReadlBlock.Click += new System.EventHandler(this.BtnReadlBlock_Click);
+			// 
+			// BtnWriteCardTest
+			// 
+			this.BtnWriteCardTest.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnWriteCardTest.Location = new System.Drawing.Point(573, 427);
+			this.BtnWriteCardTest.Name = "BtnWriteCardTest";
+			this.BtnWriteCardTest.Size = new System.Drawing.Size(110, 32);
+			this.BtnWriteCardTest.TabIndex = 32;
+			this.BtnWriteCardTest.Text = " 测试写卡";
+			this.BtnWriteCardTest.UseVisualStyleBackColor = true;
+			this.BtnWriteCardTest.Click += new System.EventHandler(this.BtnWriteCardTest_Click);
+			// 
+			// CbAuthenKey
+			// 
+			this.CbAuthenKey.FormattingEnabled = true;
+			this.CbAuthenKey.Location = new System.Drawing.Point(522, 8);
+			this.CbAuthenKey.Name = "CbAuthenKey";
+			this.CbAuthenKey.Size = new System.Drawing.Size(147, 27);
+			this.CbAuthenKey.TabIndex = 38;
+			this.CbAuthenKey.SelectedIndexChanged += new System.EventHandler(this.CbAuthenKey_SelectedIndexChanged);
+			// 
 			// CardForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
+			this.Controls.Add(this.CbAuthenKey);
 			this.Controls.Add(this.BntReset);
 			this.Controls.Add(this.BtnUpdateKeyB);
 			this.Controls.Add(this.BtnUpdateKeyA);
 			this.Controls.Add(this.BtnInitialize);
+			this.Controls.Add(this.BtnWriteCardTest);
+			this.Controls.Add(this.BtnReadlBlock);
 			this.Controls.Add(this.BtnWriteBlock);
 			this.Controls.Add(this.BtnReadBlockB);
 			this.Controls.Add(this.BtnReadBlockA);
@@ -467,7 +495,6 @@
 			this.Controls.Add(this.TxtDbg);
 			this.Controls.Add(this.CbAll);
 			this.Controls.Add(this.groupBox1);
-			this.Controls.Add(this.TxtControlBlock);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.TxtKeyA);
 			this.Controls.Add(this.label7);
@@ -517,7 +544,6 @@
 		private System.Windows.Forms.CheckBox CbAll;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.CheckBox Cb6;
-		private System.Windows.Forms.TextBox TxtControlBlock;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TextBox TxtKeyA;
 		private System.Windows.Forms.Label label7;
@@ -527,5 +553,8 @@
 		private System.Windows.Forms.Button BtnTestKeyA;
 		private System.Windows.Forms.Button BtnTestKeyB;
 		private System.Windows.Forms.Button BtnSelectCard2;
+		private System.Windows.Forms.Button BtnReadlBlock;
+		private System.Windows.Forms.Button BtnWriteCardTest;
+		private System.Windows.Forms.ComboBox CbAuthenKey;
 	}
 }

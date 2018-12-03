@@ -78,7 +78,7 @@ namespace RonftonCard.CardReader.Decard
 		/// bk reserved, 0x00 default
 		/// </summary>
 		[DllImport(@"Plugin\dcrf32.dll")]
-		static extern short dc_changeb3(DEV_HANDLER hReader, byte sector, [In]byte[] keyA, byte b0, byte b1, byte b2, byte b3, byte bk, [In]byte[] keyB);
+		public static extern short dc_changeb3(DEV_HANDLER hReader, byte sector, [In]byte[] keyA, byte b0, byte b1, byte b2, byte b3, byte bk, [In]byte[] keyB);
 
 		/// <summary>
 		/// read block data

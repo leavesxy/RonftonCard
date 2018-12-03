@@ -43,13 +43,14 @@ namespace RonftonCard.Core
 			return true;
 		}
 
-		#region "--- selected ---"
 		public static String TempleteSelected { get; set; }
 
 		public static String ReaderSelected { get; set; }
 
 		public static String DongleSelected { get; set; }
 		
+		public static CardType CardType { get; set; }
+		 
 		/// <summary>
 		/// get all config templete names
 		/// </summary>
@@ -81,7 +82,7 @@ namespace RonftonCard.Core
 		{
 			return descriptor == null || descriptor.Keys.Count == 0 ? new String[] { } : descriptor.Keys.ToArray();
 		}
-		#endregion
+
 
 		#region "--- Create instance from config ---"
 
