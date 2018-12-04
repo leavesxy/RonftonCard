@@ -29,11 +29,11 @@ namespace RonftonCard.Main.Forms
 
 		private void CardForm_Load(object sender, EventArgs e)
 		{
-			this.TxtKeyA.Text = DEFAULT_KEY_A;
-			this.TxtKeyB.Text = DEFAULT_KEY_B;
-
-			this.CbAuthenKey.Items.AddRange(AUTHEN_KEY_MODE);
-			this.CbAuthenKey.SelectedIndex = 1;
+			this.KeyA.Text = DEFAULT_KEY_A;
+			this.KeyB.Text = DEFAULT_KEY_B;
+			this.BlockNo.Text = "0";
+			this.AuthenKeyType.Items.AddRange(AUTHEN_KEY_MODE);
+			this.AuthenKeyType.SelectedIndex = 1;
 
 			this.cardSectorSelected = new List<CheckBox>()
 			{
@@ -60,13 +60,14 @@ namespace RonftonCard.Main.Forms
 
 
 		#region "--- button handler ---"
+
 		private void BtnSelectCard_Click(object sender, EventArgs e)
 		{
 			byte[] card_id;
 
 			if (this.reader.Select(out card_id))
 			{
-				this.TxtDbg.Trace("Select card id =" + BitConverter.ToString(card_id), true);
+				this.Dbg.Trace("Select card id =" + BitConverter.ToString(card_id), true);
 			}
 		}
 
@@ -78,32 +79,50 @@ namespace RonftonCard.Main.Forms
 
 			if (this.reader.Select2(out cardId, out atqa, out sak))
 			{
-				this.TxtDbg.Trace("Select2 ", true);
-				this.TxtDbg.Trace(String.Format("card_id={0}, atqa={1}, sak={2}",
+				this.Dbg.Trace("Select2 ", true);
+				this.Dbg.Trace(String.Format("card_id={0}, atqa={1}, sak={2}",
 						BitConverter.ToString(cardId),
 						atqa.ToString("X4"),
 						sak));
 			}
 		}
-
+		/// <summary>
+		/// Verify KEY_A
+		/// </summary>
 		private void BtnTestKeyA_Click(object sender, EventArgs e)
 		{
-			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
+			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
 
-			this.TxtDbg.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
+			this.Dbg.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
 			TestKey(M1KeyMode.KEY_A, keyA);
 		}
 
+		/// <summary>
+		/// verify KEY_B
+		/// </summary>
 		private void BtnTestKeyB_Click(object sender, EventArgs e)
 		{
-			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
+			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
 
-			this.TxtDbg.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
+			this.Dbg.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
 			TestKey(M1KeyMode.KEY_B, keyB);
 		}
 
 		private void TestKey(M1KeyMode keyMode, byte[] key)
 		{
+			ResultArgs ret = this.reader.Select();
+			if (!ret.Succ)
+			{
+				this.Dbg.Trace("Select Card Error!");
+				return;
+			}
+
+			CardInfo cardInfo = (CardInfo)ret.Result;
+			this.Dbg.Trace( String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
+					BitConverter.ToString( cardInfo.CardId),
+					cardInfo.Atqa.ToString("X4"),
+					cardInfo.Sak.ToString("X2")));
+
 			foreach (CheckBox cb in this.cardSectorSelected)
 			{
 				if (!cb.Checked)
@@ -111,64 +130,70 @@ namespace RonftonCard.Main.Forms
 
 				int sector = int.Parse(cb.Text.Trim());
 				if (!this.reader.Authen(keyMode, sector * 4, key))
-					this.TxtDbg.Trace("Authen sector {0} failed !", sector);
+					this.Dbg.Trace("Authen sector {0} failed !", sector);
 				else
-					this.TxtDbg.Trace("Authen sector {0} OK !", sector);
+					this.Dbg.Trace("Authen sector {0} OK !", sector);
 			}
 		}
 
-		private void BtnReadBlockA_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Read Sector with KEY_A
+		/// </summary>
+		private void BtnReadSectorA_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("Read Card With Key_A ...", true);
-			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
+			this.Dbg.Trace("Read Card Sector With Key_A ..." + this.KeyA.Text.Trim(), true);
+			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
+			ReadSector(M1KeyMode.KEY_A, keyA);
+		}
+
+		/// <summary>
+		/// Read Sector with KEY_B
+		/// </summary>
+		private void BtnReadSectorB_Click(object sender, EventArgs e)
+		{
+			this.Dbg.Trace("Read Card by KeyB..." + this.KeyB.Text.Trim(), true);
+			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
+			ReadSector(M1KeyMode.KEY_B, keyB);
+		}
+
+		private void ReadSector(M1KeyMode keyMode, byte[] key)
+		{
+			ResultArgs ret = this.reader.Select();
+			if (!ret.Succ)
+				this.Dbg.Trace("Select Card Error!");
+
+			CardInfo cardInfo = (CardInfo)ret.Result;
+			this.Dbg.Trace(String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
+					BitConverter.ToString(cardInfo.CardId),
+					cardInfo.Atqa.ToString("X4"),
+					cardInfo.Sak.ToString("X2")));
+
 			foreach (CheckBox cb in this.cardSectorSelected)
 			{
 				if (!cb.Checked)
 					continue;
 
 				int sector = int.Parse(cb.Text.Trim());
-				ReadSector(M1KeyMode.KEY_A, sector, keyA);
+
+				if (!this.reader.Authen(keyMode, sector * 4, key))
+				{
+					this.Dbg.Trace("Auth sector {0} failed !", sector);
+					return;
+				}
+
+				byte[] buffer;
+				int len = 0;
+				if (this.reader.ReadSector(sector, out buffer, out len))
+				{
+					this.Dbg.Trace("Sector {0}", sector);
+					this.Dbg.Trace(BitConverter.ToString(buffer, 0, 16));
+					this.Dbg.Trace(BitConverter.ToString(buffer, 16, 16));
+					this.Dbg.Trace(BitConverter.ToString(buffer, 32, 16));
+					this.Dbg.Trace(BitConverter.ToString(buffer, 48, 16));
+				}
 			}
 		}
-
-
-		private void BtnReadBlockB_Click(object sender, EventArgs e)
-		{
-			this.TxtDbg.Trace("Read Card by KeyB...", true);
-			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
-
-			foreach (CheckBox cb in this.cardSectorSelected)
-			{
-				if (!cb.Checked)
-					continue;
-
-				int sector = int.Parse(cb.Text.Trim());
-				ReadSector(M1KeyMode.KEY_B, sector, keyB);
-			}
-		}
-
-		private void ReadSector(M1KeyMode keyMode, int sector, byte[] key)
-		{
-			if (!this.reader.Authen(keyMode, sector * 4, key))
-			{
-				this.TxtDbg.Trace("Auth sector {0} failed !", sector);
-				return;
-			}
-
-			byte[] buffer;
-			int len = 0;
-			if (this.reader.ReadSector(sector, out buffer, out len))
-			{
-				this.TxtDbg.Trace("Sector {0}", sector);
-				this.TxtDbg.Trace(BitConverter.ToString(buffer, 0, 16));
-				this.TxtDbg.Trace(BitConverter.ToString(buffer, 16, 16));
-				this.TxtDbg.Trace(BitConverter.ToString(buffer, 32, 16));
-				this.TxtDbg.Trace(BitConverter.ToString(buffer, 48, 16));
-			}
-		}
-
-
-
+		
 		private void BtnUpdateKeyA_Click(object sender, EventArgs e)
 		{
 
@@ -190,10 +215,10 @@ namespace RonftonCard.Main.Forms
 
 			if (this.reader.Select(out card_id))
 			{
-				this.TxtDbg.Trace("Select card id =" + BitConverter.ToString(card_id), true);
+				this.Dbg.Trace("Select card id =" + BitConverter.ToString(card_id), true);
 			}
 
-			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
+			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
 			byte[] block0;
 
 			if (!this.reader.Authen(M1KeyMode.KEY_A, 0, keyB))
@@ -201,7 +226,7 @@ namespace RonftonCard.Main.Forms
 
 			if (this.reader.ReadBlock(0, out block0))
 			{
-				this.TxtDbg.Trace(String.Format("ReadlBlock0 = {0}", BitConverter.ToString(block0)), false);
+				this.Dbg.Trace(String.Format("ReadlBlock0 = {0}", BitConverter.ToString(block0)), false);
 			}
 		}
 
@@ -238,7 +263,6 @@ namespace RonftonCard.Main.Forms
 
 		private void CbAuthenKey_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			MessageBox.Show(CbAuthenKey.SelectedIndex.ToString());
 		}
 
 		#endregion
@@ -274,12 +298,12 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnWriteCardTest_Click(object sender, EventArgs e)
 		{
-			this.TxtDbg.Trace("Write sector Control block", true);
+			this.Dbg.Trace("Write sector Control block", true);
 
-			byte[] keyA = HexString.FromHexString(this.TxtKeyA.Text.Trim(), "-");
-			byte[] keyB = HexString.FromHexString(this.TxtKeyB.Text.Trim(), "-");
+			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
+			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
 
-			M1KeyMode mode = (M1KeyMode)Enum.Parse(typeof(M1KeyMode), CbAuthenKey.Items[CbAuthenKey.SelectedIndex] as String, true);
+			M1KeyMode mode = (M1KeyMode)Enum.Parse(typeof(M1KeyMode), AuthenKeyType.Items[AuthenKeyType.SelectedIndex] as String, true);
 
 			foreach (CheckBox cb in this.cardSectorSelected)
 			{
@@ -289,11 +313,9 @@ namespace RonftonCard.Main.Forms
 				int sector = int.Parse(cb.Text.Trim());
 				if( this.reader.ChangeControlBlock(sector, mode, keyA, keyB) )
 				{
-					this.TxtDbg.Trace(String.Format("Write sector {0} block ok!", sector));
+					this.Dbg.Trace(String.Format("Write sector {0} block ok!", sector));
 				}
 			}
 		}
-
-
 	}
 }

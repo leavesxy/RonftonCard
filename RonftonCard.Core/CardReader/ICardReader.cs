@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bluemoon;
 
 namespace RonftonCard.Core.CardReader
 {
@@ -37,6 +38,7 @@ namespace RonftonCard.Core.CardReader
 
 		bool Select(out byte[] cardId);
 		bool Select2(out byte[] cardId, out UInt16 atqa, out byte sak);
+		ResultArgs Select();
 
 		/// <summary>
 		/// logic block number

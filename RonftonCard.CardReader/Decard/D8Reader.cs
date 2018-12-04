@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace RonftonCard.CardReader.Decard
 {
+	using Core.DTO;
 	using log4net;
 	using DEV_HANDLER = System.Int32;
 
@@ -166,6 +167,48 @@ namespace RonftonCard.CardReader.Decard
 			return true;
 		}
 
+		public ResultArgs Select()
+		{
+			ResultArgs ret = new ResultArgs(false);
+			CardInfo cardInfo = new CardInfo();
+
+			if (this.hReader == -1)
+				return ret;
+
+			//atqa :: M1_S50: 0x0004; M1_S70: 0x0002
+			UInt16 atqa = 0;
+			if (dc_request(this.hReader, 0x00, ref atqa) != SUCC)
+			{
+				ret.Msg = "Can't request atqa !";
+				return ret;
+			}
+
+			cardInfo.Atqa = atqa;
+
+			byte[] cardId = ByteUtil.Malloc(16);
+			if (dc_anticoll(this.hReader, 0x00, cardId) != SUCC)
+			{
+				ret.Msg = "AntiCollision Failed !";
+				return ret;
+			}
+
+			// remove zero at the end
+			cardInfo.CardId = ByteUtil.TrimEnd(cardId);
+
+			//M1: sak = 0x08
+			//CPU simulate M1: sak=0x28
+			byte sak = 0x00;
+			if (dc_select(this.hReader, cardId, ref sak) != SUCC)
+			{
+				ret.Msg = "Can't get SAK!";
+				return ret;
+			}
+			cardInfo.Sak = sak;
+			ret.Succ = true;
+			ret.Result = cardInfo;
+			return ret;
+		}
+
 		/// <summary>
 		/// block logic number
 		/// </summary>
@@ -286,6 +329,7 @@ namespace RonftonCard.CardReader.Decard
 
 
 		private static byte[] controlBlock = new byte[] { 0x78, 0x77, 0x88, 0x69 };
+
 		/// <summary>
 		/// change control block of sector
 		/// </summary>
@@ -318,6 +362,29 @@ namespace RonftonCard.CardReader.Decard
 			//Array.Copy(keyB, 0, block3, 10, 6);
 
 			//return WriteBlock(startBlockNo + blockNum - 1, block3);
+		}
+
+		public bool ChangeControlBlock2(int sector, M1KeyMode keyMode, byte[] keyA, byte[] keyB)
+		{
+			if (!IsValidSector(sector))
+				return false;
+
+			byte[] key = (keyMode == M1KeyMode.KEY_A) ? keyA : keyB;
+			int startBlockNo = ComputeStartBlockNo(sector);
+			int blockNum = ComputeBlockNum(sector);
+
+			if (!Authen(keyMode, startBlockNo, key))
+			{
+				logger.Debug("Can't authen with KeyMode=" + keyMode.ToString());
+				return false;
+			}
+
+			byte[] cb = ByteUtil.Malloc(M1_BLOCK_LEN);
+			Array.Copy(keyA, 0, cb, 0, 6);
+			Array.Copy(controlBlock, 0, cb, 6, 4);
+			Array.Copy(keyB, 0, cb, 10, 6);
+
+			return WriteBlock(startBlockNo + blockNum - 1, cb);
 		}
 		#endregion
 	}

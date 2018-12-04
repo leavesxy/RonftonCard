@@ -52,6 +52,7 @@
     <Compile Include="Card\MifareCard.cs" />
     <Compile Include="DTO\CardKeyRequest.cs" />
     <Compile Include="DTO\CardKeyResponse.cs" />
+    <Compile Include="DTO\CardInfo.cs" />
     <Compile Include="DTO\DongleUserInfo.cs" />
     <Compile Include="Dongle\IDongle.cs" />
     <Compile Include="DTO\AuthenKeyResponse.cs" />
