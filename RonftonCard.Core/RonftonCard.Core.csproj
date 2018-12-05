@@ -50,15 +50,16 @@
   <ItemGroup>
     <Compile Include="Card\ICard.cs" />
     <Compile Include="Card\MifareCard.cs" />
+    <Compile Include="DTO\CardInfo.cs" />
     <Compile Include="DTO\CardKeyRequest.cs" />
     <Compile Include="DTO\CardKeyResponse.cs" />
-    <Compile Include="DTO\CardInfo.cs" />
+    <Compile Include="DTO\CardSelectInfo.cs" />
     <Compile Include="DTO\DongleUserInfo.cs" />
     <Compile Include="Dongle\IDongle.cs" />
     <Compile Include="DTO\AuthenKeyResponse.cs" />
     <Compile Include="DTO\UserRootKeyResponse.cs" />
     <Compile Include="CardManager.cs" />
-    <Compile Include="CardReader\CardDataType.cs" />
+    <Compile Include="CardDataType.cs" />
     <Compile Include="CardType.cs" />
     <Compile Include="Dongle\DongleConst.cs" />
     <Compile Include="Dongle\DongleInfo.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="ConfigManager.cs" />
     <Compile Include="IKeyService.cs" />
     <Compile Include="KeyService\LocalTestKeyService.cs" />
+    <Compile Include="M1CardAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

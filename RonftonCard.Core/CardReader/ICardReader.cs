@@ -36,8 +36,8 @@ namespace RonftonCard.Core.CardReader
 
 		#region "--- M1 Card operation ---"
 
-		bool Select(out byte[] cardId);
-		bool Select2(out byte[] cardId, out UInt16 atqa, out byte sak);
+		bool Select(out byte[] sn);
+		bool Select2(out byte[] sn, out UInt16 atqa, out byte sak);
 		ResultArgs Select();
 
 		/// <summary>

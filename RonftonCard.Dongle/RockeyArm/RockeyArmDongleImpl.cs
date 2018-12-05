@@ -60,7 +60,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		}
 		#endregion
 
-		#region "--- User root Key Process ---"
+		#region "--- User root Key ---"
 		/// <summary>
 		/// Create user root key
 		/// userRootKey can't less 16 bytes
@@ -94,6 +94,19 @@ namespace RonftonCard.Dongle.RockeyArm
 			// renew appid
 			this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
 
+			// reset authen status as anonymous
+			Dongle_ResetState(this.hDongle);
+
+			// compute test cipher ( encrypt userId with root_key )
+			// test cipher is same for same user id
+			byte[] uid = this.encoder.GetBytes(userId);
+			byte[] testCipher;
+			String cipherString=null;
+			if (Encrypt(uid, out testCipher))
+			{
+				cipherString = HexString.ToHexString(testCipher);
+			}
+
 			ret.Succ = true;
 			ret.Result = new UserRootKeyResponse
 			{
@@ -101,7 +114,8 @@ namespace RonftonCard.Dongle.RockeyArm
 				AppId = this.dongleInfo[this.selectedIndex].AppId,
 				KeyId = this.dongleInfo[this.selectedIndex].KeyId,
 				Version = this.dongleInfo[this.selectedIndex].Version,
-				UserId = userId
+				UserId = userId,
+				TestCipher = cipherString
 			};
 			return ret;
 		}
@@ -131,7 +145,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		}
 		#endregion
 
-		#region "--- Authen Key Process ---"
+		#region "--- Authen Key ---"
 		public ResultArgs CreateAuthenKey(String userId)
 		{
 			ResultArgs ret = new ResultArgs(false);
@@ -189,6 +203,9 @@ namespace RonftonCard.Dongle.RockeyArm
 				IntPtrUtil.Free(ref pPubKey);
 				IntPtrUtil.Free(ref pPriKey);
 			}
+
+			// reset authen status as anonymous
+			Dongle_ResetState(this.hDongle);
 			return ret;
 		}
 

@@ -116,18 +116,18 @@ namespace RonftonCard.CardReader.Decard
 		/// atqa : Answer To Request, Type A
 		///	sak : Select Acknowledge
 		/// </summary>
-		public bool Select(out byte[] cardId)
+		public bool Select(out byte[] sn)
 		{
-			uint cardIdLen = 0;
+			uint snLen = 0;
 			byte[] buffer = ByteUtil.Malloc(16);
 
 			//Reset();
-			if (dc_card_n(this.hReader, 0x00, ref cardIdLen, buffer) != SUCC)
+			if (dc_card_n(this.hReader, 0x00, ref snLen, buffer) != SUCC)
 			{
-				cardId = null;
+				sn = null;
 				return false;
 			}
-			cardId = ArrayUtil.CopyFrom(buffer, (int)cardIdLen);
+			sn = ArrayUtil.CopyFrom(buffer, (int)snLen);
 			return true;
 		}
 
@@ -135,10 +135,10 @@ namespace RonftonCard.CardReader.Decard
 		/// low level invoke,include request,anticoll,select
 		/// </summary>
 		/// <returns></returns>
-		public bool Select2(out byte[] cardId,  out UInt16 atqa,  out byte sak)
+		public bool Select2(out byte[] sn,  out UInt16 atqa,  out byte sak)
 		{
 			atqa = 0;
-			cardId = null;
+			sn = null;
 			sak = 0x00;
 
 			if (this.hReader == -1)
@@ -150,16 +150,16 @@ namespace RonftonCard.CardReader.Decard
 
 			logger.Debug(String.Format("dc_request atqa = 0x{0}", atqa.ToString("X4")));
 
-			byte[] __cardId = ByteUtil.Malloc(16);
-			if (dc_anticoll(this.hReader, 0x00, __cardId) != SUCC)
+			byte[] __sn = ByteUtil.Malloc(16);
+			if (dc_anticoll(this.hReader, 0x00, __sn) != SUCC)
 				return false;
 
 			// remove zero at the end
-			cardId = ByteUtil.TrimEnd(__cardId);
+			sn = ByteUtil.TrimEnd(__sn);
 
 			//M1: sak = 0x08
 			//CPU simulate M1: sak=0x28
-			if (dc_select(this.hReader, __cardId, ref sak) != SUCC)
+			if (dc_select(this.hReader, __sn, ref sak) != SUCC)
 				return false;
 			
 			logger.Debug(String.Format("dc_select sak = 0x{0}", sak.ToString("X2")));
@@ -170,7 +170,7 @@ namespace RonftonCard.CardReader.Decard
 		public ResultArgs Select()
 		{
 			ResultArgs ret = new ResultArgs(false);
-			CardInfo cardInfo = new CardInfo();
+			CardSelectInfo cardInfo = new CardSelectInfo();
 
 			if (this.hReader == -1)
 				return ret;
@@ -183,27 +183,27 @@ namespace RonftonCard.CardReader.Decard
 				return ret;
 			}
 
-			cardInfo.Atqa = atqa;
+			cardInfo.ATQA = atqa;
 
-			byte[] cardId = ByteUtil.Malloc(16);
-			if (dc_anticoll(this.hReader, 0x00, cardId) != SUCC)
+			byte[] sn = ByteUtil.Malloc(16);
+			if (dc_anticoll(this.hReader, 0x00, sn) != SUCC)
 			{
 				ret.Msg = "AntiCollision Failed !";
 				return ret;
 			}
 
 			// remove zero at the end
-			cardInfo.CardId = ByteUtil.TrimEnd(cardId);
+			cardInfo.SN = ByteUtil.TrimEnd(sn);
 
 			//M1: sak = 0x08
 			//CPU simulate M1: sak=0x28
 			byte sak = 0x00;
-			if (dc_select(this.hReader, cardId, ref sak) != SUCC)
+			if (dc_select(this.hReader, sn, ref sak) != SUCC)
 			{
 				ret.Msg = "Can't get SAK!";
 				return ret;
 			}
-			cardInfo.Sak = sak;
+			cardInfo.SAK = sak;
 			ret.Succ = true;
 			ret.Result = cardInfo;
 			return ret;
@@ -219,12 +219,16 @@ namespace RonftonCard.CardReader.Decard
 		}
 
 		/// <summary>
-		/// M1_S50: 16 sectors,  64 blocks
-		/// M1_S70: 40 sectors, 256 blocks
-		/// in the first 32 sectors, 4 data blocks per sector. 
-		/// 16 blocks per sector in the last 8 sectors
+		/// block length(bytes) of M1
 		/// </summary>
 		private const int M1_BLOCK_LEN = 16;
+
+		/// <summary>
+		/// M1_S50: 16 sectors,  64 blocks
+		/// M1_S70: 40 sectors, 256 blocks
+		///			in the first 32 sectors, 4 blocks per sector. 
+		///			16 blocks per sector in the last 8 sectors
+		/// </summary>
 		private const int M1_SECTOR_SPLIT = 32;
 		private const int M1_MAX_SECTOR = 40;
 		private const int M1_MAX_BLOCK = 256;
@@ -260,11 +264,17 @@ namespace RonftonCard.CardReader.Decard
 			return dc_write(this.hReader, (byte)(blockNo & 0xff), inData) == SUCC;
 		}
 
+		/// <summary>
+		/// compute how many blocks in specified sector
+		/// </summary>
 		private int ComputeBlockNum(int sector)
 		{
 			return (sector < M1_SECTOR_SPLIT) ? 4 : 16;
 		}
 
+		/// <summary>
+		/// compute start block of specified sector
+		/// </summary>
 		private int ComputeStartBlockNo(int sector)
 		{
 			return (sector < M1_SECTOR_SPLIT) 
@@ -272,6 +282,10 @@ namespace RonftonCard.CardReader.Decard
 				: M1_SECTOR_SPLIT * 4 + (sector - M1_SECTOR_SPLIT) * 16;
 		}
 
+
+		/// <summary>
+		/// read all sector data
+		/// </summary>
 		public bool ReadSector(int sector, out byte[] outData, out int len)
 		{
 			outData = null;
@@ -304,18 +318,26 @@ namespace RonftonCard.CardReader.Decard
 			return true;
 		}
 
+		/// <summary>
+		/// write data to sector
+		/// </summary>
 		public bool WriteSector(int sector, byte[] inData, int len)
 		{
+			// len should be Multiple of M1_BLOCK_LEN
 			if (!IsValidSector(sector) || len <=0 || len % M1_BLOCK_LEN != 0 )
 				return false;
 
 			// compute block number for this sector
-			int blockNum = ComputeBlockNum(sector);
+			// if len is greater than block number of this sector, the excess part is discarded
+			// if len is less than block number of this sector, keep the rest of sector
+			int loop = Math.Min(ComputeBlockNum(sector), len / M1_BLOCK_LEN);
+
 			int startBlockNo = ComputeStartBlockNo(sector);
-			//len = M1_BLOCK_LEN * blockNum;
+
+			// len = M1_BLOCK_LEN * blockNum;
 			byte[] buffer = ByteUtil.Malloc(16);
 
-			for (int i = 0; i < blockNum; i++)
+			for (int i = 0; i < loop; i++)
 			{
 				Array.Copy(inData, i * M1_BLOCK_LEN, buffer, 0, M1_BLOCK_LEN);
 				if (!WriteBlock(startBlockNo + i, buffer))

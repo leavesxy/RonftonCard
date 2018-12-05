@@ -31,7 +31,6 @@
 			this.BntReset = new System.Windows.Forms.Button();
 			this.BtnUpdateKeyB = new System.Windows.Forms.Button();
 			this.BtnUpdateKeyA = new System.Windows.Forms.Button();
-			this.BtnWriteBlock = new System.Windows.Forms.Button();
 			this.BtnReadSectorB = new System.Windows.Forms.Button();
 			this.BtnReadSectorA = new System.Windows.Forms.Button();
 			this.BtnSelectCard = new System.Windows.Forms.Button();
@@ -63,11 +62,11 @@
 			this.BtnTestKeyA = new System.Windows.Forms.Button();
 			this.BtnTestKeyB = new System.Windows.Forms.Button();
 			this.BtnSelectCard2 = new System.Windows.Forms.Button();
-			this.BtnReadlBlock = new System.Windows.Forms.Button();
-			this.BtnWriteCardTest = new System.Windows.Forms.Button();
+			this.BtnTest3 = new System.Windows.Forms.Button();
 			this.AuthenKeyType = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.BlockNo = new System.Windows.Forms.TextBox();
+			this.BtnTest4 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -80,45 +79,31 @@
 			this.BntReset.TabIndex = 37;
 			this.BntReset.Text = "Reset";
 			this.BntReset.UseVisualStyleBackColor = true;
-			this.BntReset.Click += new System.EventHandler(this.BntReset_Click);
 			// 
 			// BtnUpdateKeyB
 			// 
 			this.BtnUpdateKeyB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnUpdateKeyB.Location = new System.Drawing.Point(354, 388);
+			this.BtnUpdateKeyB.Location = new System.Drawing.Point(246, 388);
 			this.BtnUpdateKeyB.Name = "BtnUpdateKeyB";
 			this.BtnUpdateKeyB.Size = new System.Drawing.Size(110, 32);
 			this.BtnUpdateKeyB.TabIndex = 30;
 			this.BtnUpdateKeyB.Text = "写扇区(B)";
 			this.BtnUpdateKeyB.UseVisualStyleBackColor = true;
-			this.BtnUpdateKeyB.Click += new System.EventHandler(this.BtnUpdateKeyB_Click);
 			// 
 			// BtnUpdateKeyA
 			// 
 			this.BtnUpdateKeyA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnUpdateKeyA.Location = new System.Drawing.Point(354, 356);
+			this.BtnUpdateKeyA.Location = new System.Drawing.Point(246, 356);
 			this.BtnUpdateKeyA.Name = "BtnUpdateKeyA";
 			this.BtnUpdateKeyA.Size = new System.Drawing.Size(110, 32);
 			this.BtnUpdateKeyA.TabIndex = 31;
 			this.BtnUpdateKeyA.Text = "写扇区(A)";
 			this.BtnUpdateKeyA.UseVisualStyleBackColor = true;
-			this.BtnUpdateKeyA.Click += new System.EventHandler(this.BtnUpdateKeyA_Click);
-			// 
-			// BtnWriteBlock
-			// 
-			this.BtnWriteBlock.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnWriteBlock.Location = new System.Drawing.Point(464, 356);
-			this.BtnWriteBlock.Name = "BtnWriteBlock";
-			this.BtnWriteBlock.Size = new System.Drawing.Size(110, 32);
-			this.BtnWriteBlock.TabIndex = 32;
-			this.BtnWriteBlock.Text = "写控制块";
-			this.BtnWriteBlock.UseVisualStyleBackColor = true;
-			this.BtnWriteBlock.Click += new System.EventHandler(this.BtnWriteBlock_Click);
 			// 
 			// BtnReadSectorB
 			// 
 			this.BtnReadSectorB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnReadSectorB.Location = new System.Drawing.Point(244, 388);
+			this.BtnReadSectorB.Location = new System.Drawing.Point(136, 388);
 			this.BtnReadSectorB.Name = "BtnReadSectorB";
 			this.BtnReadSectorB.Size = new System.Drawing.Size(110, 32);
 			this.BtnReadSectorB.TabIndex = 33;
@@ -129,7 +114,7 @@
 			// BtnReadSectorA
 			// 
 			this.BtnReadSectorA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnReadSectorA.Location = new System.Drawing.Point(244, 356);
+			this.BtnReadSectorA.Location = new System.Drawing.Point(136, 356);
 			this.BtnReadSectorA.Name = "BtnReadSectorA";
 			this.BtnReadSectorA.Size = new System.Drawing.Size(110, 32);
 			this.BtnReadSectorA.TabIndex = 34;
@@ -140,9 +125,9 @@
 			// BtnSelectCard
 			// 
 			this.BtnSelectCard.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnSelectCard.Location = new System.Drawing.Point(24, 356);
+			this.BtnSelectCard.Location = new System.Drawing.Point(24, 426);
 			this.BtnSelectCard.Name = "BtnSelectCard";
-			this.BtnSelectCard.Size = new System.Drawing.Size(110, 32);
+			this.BtnSelectCard.Size = new System.Drawing.Size(63, 32);
 			this.BtnSelectCard.TabIndex = 35;
 			this.BtnSelectCard.Text = "寻卡";
 			this.BtnSelectCard.UseVisualStyleBackColor = true;
@@ -370,7 +355,6 @@
 			this.KeyA.Name = "KeyA";
 			this.KeyA.Size = new System.Drawing.Size(120, 25);
 			this.KeyA.TabIndex = 25;
-			this.KeyA.Text = "010101010101";
 			// 
 			// label7
 			// 
@@ -399,7 +383,6 @@
 			this.KeyB.Name = "KeyB";
 			this.KeyB.Size = new System.Drawing.Size(140, 25);
 			this.KeyB.TabIndex = 24;
-			this.KeyB.Text = "0f0f0f0f0f0f";
 			// 
 			// BtnInitialize
 			// 
@@ -415,7 +398,7 @@
 			// BtnTestKeyA
 			// 
 			this.BtnTestKeyA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTestKeyA.Location = new System.Drawing.Point(133, 356);
+			this.BtnTestKeyA.Location = new System.Drawing.Point(25, 356);
 			this.BtnTestKeyA.Name = "BtnTestKeyA";
 			this.BtnTestKeyA.Size = new System.Drawing.Size(110, 32);
 			this.BtnTestKeyA.TabIndex = 35;
@@ -426,7 +409,7 @@
 			// BtnTestKeyB
 			// 
 			this.BtnTestKeyB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTestKeyB.Location = new System.Drawing.Point(133, 388);
+			this.BtnTestKeyB.Location = new System.Drawing.Point(25, 388);
 			this.BtnTestKeyB.Name = "BtnTestKeyB";
 			this.BtnTestKeyB.Size = new System.Drawing.Size(110, 32);
 			this.BtnTestKeyB.TabIndex = 35;
@@ -437,35 +420,24 @@
 			// BtnSelectCard2
 			// 
 			this.BtnSelectCard2.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnSelectCard2.Location = new System.Drawing.Point(24, 388);
+			this.BtnSelectCard2.Location = new System.Drawing.Point(87, 426);
 			this.BtnSelectCard2.Name = "BtnSelectCard2";
-			this.BtnSelectCard2.Size = new System.Drawing.Size(110, 32);
+			this.BtnSelectCard2.Size = new System.Drawing.Size(63, 32);
 			this.BtnSelectCard2.TabIndex = 35;
 			this.BtnSelectCard2.Text = "寻卡2";
 			this.BtnSelectCard2.UseVisualStyleBackColor = true;
 			this.BtnSelectCard2.Click += new System.EventHandler(this.BtnSelectCard2_Click);
 			// 
-			// BtnReadlBlock
+			// BtnTest3
 			// 
-			this.BtnReadlBlock.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnReadlBlock.Location = new System.Drawing.Point(464, 388);
-			this.BtnReadlBlock.Name = "BtnReadlBlock";
-			this.BtnReadlBlock.Size = new System.Drawing.Size(110, 32);
-			this.BtnReadlBlock.TabIndex = 32;
-			this.BtnReadlBlock.Text = "读控制块";
-			this.BtnReadlBlock.UseVisualStyleBackColor = true;
-			this.BtnReadlBlock.Click += new System.EventHandler(this.BtnReadlBlock_Click);
-			// 
-			// BtnWriteCardTest
-			// 
-			this.BtnWriteCardTest.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnWriteCardTest.Location = new System.Drawing.Point(573, 388);
-			this.BtnWriteCardTest.Name = "BtnWriteCardTest";
-			this.BtnWriteCardTest.Size = new System.Drawing.Size(110, 32);
-			this.BtnWriteCardTest.TabIndex = 32;
-			this.BtnWriteCardTest.Text = " 测试写卡(15)";
-			this.BtnWriteCardTest.UseVisualStyleBackColor = true;
-			this.BtnWriteCardTest.Click += new System.EventHandler(this.BtnWriteCardTest_Click);
+			this.BtnTest3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnTest3.Location = new System.Drawing.Point(150, 426);
+			this.BtnTest3.Name = "BtnTest3";
+			this.BtnTest3.Size = new System.Drawing.Size(70, 32);
+			this.BtnTest3.TabIndex = 32;
+			this.BtnTest3.Text = "控制块";
+			this.BtnTest3.UseVisualStyleBackColor = true;
+			this.BtnTest3.Click += new System.EventHandler(this.BtnTest3_Click);
 			// 
 			// AuthenKeyType
 			// 
@@ -493,7 +465,17 @@
 			this.BlockNo.Name = "BlockNo";
 			this.BlockNo.Size = new System.Drawing.Size(94, 25);
 			this.BlockNo.TabIndex = 24;
-			this.BlockNo.Text = "0f0f0f0f0f0f";
+			// 
+			// BtnTest4
+			// 
+			this.BtnTest4.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnTest4.Location = new System.Drawing.Point(220, 426);
+			this.BtnTest4.Name = "BtnTest4";
+			this.BtnTest4.Size = new System.Drawing.Size(80, 32);
+			this.BtnTest4.TabIndex = 32;
+			this.BtnTest4.Text = "测试数据";
+			this.BtnTest4.UseVisualStyleBackColor = true;
+			this.BtnTest4.Click += new System.EventHandler(this.BtnTest4_Click);
 			// 
 			// CardForm
 			// 
@@ -505,9 +487,8 @@
 			this.Controls.Add(this.BtnUpdateKeyB);
 			this.Controls.Add(this.BtnUpdateKeyA);
 			this.Controls.Add(this.BtnInitialize);
-			this.Controls.Add(this.BtnWriteCardTest);
-			this.Controls.Add(this.BtnReadlBlock);
-			this.Controls.Add(this.BtnWriteBlock);
+			this.Controls.Add(this.BtnTest4);
+			this.Controls.Add(this.BtnTest3);
 			this.Controls.Add(this.BtnReadSectorB);
 			this.Controls.Add(this.BtnReadSectorA);
 			this.Controls.Add(this.BtnTestKeyB);
@@ -545,7 +526,6 @@
 		private System.Windows.Forms.Button BntReset;
 		private System.Windows.Forms.Button BtnUpdateKeyB;
 		private System.Windows.Forms.Button BtnUpdateKeyA;
-		private System.Windows.Forms.Button BtnWriteBlock;
 		private System.Windows.Forms.Button BtnReadSectorB;
 		private System.Windows.Forms.Button BtnReadSectorA;
 		private System.Windows.Forms.Button BtnSelectCard;
@@ -577,10 +557,10 @@
 		private System.Windows.Forms.Button BtnTestKeyA;
 		private System.Windows.Forms.Button BtnTestKeyB;
 		private System.Windows.Forms.Button BtnSelectCard2;
-		private System.Windows.Forms.Button BtnReadlBlock;
-		private System.Windows.Forms.Button BtnWriteCardTest;
+		private System.Windows.Forms.Button BtnTest3;
 		private System.Windows.Forms.ComboBox AuthenKeyType;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox BlockNo;
+		private System.Windows.Forms.Button BtnTest4;
 	}
 }
