@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using RonftonCard.Core.Dongle;
 using RonftonCard.Dongle.RockeyArm;
 
 namespace RonftonCard.Tester
@@ -70,6 +72,14 @@ namespace RonftonCard.Tester
 			//Int64 hDongle = dongle.GetDongleHanlder(0);
 
 			//Dongle_LEDControl(hDongle, (uint)this.ledFlag);
+		}
+
+		private void BtnDongleInfo2Json_Click(object sender, EventArgs e)
+		{
+			DongleKeyInfo keyInfo = DongleKeyInfo.CreateTestDongleKeyInfo(DongleType.USER_ROOT, "01234567");
+
+			String jsonData = JsonConvert.SerializeObject(keyInfo);
+			this.TxtTrace.Trace(jsonData, true);
 		}
 	}
 }

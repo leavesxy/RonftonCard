@@ -83,7 +83,7 @@
 			// BtnUpdateKeyB
 			// 
 			this.BtnUpdateKeyB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnUpdateKeyB.Location = new System.Drawing.Point(246, 388);
+			this.BtnUpdateKeyB.Location = new System.Drawing.Point(246, 408);
 			this.BtnUpdateKeyB.Name = "BtnUpdateKeyB";
 			this.BtnUpdateKeyB.Size = new System.Drawing.Size(110, 32);
 			this.BtnUpdateKeyB.TabIndex = 30;
@@ -93,7 +93,7 @@
 			// BtnUpdateKeyA
 			// 
 			this.BtnUpdateKeyA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnUpdateKeyA.Location = new System.Drawing.Point(246, 356);
+			this.BtnUpdateKeyA.Location = new System.Drawing.Point(246, 376);
 			this.BtnUpdateKeyA.Name = "BtnUpdateKeyA";
 			this.BtnUpdateKeyA.Size = new System.Drawing.Size(110, 32);
 			this.BtnUpdateKeyA.TabIndex = 31;
@@ -103,7 +103,7 @@
 			// BtnReadSectorB
 			// 
 			this.BtnReadSectorB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnReadSectorB.Location = new System.Drawing.Point(136, 388);
+			this.BtnReadSectorB.Location = new System.Drawing.Point(136, 408);
 			this.BtnReadSectorB.Name = "BtnReadSectorB";
 			this.BtnReadSectorB.Size = new System.Drawing.Size(110, 32);
 			this.BtnReadSectorB.TabIndex = 33;
@@ -114,7 +114,7 @@
 			// BtnReadSectorA
 			// 
 			this.BtnReadSectorA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnReadSectorA.Location = new System.Drawing.Point(136, 356);
+			this.BtnReadSectorA.Location = new System.Drawing.Point(136, 376);
 			this.BtnReadSectorA.Name = "BtnReadSectorA";
 			this.BtnReadSectorA.Size = new System.Drawing.Size(110, 32);
 			this.BtnReadSectorA.TabIndex = 34;
@@ -125,7 +125,7 @@
 			// BtnSelectCard
 			// 
 			this.BtnSelectCard.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnSelectCard.Location = new System.Drawing.Point(24, 426);
+			this.BtnSelectCard.Location = new System.Drawing.Point(24, 440);
 			this.BtnSelectCard.Name = "BtnSelectCard";
 			this.BtnSelectCard.Size = new System.Drawing.Size(63, 32);
 			this.BtnSelectCard.TabIndex = 35;
@@ -220,7 +220,7 @@
 			this.Dbg.Multiline = true;
 			this.Dbg.Name = "Dbg";
 			this.Dbg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.Dbg.Size = new System.Drawing.Size(753, 255);
+			this.Dbg.Size = new System.Drawing.Size(753, 273);
 			this.Dbg.TabIndex = 29;
 			// 
 			// Cb7
@@ -387,7 +387,7 @@
 			// BtnInitialize
 			// 
 			this.BtnInitialize.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnInitialize.Location = new System.Drawing.Point(573, 356);
+			this.BtnInitialize.Location = new System.Drawing.Point(573, 376);
 			this.BtnInitialize.Name = "BtnInitialize";
 			this.BtnInitialize.Size = new System.Drawing.Size(110, 32);
 			this.BtnInitialize.TabIndex = 32;
@@ -398,7 +398,7 @@
 			// BtnTestKeyA
 			// 
 			this.BtnTestKeyA.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTestKeyA.Location = new System.Drawing.Point(25, 356);
+			this.BtnTestKeyA.Location = new System.Drawing.Point(25, 376);
 			this.BtnTestKeyA.Name = "BtnTestKeyA";
 			this.BtnTestKeyA.Size = new System.Drawing.Size(110, 32);
 			this.BtnTestKeyA.TabIndex = 35;
@@ -409,7 +409,7 @@
 			// BtnTestKeyB
 			// 
 			this.BtnTestKeyB.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTestKeyB.Location = new System.Drawing.Point(25, 388);
+			this.BtnTestKeyB.Location = new System.Drawing.Point(25, 408);
 			this.BtnTestKeyB.Name = "BtnTestKeyB";
 			this.BtnTestKeyB.Size = new System.Drawing.Size(110, 32);
 			this.BtnTestKeyB.TabIndex = 35;
@@ -420,7 +420,7 @@
 			// BtnSelectCard2
 			// 
 			this.BtnSelectCard2.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnSelectCard2.Location = new System.Drawing.Point(87, 426);
+			this.BtnSelectCard2.Location = new System.Drawing.Point(87, 440);
 			this.BtnSelectCard2.Name = "BtnSelectCard2";
 			this.BtnSelectCard2.Size = new System.Drawing.Size(63, 32);
 			this.BtnSelectCard2.TabIndex = 35;
@@ -431,7 +431,7 @@
 			// BtnTest3
 			// 
 			this.BtnTest3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTest3.Location = new System.Drawing.Point(150, 426);
+			this.BtnTest3.Location = new System.Drawing.Point(150, 440);
 			this.BtnTest3.Name = "BtnTest3";
 			this.BtnTest3.Size = new System.Drawing.Size(70, 32);
 			this.BtnTest3.TabIndex = 32;
@@ -469,7 +469,7 @@
 			// BtnTest4
 			// 
 			this.BtnTest4.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTest4.Location = new System.Drawing.Point(220, 426);
+			this.BtnTest4.Location = new System.Drawing.Point(220, 440);
 			this.BtnTest4.Name = "BtnTest4";
 			this.BtnTest4.Size = new System.Drawing.Size(80, 32);
 			this.BtnTest4.TabIndex = 32;
@@ -481,7 +481,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(795, 466);
+			this.ClientSize = new System.Drawing.Size(795, 475);
 			this.Controls.Add(this.AuthenKeyType);
 			this.Controls.Add(this.BntReset);
 			this.Controls.Add(this.BtnUpdateKeyB);

@@ -1,7 +1,5 @@
 ﻿using log4net;
 using System.Web.Http;
-using RonftonCard.Core.Dongle;
-using RonftonCard.Core;
 using Bluemoon;
 using System;
 

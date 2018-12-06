@@ -25,6 +25,7 @@ namespace RonftonCard.Main.Forms
 		{
 			this.TxtUserRootKey.Text = BitConverter.ToString(ByteUtil.Malloc(16, 0x0a));
 			this.TxtPlain.Text = "01234567";
+
 			Update();
 
 			RefreshDongle(true);
@@ -100,7 +101,11 @@ namespace RonftonCard.Main.Forms
 		{
 			int selected = this.CbDongle.SelectedIndex;
 			byte[] userRootKey = HexString.FromHexString(this.TxtUserRootKey.Text.Trim(), "-");
-			ResultArgs arg = this.dongle.CreateUserRootKey(this.TxtUserID.Text.Trim(), userRootKey);
+			String userId = this.TxtUserID.Text.Trim();
+
+			DongleKeyInfo keyInfo = DongleKeyInfo.CreateTestDongleKeyInfo(DongleType.USER_ROOT, userId);
+
+			ResultArgs arg = this.dongle.CreateUserRootKey(userId, userRootKey, keyInfo);
 
 			if (arg.Succ)
 			{
@@ -141,7 +146,10 @@ namespace RonftonCard.Main.Forms
 		private void BtnCreateAuthenKey_Click(object sender, EventArgs e)
 		{
 			int selected = this.CbDongle.SelectedIndex;
-			ResultArgs arg = this.dongle.CreateAuthenKey(this.TxtUserID.Text.Trim());
+			String userId = this.TxtUserID.Text.Trim();
+
+			DongleKeyInfo keyInfo = DongleKeyInfo.CreateTestDongleKeyInfo(DongleType.AUTHEN, userId);
+			ResultArgs arg = this.dongle.CreateAuthenKey(userId, keyInfo);
 
 			if (arg.Succ)
 			{

@@ -59,8 +59,10 @@ namespace RonftonCard.Dongle.RockeyArm
 		static extern uint Dongle_CreateFile(DONGLE_HANDLER hDongle, uint fileType, ushort descriptor, IntPtr pFileAttr);
 
 		[DllImport(@"Plugin\Dongle_d.dll")]
-		static extern uint Dongle_WriteFile(DONGLE_HANDLER hDongle, uint fileType, ushort descriptor, short offset, byte[] buffer, int bufferLen);
+		static extern uint Dongle_WriteFile(DONGLE_HANDLER hDongle, uint fileType, ushort descriptor, short offset, byte[] buffer, int length);
 
+		[DllImport(@"Plugin\Dongle_d.dll")]
+		static extern uint Dongle_ReadFile(DONGLE_HANDLER hDongle, ushort descriptor, short offset, byte[] buffer, int length);
 
 		/// <summary>
 		/// TripleDES encrypt

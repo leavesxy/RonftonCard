@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DongleKeyInfoStru.cs" />
     <Compile Include="RockeyArm\RockeyArmDongle.cs" />
     <Compile Include="RockeyArm\RockeyArmDongleInterface.cs" />
     <Compile Include="RockeyArm\RockeyArmDongleImpl.cs" />

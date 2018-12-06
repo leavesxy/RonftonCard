@@ -54,7 +54,7 @@
     <Compile Include="DTO\CardKeyRequest.cs" />
     <Compile Include="DTO\CardKeyResponse.cs" />
     <Compile Include="DTO\CardSelectInfo.cs" />
-    <Compile Include="DTO\DongleUserInfo.cs" />
+    <Compile Include="Dongle\DongleKeyInfo.cs" />
     <Compile Include="Dongle\IDongle.cs" />
     <Compile Include="DTO\AuthenKeyResponse.cs" />
     <Compile Include="DTO\UserRootKeyResponse.cs" />

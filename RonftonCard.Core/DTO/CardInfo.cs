@@ -85,5 +85,57 @@ namespace RonftonCard.Core.DTO
 		/// 餐次最高消费限额
 		/// </summary>
 		public Int16 SumLmtMeal { get; set; }
+
+		public static CardInfo CreateTestCardInfo()
+		{
+			CardInfo cardInfo = new CardInfo()
+			{
+				Version = (byte)0x10,	//1.0
+				UniversityCode = "012345",
+				SNO = "201812060001",
+				CardNo = 1,			//internal card no
+				ExpireDate = new DateTime(2020, 12, 31),
+				IdType = 0x01,		//teacher
+				CardStatus = 0x00,	//normal
+				Name = "Test",
+				Sex = 0x01,			//male
+				Nation = 0x01,		//Han
+				Country = 0x01,		//chinese
+				DeptNo = new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xab },
+				Balance = 100,		//1.00
+				Seq = 1,
+				LastSumByMeal = 100,   //1.00
+				LastMealNo = 0x03,     //supper
+				LastDate = new DateTime(2018, 12, 6),
+				PayPwd = "012345",
+				SumLmtMeal = 5000,     //5.00
+			};
+			return cardInfo;
+		}
+
+		public override String ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("version = 0x").Append(this.Version.ToString("X2") ).Append(Environment.NewLine);
+			sb.Append("UniversityCode = ").Append(this.UniversityCode).Append(Environment.NewLine);
+			sb.Append("SNO = ").Append(this.SNO).Append(Environment.NewLine);
+			sb.Append("CardNo = ").Append(this.CardNo.ToString()).Append(Environment.NewLine);
+			sb.Append("ExpireDate = ").Append(this.ExpireDate.ToString("yyyy-MM-dd HH:mm:ss")).Append(Environment.NewLine);
+			sb.Append("IdType = ").Append(this.IdType.ToString()).Append(Environment.NewLine);
+			sb.Append("CardStatus = ").Append(this.CardStatus.ToString()).Append(Environment.NewLine);
+			sb.Append("Name = ").Append(this.Name).Append(Environment.NewLine);
+			sb.Append("Sex = ").Append(this.Sex.ToString()).Append(Environment.NewLine);
+			sb.Append("Nation = ").Append(this.Nation.ToString()).Append(Environment.NewLine);
+			sb.Append("Country = ").Append(this.Country.ToString()).Append(Environment.NewLine);
+			sb.Append("DeptNo = ").Append( BitConverter.ToString(this.DeptNo)).Append(Environment.NewLine);
+			sb.Append("Balance = ").Append(this.Balance.ToString()).Append(Environment.NewLine);
+			sb.Append("Seq = ").Append(this.Seq.ToString()).Append(Environment.NewLine);
+			sb.Append("LastSumByMeal = ").Append(this.LastSumByMeal.ToString()).Append(Environment.NewLine);
+			sb.Append("LastMealNo = ").Append(this.LastMealNo.ToString()).Append(Environment.NewLine);
+			sb.Append("LastDate = ").Append(this.LastDate.ToString("yyyy-MM-dd HH:mm:ss")).Append(Environment.NewLine);
+			sb.Append("PayPwd = ").Append(this.PayPwd).Append(Environment.NewLine);
+			sb.Append("SumLmtMeal = ").Append(this.SumLmtMeal.ToString()).Append(Environment.NewLine);
+			return sb.ToString();
+		}
 	}
 }

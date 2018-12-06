@@ -9,6 +9,9 @@ namespace RonftonCard.Dongle.RockeyArm
 {
 	public partial class RockeyArmDongle
 	{
+		/// <summary>
+		/// rockey arm key device information
+		/// </summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DONGLE_INFO
 		{
@@ -23,6 +26,22 @@ namespace RonftonCard.Dongle.RockeyArm
 			public byte[] m_HID;				//8字节的硬件ID
 			public uint m_IsMother;				//母锁标志: 0x01表示是母锁, 0x00表示不是母锁
 			public uint m_DevType;				//设备类型(PROTOCOL_HID或者PROTOCOL_CCID)
+		}
+
+		//数据文件属性数据结构
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DATA_FILE_ATTR
+		{
+			public uint m_Size;      //数据文件长度，该值最大为4096
+			public DATA_LIC m_Lic;       //授权
+		}
+
+		//数据文件授权结构
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DATA_LIC
+		{
+			public ushort m_Read_Priv;     //读权限: 0为最小匿名权限，1为最小用户权限，2为最小开发商权限            	
+			public ushort m_Write_Priv;    //写权限: 0为最小匿名权限，1为最小用户权限，2为最小开发商权限
 		}
 
 		//RSA_PUB_KEY(support 1024,2048)

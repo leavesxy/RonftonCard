@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Bluemoon;
 using log4net;
+using Newtonsoft.Json;
 using RonftonCard.Core;
 using RonftonCard.Core.Dongle;
 
@@ -16,7 +17,9 @@ namespace RonftonCard.Service
 		public IHttpActionResult Create(dynamic request)
 		{
 			String userId = Convert.ToString(request.userId);
-			ResultArgs ret = DongleUtil.dongle.CreateAuthenKey(userId);
+			String jsonString = Convert.ToString(request.keyInfo);
+			DongleKeyInfo keyInfo = JsonConvert.DeserializeObject<DongleKeyInfo>(jsonString);
+			ResultArgs ret = DongleUtil.dongle.CreateAuthenKey(userId, keyInfo);
 			return Json<ResultArgs>(ret);
 		}
 

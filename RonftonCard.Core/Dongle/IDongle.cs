@@ -57,11 +57,9 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		bool Reset();
 
-		bool CreateUserInfo(DongleUserInfo userInfo);
+		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, DongleKeyInfo keyInfo);
 
-		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey);
-
-		ResultArgs CreateAuthenKey(String userId);
+		ResultArgs CreateAuthenKey(String userId, DongleKeyInfo keyInfo);
 
 		bool Encrypt(DongleType dongleType, byte[] plain, out byte[] cipher);
 	}

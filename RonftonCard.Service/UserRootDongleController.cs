@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Bluemoon;
 using log4net;
+using Newtonsoft.Json;
 using RonftonCard.Core;
 using RonftonCard.Core.Dongle;
 
@@ -17,10 +18,13 @@ namespace RonftonCard.Service
 		{
 			String userId = Convert.ToString(request.userId);
 			String rootKey = Convert.ToString(request.rootKey);
-
 			byte[] rootKeyBytes = HexString.FromHexString(rootKey);
 
-			ResultArgs ret = DongleUtil.dongle.CreateUserRootKey(userId, rootKeyBytes);
+			String jsonString = Convert.ToString(request.keyInfo);
+
+			DongleKeyInfo keyInfo = JsonConvert.DeserializeObject<DongleKeyInfo>(jsonString);
+
+			ResultArgs ret = DongleUtil.dongle.CreateUserRootKey(userId, rootKeyBytes, keyInfo);
 			return Json<ResultArgs>(ret);
 		}
 

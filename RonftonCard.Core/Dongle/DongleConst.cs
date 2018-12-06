@@ -14,27 +14,35 @@ namespace RonftonCard.Core.Dongle
 		// length of RSA
 		public const int RSA_KEY_LEN = 128;
 
+		/// <summary>
+		/// new admin pwd = BE5A1DB3DF98E81C 
+		/// </summary>
 		public const String DEFAULT_SEED_KEY = "0123456789abcdef";
 
-		// file descriptor of user info
-		public const ushort USER_INFO_DESCRIPTOR = 0x1001;
+		/// <summary>
+		/// length of Key information file
+		/// </summary>
+		public const ushort KEY_INFO_FILE_LEN = 128;
 
-		// file descriptor of company seed
+		/// <summary>
+		/// descriptor of Key info file
+		/// </summary>
+		public const ushort KEY_INFO_DESCRIPTOR = 0x1001;
+
+		/// <summary>
+		/// descriptor of company seed file
+		/// </summary>
 		public const ushort COMPANY_SEED_KEY_DESCRIPTOR = 0x1002;
 
-		// file descriptor of user root key (3DES)
+		/// <summary>
+		/// descriptor of user root key file
+		/// </summary>
 		public const ushort USER_ROOT_KEY_DESCRIPTOR = 0x1003;
 
-		// file descriptor of authen key (RSA)
+		/// <summary>
+		/// descriptor of authen private key file
+		/// </summary>
 		public const ushort AUTHEN_KEY_DESCRIPTOR = 0x1004;
-
-
-		//#region "--- const for dongle pin ---"
-
-		//// default pin for dongle
-
-
-		//#endregion
 
 	}
 }

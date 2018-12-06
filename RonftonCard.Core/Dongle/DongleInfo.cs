@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RonftonCard.Core.Dongle
 {
+	using Bluemoon;
+
+	/// <summary>
+	/// dongle device information
+	/// </summary>
 	public class DongleInfo
 	{
 		/// <summary>
@@ -48,18 +50,31 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		public String Description { get; set; }
 
+		public DongleKeyInfo KeyInfo { get; set; }
+
 		public String GetInfo()
 		{
 			StringBuilder sb = new StringBuilder();
 
 			sb.Append("[" + this.Seq.ToString("d2") +"]").Append(" : ");
+
+			//sb.Append(this.DongleType.GetAliasName()).Append(",");
+			if (this.KeyInfo != null)
+				sb.Append(this.KeyInfo.DongleType.GetAliasName()).Append(",");
+			else
+				sb.Append(DongleType.EMPTY.GetAliasName()).Append(",");
+
 			sb.Append(this.KeyId).Append(",");
 			sb.Append(this.Version).Append(",");
-			sb.Append(this.AppId).Append(",");
 			sb.Append(this.UserId).Append(",");
 			sb.Append(this.Model).Append(",");
 			sb.Append(this.ManufactureDate).Append(",");
-			sb.Append(this.Description);
+			//sb.Append(this.Description);
+			if (this.KeyInfo != null)
+			{
+				sb.Append(this.KeyInfo.UserName).Append(",");
+				sb.Append(this.KeyInfo.CreateDate);
+			}
 			return sb.ToString();
 		}
 

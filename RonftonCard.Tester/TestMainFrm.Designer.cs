@@ -34,9 +34,10 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.BtnLedControl = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.RbLedOff = new System.Windows.Forms.RadioButton();
-			this.RbLedOn = new System.Windows.Forms.RadioButton();
 			this.RbLedBlink = new System.Windows.Forms.RadioButton();
+			this.RbLedOn = new System.Windows.Forms.RadioButton();
+			this.RbLedOff = new System.Windows.Forms.RadioButton();
+			this.BtnDongleInfo2Json = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
@@ -73,6 +74,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.BtnDongleInfo2Json);
 			this.groupBox1.Controls.Add(this.BtnLedControl);
 			this.groupBox1.Controls.Add(this.BtnGetUTCTime);
 			this.groupBox1.Controls.Add(this.BtnExit);
@@ -104,17 +106,17 @@
 			this.groupBox2.TabIndex = 3;
 			this.groupBox2.TabStop = false;
 			// 
-			// RbLedOff
+			// RbLedBlink
 			// 
-			this.RbLedOff.AutoSize = true;
-			this.RbLedOff.Location = new System.Drawing.Point(10, 18);
-			this.RbLedOff.Name = "RbLedOff";
-			this.RbLedOff.Size = new System.Drawing.Size(51, 24);
-			this.RbLedOff.TabIndex = 0;
-			this.RbLedOff.TabStop = true;
-			this.RbLedOff.Text = "Off";
-			this.RbLedOff.UseVisualStyleBackColor = true;
-			this.RbLedOff.CheckedChanged += new System.EventHandler(this.RbLedOff_CheckedChanged);
+			this.RbLedBlink.AutoSize = true;
+			this.RbLedBlink.Location = new System.Drawing.Point(123, 17);
+			this.RbLedBlink.Name = "RbLedBlink";
+			this.RbLedBlink.Size = new System.Drawing.Size(64, 24);
+			this.RbLedBlink.TabIndex = 0;
+			this.RbLedBlink.TabStop = true;
+			this.RbLedBlink.Text = "Blink";
+			this.RbLedBlink.UseVisualStyleBackColor = true;
+			this.RbLedBlink.CheckedChanged += new System.EventHandler(this.RbLedBlink_CheckedChanged);
 			// 
 			// RbLedOn
 			// 
@@ -128,17 +130,28 @@
 			this.RbLedOn.UseVisualStyleBackColor = true;
 			this.RbLedOn.CheckedChanged += new System.EventHandler(this.RbLedOn_CheckedChanged);
 			// 
-			// RbLedBlink
+			// RbLedOff
 			// 
-			this.RbLedBlink.AutoSize = true;
-			this.RbLedBlink.Location = new System.Drawing.Point(123, 17);
-			this.RbLedBlink.Name = "RbLedBlink";
-			this.RbLedBlink.Size = new System.Drawing.Size(64, 24);
-			this.RbLedBlink.TabIndex = 0;
-			this.RbLedBlink.TabStop = true;
-			this.RbLedBlink.Text = "Blink";
-			this.RbLedBlink.UseVisualStyleBackColor = true;
-			this.RbLedBlink.CheckedChanged += new System.EventHandler(this.RbLedBlink_CheckedChanged);
+			this.RbLedOff.AutoSize = true;
+			this.RbLedOff.Location = new System.Drawing.Point(10, 18);
+			this.RbLedOff.Name = "RbLedOff";
+			this.RbLedOff.Size = new System.Drawing.Size(51, 24);
+			this.RbLedOff.TabIndex = 0;
+			this.RbLedOff.TabStop = true;
+			this.RbLedOff.Text = "Off";
+			this.RbLedOff.UseVisualStyleBackColor = true;
+			this.RbLedOff.CheckedChanged += new System.EventHandler(this.RbLedOff_CheckedChanged);
+			// 
+			// BtnDongleInfo2Json
+			// 
+			this.BtnDongleInfo2Json.Location = new System.Drawing.Point(259, 38);
+			this.BtnDongleInfo2Json.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.BtnDongleInfo2Json.Name = "BtnDongleInfo2Json";
+			this.BtnDongleInfo2Json.Size = new System.Drawing.Size(145, 27);
+			this.BtnDongleInfo2Json.TabIndex = 0;
+			this.BtnDongleInfo2Json.Text = "DongleInfo2Json";
+			this.BtnDongleInfo2Json.UseVisualStyleBackColor = true;
+			this.BtnDongleInfo2Json.Click += new System.EventHandler(this.BtnDongleInfo2Json_Click);
 			// 
 			// TestMainFrm
 			// 
@@ -174,6 +187,7 @@
 		private System.Windows.Forms.RadioButton RbLedBlink;
 		private System.Windows.Forms.RadioButton RbLedOn;
 		private System.Windows.Forms.RadioButton RbLedOff;
+		private System.Windows.Forms.Button BtnDongleInfo2Json;
 	}
 }
 

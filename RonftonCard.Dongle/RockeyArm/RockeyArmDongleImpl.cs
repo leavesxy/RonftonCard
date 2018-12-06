@@ -38,6 +38,9 @@ namespace RonftonCard.Dongle.RockeyArm
 			return IsSucc;
 		}
 
+		/// <summary>
+		/// unique Key, and login with new admin pin
+		/// </summary>
 		private bool Initialize(DONGLE_HANDLER hDongle, String userId, out byte[] newAdminPin, out byte[] appId)
 		{
 			// unique key
@@ -51,13 +54,59 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.lastErrorCode = Dongle_SetUserID(hDongle, ToUint32(userId));
 			return true;
 		}
+
 		#endregion
 
-		#region "--- Create User information ---"
-		public bool CreateUserInfo(DongleUserInfo userInfo)
+		#region "--- Create KEY information ---"
+		public bool CreateKeyInfo(DONGLE_HANDLER hDongle, DongleKeyInfo keyInfo)
 		{
-			return true;
+			if (!CreateKeyInfoFile(hDongle))
+				return false;
+
+			DongleKeyInfoStru stru = CreateDongleKeyInfoStru(keyInfo);
+
+			IntPtr ptr = IntPtrUtil.CreateByStru(stru);
+			byte[] dest = new byte[IntPtrUtil.SizeOf(stru.GetType())];
+
+			Marshal.Copy(ptr, dest, 0, dest.Length);
+			this.lastErrorCode = Dongle_WriteFile(
+						hDongle, 
+						RockeyArmFileType.FILE_DATA, 
+						DongleConst.KEY_INFO_DESCRIPTOR,
+						0,
+						dest,
+						dest.Length);
+			IntPtrUtil.Free(ref ptr);
+			return IsSucc;
 		}
+
+		private DongleKeyInfoStru CreateDongleKeyInfoStru(DongleKeyInfo keyInfo)
+		{
+			DongleKeyInfoStru stru = new DongleKeyInfoStru();
+			stru.DongleType = (byte)keyInfo.DongleType;
+			stru.UserId = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.UserId), 6);
+			stru.UserName = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.UserName), 64);
+			stru.CreateDate = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.CreateDate), 14);
+			stru.Operator = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.Operator), 3);
+			return stru;
+		}
+
+		private bool CreateKeyInfoFile(DONGLE_HANDLER hDongle)
+		{
+			DATA_FILE_ATTR dataAttr;
+			dataAttr.m_Size = DongleConst.KEY_INFO_FILE_LEN;
+			//allow anonymous read
+			dataAttr.m_Lic.m_Read_Priv = 0;
+			//only admin could write
+			dataAttr.m_Lic.m_Write_Priv = 2;
+
+			IntPtr ptr = IntPtrUtil.CreateByStru(dataAttr);
+			this.lastErrorCode = Dongle_CreateFile(hDongle, RockeyArmFileType.FILE_DATA, DongleConst.KEY_INFO_DESCRIPTOR, ptr);
+			IntPtrUtil.Free(ref ptr);
+
+			return IsSucc;
+		}
+
 		#endregion
 
 		#region "--- User root Key ---"
@@ -65,7 +114,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// Create user root key
 		/// userRootKey can't less 16 bytes
 		/// </summary>
-		public ResultArgs CreateUserRootKey(String userId, byte[] userRootKey)
+		public ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, DongleKeyInfo keyInfo)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
@@ -85,9 +134,10 @@ namespace RonftonCard.Dongle.RockeyArm
 				return ret;
 			}
 
-			if (!CreateKeyFile(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
+			if (!CreateKeyInfo(this.hDongle, keyInfo) ||
+				!CreateKeyFile(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
 			{
-				ret.Msg = "Create Key file failed ";
+				ret.Msg = "Create User root Key failed !";
 				return ret;
 			}
 
@@ -95,18 +145,8 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
 
 			// reset authen status as anonymous
-			Dongle_ResetState(this.hDongle);
-
-			// compute test cipher ( encrypt userId with root_key )
-			// test cipher is same for same user id
-			byte[] uid = this.encoder.GetBytes(userId);
-			byte[] testCipher;
-			String cipherString=null;
-			if (Encrypt(uid, out testCipher))
-			{
-				cipherString = HexString.ToHexString(testCipher);
-			}
-
+			Reset();
+			
 			ret.Succ = true;
 			ret.Result = new UserRootKeyResponse
 			{
@@ -115,10 +155,26 @@ namespace RonftonCard.Dongle.RockeyArm
 				KeyId = this.dongleInfo[this.selectedIndex].KeyId,
 				Version = this.dongleInfo[this.selectedIndex].Version,
 				UserId = userId,
-				TestCipher = cipherString
+				TestCipher = CreateTestCipher(userId)
 			};
 			return ret;
 		}
+
+		private String CreateTestCipher(String uid)
+		{
+			// compute test cipher ( encrypt userId with root_key )
+			// test cipher is same for same user id
+			byte[] uidBytes = this.encoder.GetBytes(uid);
+			byte[] testCipher;
+			
+			if (Encrypt(uidBytes, out testCipher))
+			{
+				return HexString.ToHexString(testCipher);
+			}
+
+			return "Error";
+		}
+
 
 		/// <summary>
 		/// create User root key file,and Key is request 16 bytes at least
@@ -146,7 +202,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		#endregion
 
 		#region "--- Authen Key ---"
-		public ResultArgs CreateAuthenKey(String userId)
+		public ResultArgs CreateAuthenKey(String userId, DongleKeyInfo keyInfo)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
@@ -166,55 +222,62 @@ namespace RonftonCard.Dongle.RockeyArm
 				return ret;
 			}
 
-			if (!CreatePrikeyFile(this.hDongle))
+			if (!CreateKeyInfo(this.hDongle, keyInfo) ||
+				!CreatePrikeyFile(this.hDongle) )
 			{
-				ret.Msg = "Create private key file failed !";
+				ret.Msg = "Create Key info file failed !";
 				return ret;
 			}
 
-			IntPtr pPubKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PUBLIC_KEY)));
-			IntPtr pPriKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PRIVATE_KEY)));
+			return CreatePriKey(userId,appId, newAdminPin);
+		}
+
+		private ResultArgs CreatePriKey(String userId, byte[] appId, byte[] adminPin)
+		{
+			IntPtr pubKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PUBLIC_KEY)));
+			IntPtr priKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PRIVATE_KEY)));
+			ResultArgs ret = new ResultArgs(true);
 
 			try
 			{
-				this.lastErrorCode = Dongle_RsaGenPubPriKey(hDongle, DongleConst.AUTHEN_KEY_DESCRIPTOR, pPubKey, pPriKey);
-
-				RSA_PUBLIC_KEY pub = IntPtrUtil.ToStructure<RSA_PUBLIC_KEY>(pPubKey);
-				RSA_PRIVATE_KEY pri = IntPtrUtil.ToStructure<RSA_PRIVATE_KEY>(pPriKey);
-
-				LogKey(pub, pri);
+				this.lastErrorCode = Dongle_RsaGenPubPriKey(this.hDongle, DongleConst.AUTHEN_KEY_DESCRIPTOR, pubKey, priKey);
+				LogKey(pubKey, priKey);
 
 				// renew appid
 				this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
-
-				ret.Succ = true;
+				
+				RSA_PUBLIC_KEY pubStru = IntPtrUtil.ToStru<RSA_PUBLIC_KEY>(pubKey);
 				ret.Result = new AuthenKeyResponse()
 				{
-					PubKey = Convert.ToBase64String(pub.exponent, 0, DongleConst.RSA_KEY_LEN),
+					PubKey = Convert.ToBase64String(pubStru.exponent, 0, DongleConst.RSA_KEY_LEN),
 					Version = this.dongleInfo[this.selectedIndex].Version,
 					AppId = this.dongleInfo[this.selectedIndex].AppId,
 					UserId = userId,
-					KeyPwd = this.Encoder.GetString(newAdminPin),
+					KeyPwd = this.Encoder.GetString(adminPin),
 					KeyId = this.dongleInfo[this.selectedIndex].KeyId
 				};
 			}
 			finally
 			{
-				IntPtrUtil.Free(ref pPubKey);
-				IntPtrUtil.Free(ref pPriKey);
-			}
+				IntPtrUtil.Free(ref pubKey);
+				IntPtrUtil.Free(ref priKey);
 
-			// reset authen status as anonymous
-			Dongle_ResetState(this.hDongle);
+				// reset authen status as anonymous
+				Reset();
+			}
 			return ret;
+			 
 		}
 
-		private void LogKey(RSA_PUBLIC_KEY pubKey, RSA_PRIVATE_KEY priKey)
+		private void LogKey(IntPtr pubKey, IntPtr priKey)
 		{
-			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}", priKey.bits, priKey.modulus));
-			logger.Debug("RSA-PRI : " + Convert.ToBase64String(priKey.exponent, 0, DongleConst.RSA_KEY_LEN));
-			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", pubKey.bits, pubKey.modulus));
-			logger.Debug("RSA-PUB : " + Convert.ToBase64String(pubKey.exponent, 0, DongleConst.RSA_KEY_LEN));
+			RSA_PUBLIC_KEY pubStru = IntPtrUtil.ToStru<RSA_PUBLIC_KEY>(pubKey);
+			RSA_PRIVATE_KEY priStru = IntPtrUtil.ToStru<RSA_PRIVATE_KEY>(priKey);
+
+			logger.Debug(String.Format("RSA-PRI : bit={0},modulus={1}", priStru.bits, priStru.modulus));
+			logger.Debug("RSA-PRI : " + Convert.ToBase64String(priStru.exponent, 0, DongleConst.RSA_KEY_LEN));
+			logger.Debug(String.Format("RSA-PUB : bit={0},modulus={1}", priStru.bits, priStru.modulus));
+			logger.Debug("RSA-PUB : " + Convert.ToBase64String(priStru.exponent, 0, DongleConst.RSA_KEY_LEN));
 		}
 
 		/// <summary>

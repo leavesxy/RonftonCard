@@ -280,7 +280,8 @@ namespace RonftonCard.Main.Forms
 		/// </summary>
 		private void BtnTest4_Click(object sender, EventArgs e)
 		{
-
+			CardInfo cardInfo = CardInfo.CreateTestCardInfo();
+			this.Dbg.Trace(cardInfo.ToString(), true);
 		}
 
 		#endregion
