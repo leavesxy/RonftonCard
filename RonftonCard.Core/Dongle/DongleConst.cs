@@ -22,12 +22,12 @@ namespace RonftonCard.Core.Dongle
 		/// <summary>
 		/// length of Key information file
 		/// </summary>
-		public const ushort KEY_INFO_FILE_LEN = 128;
+		public const ushort USER_INFO_FILE_LEN = 128;
 
 		/// <summary>
-		/// descriptor of Key info file
+		/// descriptor of User info file
 		/// </summary>
-		public const ushort KEY_INFO_DESCRIPTOR = 0x1001;
+		public const ushort USER_INFO_DESCRIPTOR = 0x1001;
 
 		/// <summary>
 		/// descriptor of company seed file

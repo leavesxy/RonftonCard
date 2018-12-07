@@ -137,6 +137,11 @@ namespace RonftonCard.Core
 		{
 			return new LocalTestKeyService();
 		}
+
+		public static ILog GetLogger()
+		{
+			return logger;
+		}
 		#endregion
 	}
 }

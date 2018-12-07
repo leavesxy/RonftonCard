@@ -8,10 +8,10 @@ namespace RonftonCard.Core.Card
 {
 	public interface ICard
 	{
-
 		bool Initialize();
 
 		bool Personalize();
 
+		bool Restore();
 	}
 }

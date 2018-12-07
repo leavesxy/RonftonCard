@@ -10,7 +10,7 @@ namespace RonftonCard.Dongle.RockeyArm
 
 	public partial class RockeyArmDongle
 	{
-		#region "--- initialize dongle ---"
+		#region "--- util of device interface ---"
 
 		/// <summary>
 		/// initialize a empty dongle
@@ -38,6 +38,16 @@ namespace RonftonCard.Dongle.RockeyArm
 			return IsSucc;
 		}
 
+		private bool Authen(DONGLE_HANDLER hDongle, DongleAuthenMode authenMode, byte[] pin)
+		{
+			uint flag = (authenMode == DongleAuthenMode.ADMIN) ? (uint)1 : (uint)0;
+
+			int remainCount;
+			this.lastErrorCode = Dongle_VerifyPIN(hDongle, flag, pin, out remainCount);
+
+			return IsSucc;
+		}
+
 		/// <summary>
 		/// unique Key, and login with new admin pin
 		/// </summary>
@@ -57,13 +67,30 @@ namespace RonftonCard.Dongle.RockeyArm
 
 		#endregion
 
-		#region "--- Create KEY information ---"
-		public bool CreateKeyInfo(DONGLE_HANDLER hDongle, DongleKeyInfo keyInfo)
+		#region "--- Create User information ---"
+
+		private bool CreateUserInfoFile(DONGLE_HANDLER hDongle)
 		{
-			if (!CreateKeyInfoFile(hDongle))
+			DATA_FILE_ATTR dataAttr;
+			dataAttr.m_Size = DongleConst.USER_INFO_FILE_LEN;
+			//allow anonymous read
+			dataAttr.m_Lic.m_Read_Priv = 0;
+			//only admin could write
+			dataAttr.m_Lic.m_Write_Priv = 2;
+
+			IntPtr ptr = IntPtrUtil.CreateByStru(dataAttr);
+			this.lastErrorCode = Dongle_CreateFile(hDongle, RockeyArmFileType.FILE_DATA, DongleConst.USER_INFO_DESCRIPTOR, ptr);
+			IntPtrUtil.Free(ref ptr);
+
+			return IsSucc;
+		}
+
+		public bool CreateUserInfo(DONGLE_HANDLER hDongle, DongleUserInfo userInfo)
+		{
+			if (!CreateUserInfoFile(hDongle))
 				return false;
 
-			DongleKeyInfoStru stru = CreateDongleKeyInfoStru(keyInfo);
+			DongleUserInfoStru stru = CreateUserInfoStru(userInfo);
 
 			IntPtr ptr = IntPtrUtil.CreateByStru(stru);
 			byte[] dest = new byte[IntPtrUtil.SizeOf(stru.GetType())];
@@ -72,7 +99,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			this.lastErrorCode = Dongle_WriteFile(
 						hDongle, 
 						RockeyArmFileType.FILE_DATA, 
-						DongleConst.KEY_INFO_DESCRIPTOR,
+						DongleConst.USER_INFO_DESCRIPTOR,
 						0,
 						dest,
 						dest.Length);
@@ -80,9 +107,9 @@ namespace RonftonCard.Dongle.RockeyArm
 			return IsSucc;
 		}
 
-		private DongleKeyInfoStru CreateDongleKeyInfoStru(DongleKeyInfo keyInfo)
+		private DongleUserInfoStru CreateUserInfoStru(DongleUserInfo keyInfo)
 		{
-			DongleKeyInfoStru stru = new DongleKeyInfoStru();
+			DongleUserInfoStru stru = new DongleUserInfoStru();
 			stru.DongleType = (byte)keyInfo.DongleType;
 			stru.UserId = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.UserId), 6);
 			stru.UserName = ArrayUtil.CopyFrom(this.encoder.GetBytes(keyInfo.UserName), 64);
@@ -91,30 +118,14 @@ namespace RonftonCard.Dongle.RockeyArm
 			return stru;
 		}
 
-		private bool CreateKeyInfoFile(DONGLE_HANDLER hDongle)
-		{
-			DATA_FILE_ATTR dataAttr;
-			dataAttr.m_Size = DongleConst.KEY_INFO_FILE_LEN;
-			//allow anonymous read
-			dataAttr.m_Lic.m_Read_Priv = 0;
-			//only admin could write
-			dataAttr.m_Lic.m_Write_Priv = 2;
-
-			IntPtr ptr = IntPtrUtil.CreateByStru(dataAttr);
-			this.lastErrorCode = Dongle_CreateFile(hDongle, RockeyArmFileType.FILE_DATA, DongleConst.KEY_INFO_DESCRIPTOR, ptr);
-			IntPtrUtil.Free(ref ptr);
-
-			return IsSucc;
-		}
-
 		#endregion
 
-		#region "--- User root Key ---"
+		#region "--- User root Dongle ---"
 		/// <summary>
-		/// Create user root key
+		/// Create user root dongle
 		/// userRootKey can't less 16 bytes
 		/// </summary>
-		public ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, DongleKeyInfo keyInfo)
+		public ResultArgs CreateUserRootDongle(String userId, byte[] userRootKey, DongleUserInfo keyInfo)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
@@ -134,8 +145,8 @@ namespace RonftonCard.Dongle.RockeyArm
 				return ret;
 			}
 
-			if (!CreateKeyInfo(this.hDongle, keyInfo) ||
-				!CreateKeyFile(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
+			if (!CreateUserInfo(this.hDongle, keyInfo) ||
+				!CreateUserRootKeyFile(this.hDongle, DongleConst.USER_ROOT_KEY_DESCRIPTOR, userRootKey))
 			{
 				ret.Msg = "Create User root Key failed !";
 				return ret;
@@ -148,7 +159,7 @@ namespace RonftonCard.Dongle.RockeyArm
 			Reset();
 			
 			ret.Succ = true;
-			ret.Result = new UserRootKeyResponse
+			ret.Result = new UserRootDongleResult
 			{
 				KeyPwd = this.Encoder.GetString(newAdminPin),
 				AppId = this.dongleInfo[this.selectedIndex].AppId,
@@ -179,7 +190,7 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// create User root key file,and Key is request 16 bytes at least
 		/// </summary>
-		private bool CreateKeyFile(DONGLE_HANDLER hDongle, ushort fileDescriptor, byte[] userRootkey)
+		private bool CreateUserRootKeyFile(DONGLE_HANDLER hDongle, ushort fileDescriptor, byte[] userRootkey)
 		{
 			KEY_FILE_ATTR keyAttr = new KEY_FILE_ATTR();
 			keyAttr.m_Size = 16;
@@ -201,8 +212,8 @@ namespace RonftonCard.Dongle.RockeyArm
 		}
 		#endregion
 
-		#region "--- Authen Key ---"
-		public ResultArgs CreateAuthenKey(String userId, DongleKeyInfo keyInfo)
+		#region "--- Authen Dongle ---"
+		public ResultArgs CreateAppAuthenDongle(String userId, DongleUserInfo keyInfo)
 		{
 			ResultArgs ret = new ResultArgs(false);
 
@@ -222,17 +233,17 @@ namespace RonftonCard.Dongle.RockeyArm
 				return ret;
 			}
 
-			if (!CreateKeyInfo(this.hDongle, keyInfo) ||
-				!CreatePrikeyFile(this.hDongle) )
+			if (!CreateUserInfo(this.hDongle, keyInfo) ||
+				!CreateAuthenKeyFile(this.hDongle) )
 			{
 				ret.Msg = "Create Key info file failed !";
 				return ret;
 			}
 
-			return CreatePriKey(userId,appId, newAdminPin);
+			return CreateAuthenKey(userId,appId, newAdminPin);
 		}
 
-		private ResultArgs CreatePriKey(String userId, byte[] appId, byte[] adminPin)
+		private ResultArgs CreateAuthenKey(String userId, byte[] appId, byte[] adminPin)
 		{
 			IntPtr pubKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PUBLIC_KEY)));
 			IntPtr priKey = IntPtrUtil.Create(IntPtrUtil.SizeOf(typeof(RSA_PRIVATE_KEY)));
@@ -247,7 +258,7 @@ namespace RonftonCard.Dongle.RockeyArm
 				this.dongleInfo[this.selectedIndex].AppId = this.Encoder.GetString(appId);
 				
 				RSA_PUBLIC_KEY pubStru = IntPtrUtil.ToStru<RSA_PUBLIC_KEY>(pubKey);
-				ret.Result = new AuthenKeyResponse()
+				ret.Result = new AppAuthenDongleResult()
 				{
 					PubKey = Convert.ToBase64String(pubStru.exponent, 0, DongleConst.RSA_KEY_LEN),
 					Version = this.dongleInfo[this.selectedIndex].Version,
@@ -283,13 +294,13 @@ namespace RonftonCard.Dongle.RockeyArm
 		/// <summary>
 		/// create RSA private key file
 		/// </summary>
-		private bool CreatePrikeyFile(DONGLE_HANDLER hDongle)
+		private bool CreateAuthenKeyFile(DONGLE_HANDLER hDongle)
 		{
 			PRIKEY_FILE_ATTR priAttr = new PRIKEY_FILE_ATTR();
 
 			priAttr.m_Size = DongleConst.RSA_KEY_LEN * 8;
 			priAttr.m_Type = RockeyArmFileType.FILE_PRIKEY_RSA;
-			priAttr.m_Lic.m_Count = 0xFFFFFFFF;
+			priAttr.m_Lic.m_Count = 0xFFFFFFFF;	// un-limitted
 			priAttr.m_Lic.m_IsDecOnRAM = 0;
 			priAttr.m_Lic.m_IsReset = 0;
 			priAttr.m_Lic.m_Priv = 0;

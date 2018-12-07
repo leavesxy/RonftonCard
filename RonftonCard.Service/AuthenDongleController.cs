@@ -18,8 +18,8 @@ namespace RonftonCard.Service
 		{
 			String userId = Convert.ToString(request.userId);
 			String jsonString = Convert.ToString(request.keyInfo);
-			DongleKeyInfo keyInfo = JsonConvert.DeserializeObject<DongleKeyInfo>(jsonString);
-			ResultArgs ret = DongleUtil.dongle.CreateAuthenKey(userId, keyInfo);
+			DongleUserInfo keyInfo = JsonConvert.DeserializeObject<DongleUserInfo>(jsonString);
+			ResultArgs ret = DongleUtil.dongle.CreateAuthenDongle(userId, keyInfo);
 			return Json<ResultArgs>(ret);
 		}
 

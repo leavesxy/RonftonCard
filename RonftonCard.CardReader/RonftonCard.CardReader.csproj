@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decard\D8Reader.cs" />
+    <Compile Include="Decard\D8ReaderCardImpl.cs" />
+    <Compile Include="Decard\D8ReaderDevImpl.cs" />
     <Compile Include="Decard\D8ReaderInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

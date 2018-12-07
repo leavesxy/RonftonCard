@@ -50,7 +50,7 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		public String Description { get; set; }
 
-		public DongleKeyInfo KeyInfo { get; set; }
+		public DongleUserInfo UserInfo { get; set; }
 
 		public String GetInfo()
 		{
@@ -59,8 +59,8 @@ namespace RonftonCard.Core.Dongle
 			sb.Append("[" + this.Seq.ToString("d2") +"]").Append(" : ");
 
 			//sb.Append(this.DongleType.GetAliasName()).Append(",");
-			if (this.KeyInfo != null)
-				sb.Append(this.KeyInfo.DongleType.GetAliasName()).Append(",");
+			if (this.UserInfo != null)
+				sb.Append(this.UserInfo.DongleType.GetAliasName()).Append(",");
 			else
 				sb.Append(DongleType.EMPTY.GetAliasName()).Append(",");
 
@@ -70,10 +70,10 @@ namespace RonftonCard.Core.Dongle
 			sb.Append(this.Model).Append(",");
 			sb.Append(this.ManufactureDate).Append(",");
 			//sb.Append(this.Description);
-			if (this.KeyInfo != null)
+			if (this.UserInfo != null)
 			{
-				sb.Append(this.KeyInfo.UserName).Append(",");
-				sb.Append(this.KeyInfo.CreateDate);
+				sb.Append(this.UserInfo.UserName).Append(",");
+				sb.Append(this.UserInfo.CreateDate);
 			}
 			return sb.ToString();
 		}

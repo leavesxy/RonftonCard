@@ -11,6 +11,7 @@ namespace RonftonCard.Core.Dongle
 	/// </summary>
 	public interface IDongle : IDisposable
 	{
+		#region "--- Properties ---"
 		/// <summary>
 		/// all dongle information
 		/// </summary>
@@ -27,7 +28,7 @@ namespace RonftonCard.Core.Dongle
 		Encoding Encoder { get; }
 
 		/// <summary>
-		/// last invoke is SUCC or not
+		/// last operation if is SUCC
 		/// </summary>
 		bool IsSucc { get; }
 
@@ -36,6 +37,9 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		int SelectedIndex { get; }
 
+		#endregion
+
+		#region "--- device interface ---"
 		/// <summary>
 		/// open specified dongle,and set select index
 		/// </summary>
@@ -57,10 +61,33 @@ namespace RonftonCard.Core.Dongle
 		/// </summary>
 		bool Reset();
 
-		ResultArgs CreateUserRootKey(String userId, byte[] userRootKey, DongleKeyInfo keyInfo);
+		/// <summary>
+		/// get timer of device
+		/// </summary>
+		/// <returns></returns>
+		DateTime GetDevTimer();
 
-		ResultArgs CreateAuthenKey(String userId, DongleKeyInfo keyInfo);
+		#endregion
 
+
+		#region "--- App interface ---"
+
+		/// <summary>
+		/// create User root key dongle
+		/// </summary>
+		ResultArgs CreateUserRootDongle(String userId, byte[] userRootKey, DongleUserInfo keyInfo);
+
+
+		/// <summary>
+		/// create applicaton authentication key dongle
+		/// </summary>
+		ResultArgs CreateAppAuthenDongle(String userId, DongleUserInfo keyInfo);
+
+		/// <summary>
+		/// encrypt by dongle
+		/// </summary>
 		bool Encrypt(DongleType dongleType, byte[] plain, out byte[] cipher);
+
+		#endregion
 	}
 }

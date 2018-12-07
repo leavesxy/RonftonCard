@@ -22,10 +22,10 @@ namespace RonftonCard.Main.Forms
 			this.rm = rm;
 			this.tabPageDescriptor = new List<TabPageDescriptor>()
 			{
-				new TabPageDescriptor { PageIndex=0, PageName="配置", TabPageForm = new ConfigForm()},
-				new TabPageDescriptor { PageIndex=1, PageName="IC卡", TabPageForm = new CardForm() },
-				new TabPageDescriptor { PageIndex=2, PageName="授权KEY", TabPageForm = new DongleForm() },
-				new TabPageDescriptor { PageIndex=3, PageName="测试", TabPageForm = new TestForm() },
+				new TabPageDescriptor { PageIndex=0, PageName="Config", TabPageForm = new ConfigForm()},
+				new TabPageDescriptor { PageIndex=1, PageName="Card", TabPageForm = new CardForm() },
+				new TabPageDescriptor { PageIndex=2, PageName="Dongle", TabPageForm = new DongleForm() },
+				new TabPageDescriptor { PageIndex=3, PageName="Test", TabPageForm = new TestForm() },
 			};
 		}
 

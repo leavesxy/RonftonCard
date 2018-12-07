@@ -9,7 +9,7 @@ namespace RonftonCard.Core.DTO
 	/// <summary>
 	/// information of selecting card
 	/// </summary>
-	public class CardSelectInfo
+	public class CardSelectResult
 	{
 		/// <summary>
 		/// serial number of card, 4 bytes,big endian

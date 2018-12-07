@@ -34,7 +34,6 @@
 			this.RbLedOff = new System.Windows.Forms.RadioButton();
 			this.BtnConvert2Json = new System.Windows.Forms.Button();
 			this.BtnLedControl = new System.Windows.Forms.Button();
-			this.BtnGetUTCTime = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
@@ -85,7 +84,7 @@
 			// 
 			// BtnConvert2Json
 			// 
-			this.BtnConvert2Json.Location = new System.Drawing.Point(260, 405);
+			this.BtnConvert2Json.Location = new System.Drawing.Point(135, 405);
 			this.BtnConvert2Json.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.BtnConvert2Json.Name = "BtnConvert2Json";
 			this.BtnConvert2Json.Size = new System.Drawing.Size(145, 27);
@@ -96,23 +95,13 @@
 			// 
 			// BtnLedControl
 			// 
-			this.BtnLedControl.Location = new System.Drawing.Point(135, 405);
+			this.BtnLedControl.Location = new System.Drawing.Point(12, 405);
 			this.BtnLedControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.BtnLedControl.Name = "BtnLedControl";
 			this.BtnLedControl.Size = new System.Drawing.Size(119, 27);
 			this.BtnLedControl.TabIndex = 6;
 			this.BtnLedControl.Text = "LED";
 			this.BtnLedControl.UseVisualStyleBackColor = true;
-			// 
-			// BtnGetUTCTime
-			// 
-			this.BtnGetUTCTime.Location = new System.Drawing.Point(12, 405);
-			this.BtnGetUTCTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.BtnGetUTCTime.Name = "BtnGetUTCTime";
-			this.BtnGetUTCTime.Size = new System.Drawing.Size(119, 27);
-			this.BtnGetUTCTime.TabIndex = 7;
-			this.BtnGetUTCTime.Text = "GetUtcTime";
-			this.BtnGetUTCTime.UseVisualStyleBackColor = true;
 			// 
 			// groupBox1
 			// 
@@ -134,7 +123,6 @@
 			this.Controls.Add(this.Trace);
 			this.Controls.Add(this.BtnConvert2Json);
 			this.Controls.Add(this.BtnLedControl);
-			this.Controls.Add(this.BtnGetUTCTime);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -159,7 +147,6 @@
 		private System.Windows.Forms.RadioButton RbLedOff;
 		private System.Windows.Forms.Button BtnConvert2Json;
 		private System.Windows.Forms.Button BtnLedControl;
-		private System.Windows.Forms.Button BtnGetUTCTime;
 		private System.Windows.Forms.GroupBox groupBox1;
 	}
 }

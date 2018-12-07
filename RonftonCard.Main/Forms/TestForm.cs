@@ -52,10 +52,15 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnConvert2Json_Click(object sender, EventArgs e)
 		{
-			DongleKeyInfo keyInfo = DongleKeyInfo.CreateTestDongleKeyInfo(DongleType.USER_ROOT, "01234567");
+			DongleUserInfo keyInfo = DongleUserInfo.CreateTestDongleKeyInfo(DongleType.USER_ROOT, "01234567");
 
 			String jsonData = JsonConvert.SerializeObject(keyInfo);
 			this.Trace.Trace(jsonData, true);
+		}
+
+		private void BtnGetUTCTime_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

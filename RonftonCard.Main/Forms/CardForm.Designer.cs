@@ -42,7 +42,7 @@
 			this.Cb10 = new System.Windows.Forms.CheckBox();
 			this.Cb9 = new System.Windows.Forms.CheckBox();
 			this.Cb8 = new System.Windows.Forms.CheckBox();
-			this.Dbg = new System.Windows.Forms.TextBox();
+			this.Trace = new System.Windows.Forms.TextBox();
 			this.Cb7 = new System.Windows.Forms.CheckBox();
 			this.Cb5 = new System.Windows.Forms.CheckBox();
 			this.Cb4 = new System.Windows.Forms.CheckBox();
@@ -62,7 +62,7 @@
 			this.BtnTestKeyA = new System.Windows.Forms.Button();
 			this.BtnTestKeyB = new System.Windows.Forms.Button();
 			this.BtnSelectCard2 = new System.Windows.Forms.Button();
-			this.BtnTest3 = new System.Windows.Forms.Button();
+			this.BtnWriteControlBlock = new System.Windows.Forms.Button();
 			this.AuthenKeyType = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.BlockNo = new System.Windows.Forms.TextBox();
@@ -213,15 +213,15 @@
 			this.Cb8.Text = "8";
 			this.Cb8.UseVisualStyleBackColor = true;
 			// 
-			// Dbg
+			// Trace
 			// 
-			this.Dbg.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Dbg.Location = new System.Drawing.Point(24, 97);
-			this.Dbg.Multiline = true;
-			this.Dbg.Name = "Dbg";
-			this.Dbg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.Dbg.Size = new System.Drawing.Size(753, 273);
-			this.Dbg.TabIndex = 29;
+			this.Trace.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Trace.Location = new System.Drawing.Point(24, 97);
+			this.Trace.Multiline = true;
+			this.Trace.Name = "Trace";
+			this.Trace.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.Trace.Size = new System.Drawing.Size(753, 273);
+			this.Trace.TabIndex = 29;
 			// 
 			// Cb7
 			// 
@@ -428,16 +428,16 @@
 			this.BtnSelectCard2.UseVisualStyleBackColor = true;
 			this.BtnSelectCard2.Click += new System.EventHandler(this.BtnSelectCard2_Click);
 			// 
-			// BtnTest3
+			// BtnWriteControlBlock
 			// 
-			this.BtnTest3.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnTest3.Location = new System.Drawing.Point(150, 440);
-			this.BtnTest3.Name = "BtnTest3";
-			this.BtnTest3.Size = new System.Drawing.Size(70, 32);
-			this.BtnTest3.TabIndex = 32;
-			this.BtnTest3.Text = "控制块";
-			this.BtnTest3.UseVisualStyleBackColor = true;
-			this.BtnTest3.Click += new System.EventHandler(this.BtnTest3_Click);
+			this.BtnWriteControlBlock.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnWriteControlBlock.Location = new System.Drawing.Point(150, 440);
+			this.BtnWriteControlBlock.Name = "BtnWriteControlBlock";
+			this.BtnWriteControlBlock.Size = new System.Drawing.Size(70, 32);
+			this.BtnWriteControlBlock.TabIndex = 32;
+			this.BtnWriteControlBlock.Text = "控制块";
+			this.BtnWriteControlBlock.UseVisualStyleBackColor = true;
+			this.BtnWriteControlBlock.Click += new System.EventHandler(this.BtnWriteControlBlock_Click);
 			// 
 			// AuthenKeyType
 			// 
@@ -488,14 +488,14 @@
 			this.Controls.Add(this.BtnUpdateKeyA);
 			this.Controls.Add(this.BtnInitialize);
 			this.Controls.Add(this.BtnTest4);
-			this.Controls.Add(this.BtnTest3);
+			this.Controls.Add(this.BtnWriteControlBlock);
 			this.Controls.Add(this.BtnReadSectorB);
 			this.Controls.Add(this.BtnReadSectorA);
 			this.Controls.Add(this.BtnTestKeyB);
 			this.Controls.Add(this.BtnTestKeyA);
 			this.Controls.Add(this.BtnSelectCard2);
 			this.Controls.Add(this.BtnSelectCard);
-			this.Controls.Add(this.Dbg);
+			this.Controls.Add(this.Trace);
 			this.Controls.Add(this.CbAll);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.label1);
@@ -537,7 +537,7 @@
 		private System.Windows.Forms.CheckBox Cb10;
 		private System.Windows.Forms.CheckBox Cb9;
 		private System.Windows.Forms.CheckBox Cb8;
-		private System.Windows.Forms.TextBox Dbg;
+		private System.Windows.Forms.TextBox Trace;
 		private System.Windows.Forms.CheckBox Cb7;
 		private System.Windows.Forms.CheckBox Cb5;
 		private System.Windows.Forms.CheckBox Cb4;
@@ -557,7 +557,7 @@
 		private System.Windows.Forms.Button BtnTestKeyA;
 		private System.Windows.Forms.Button BtnTestKeyB;
 		private System.Windows.Forms.Button BtnSelectCard2;
-		private System.Windows.Forms.Button BtnTest3;
+		private System.Windows.Forms.Button BtnWriteControlBlock;
 		private System.Windows.Forms.ComboBox AuthenKeyType;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox BlockNo;

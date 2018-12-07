@@ -22,9 +22,9 @@ namespace RonftonCard.Service
 
 			String jsonString = Convert.ToString(request.keyInfo);
 
-			DongleKeyInfo keyInfo = JsonConvert.DeserializeObject<DongleKeyInfo>(jsonString);
+			DongleUserInfo keyInfo = JsonConvert.DeserializeObject<DongleUserInfo>(jsonString);
 
-			ResultArgs ret = DongleUtil.dongle.CreateUserRootKey(userId, rootKeyBytes, keyInfo);
+			ResultArgs ret = DongleUtil.dongle.CreateUserRootDongle(userId, rootKeyBytes, keyInfo);
 			return Json<ResultArgs>(ret);
 		}
 

@@ -35,10 +35,10 @@ namespace RonftonCard.Core
 			if (!reader.Select(out cardId))
 				return new ResultArgs(false, null, "not card selected !");
 
-			List<CardKeyRequest> request = new List<CardKeyRequest>();
+			List<CardInitializeRequest> request = new List<CardInitializeRequest>();
 			for(int i=0; i<sectors.Length; i++)
 			{
-				request.Add(new CardKeyRequest()
+				request.Add(new CardInitializeRequest()
 				{
 					CardId = cardId,
 					Sector = sectors[i],
@@ -51,7 +51,7 @@ namespace RonftonCard.Core
 
 			if (ret.Succ)
 			{
-				CardKeyResponse[] response = ret.Result as CardKeyResponse[];
+				CardInitializeResult[] response = ret.Result as CardInitializeResult[];
 
 				for (int i = 0; i < response.Length; i++)
 				{

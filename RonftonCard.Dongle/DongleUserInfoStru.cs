@@ -11,7 +11,7 @@ namespace RonftonCard.Dongle
 	/// User info structure
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DongleKeyInfoStru
+	public struct DongleUserInfoStru
 	{
 		public byte DongleType;
 

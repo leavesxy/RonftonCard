@@ -49,7 +49,7 @@ namespace RonftonCard.Main.Forms
 
 		#endregion
 
-		#region "--- KEY authen test ---"
+		#region "--- KEY test ---"
 
 		/// <summary>
 		/// Verify KEY_A
@@ -58,7 +58,7 @@ namespace RonftonCard.Main.Forms
 		{
 			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
 
-			this.Dbg.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
+			this.Trace.Trace("Test KeyA : " + BitConverter.ToString(keyA), true);
 			TestKey(M1KeyMode.KEY_A, keyA);
 		}
 
@@ -69,7 +69,7 @@ namespace RonftonCard.Main.Forms
 		{
 			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
 
-			this.Dbg.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
+			this.Trace.Trace("Test KeyB : " + BitConverter.ToString(keyB), true);
 			TestKey(M1KeyMode.KEY_B, keyB);
 		}
 
@@ -78,12 +78,12 @@ namespace RonftonCard.Main.Forms
 			ResultArgs ret = this.reader.Select();
 			if (!ret.Succ)
 			{
-				this.Dbg.Trace("Select Card Error!");
+				this.Trace.Trace("Select Card Error!");
 				return;
 			}
 
-			CardSelectInfo info = (CardSelectInfo)ret.Result;
-			this.Dbg.Trace( String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
+			CardSelectResult info = (CardSelectResult)ret.Result;
+			this.Trace.Trace( String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
 					BitConverter.ToString(info.SN),
 					info.ATQA.ToString("X4"),
 					info.SAK.ToString("X2")));
@@ -95,9 +95,9 @@ namespace RonftonCard.Main.Forms
 
 				int sector = int.Parse(cb.Text.Trim());
 				if (!this.reader.Authen(keyMode, sector * 4, key))
-					this.Dbg.Trace("Authen sector {0} failed !", sector);
+					this.Trace.Trace("Authen sector {0} failed !", sector);
 				else
-					this.Dbg.Trace("Authen sector {0} OK !", sector);
+					this.Trace.Trace("Authen sector {0} OK !", sector);
 			}
 		}
 		#endregion
@@ -108,7 +108,7 @@ namespace RonftonCard.Main.Forms
 		/// </summary>
 		private void BtnReadSectorA_Click(object sender, EventArgs e)
 		{
-			this.Dbg.Trace("Read Card Sector With Key_A ..." + this.KeyA.Text.Trim(), true);
+			this.Trace.Trace("Read Card Sector With Key_A ..." + this.KeyA.Text.Trim(), true);
 			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
 			ReadSector(M1KeyMode.KEY_A, keyA);
 		}
@@ -118,7 +118,7 @@ namespace RonftonCard.Main.Forms
 		/// </summary>
 		private void BtnReadSectorB_Click(object sender, EventArgs e)
 		{
-			this.Dbg.Trace("Read Card by KeyB..." + this.KeyB.Text.Trim(), true);
+			this.Trace.Trace("Read Card by KeyB..." + this.KeyB.Text.Trim(), true);
 			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
 			ReadSector(M1KeyMode.KEY_B, keyB);
 		}
@@ -127,10 +127,10 @@ namespace RonftonCard.Main.Forms
 		{
 			ResultArgs ret = this.reader.Select();
 			if (!ret.Succ)
-				this.Dbg.Trace("Select Card Error!");
+				this.Trace.Trace("Select Card Error!");
 
-			CardSelectInfo info = (CardSelectInfo)ret.Result;
-			this.Dbg.Trace(String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
+			CardSelectResult info = (CardSelectResult)ret.Result;
+			this.Trace.Trace(String.Format("Select card_id={0}, ATQA=0x{1}, SAK={2}",
 					BitConverter.ToString(info.SN),
 					info.ATQA.ToString("X4"),
 					info.SAK.ToString("X2")));
@@ -144,7 +144,7 @@ namespace RonftonCard.Main.Forms
 
 				if (!this.reader.Authen(keyMode, sector * 4, key))
 				{
-					this.Dbg.Trace("Auth sector {0} failed !", sector);
+					this.Trace.Trace("Auth sector {0} failed !", sector);
 					return;
 				}
 
@@ -152,11 +152,11 @@ namespace RonftonCard.Main.Forms
 				int len = 0;
 				if (this.reader.ReadSector(sector, out buffer, out len))
 				{
-					this.Dbg.Trace("Sector {0}", sector);
-					this.Dbg.Trace(BitConverter.ToString(buffer, 0, 16));
-					this.Dbg.Trace(BitConverter.ToString(buffer, 16, 16));
-					this.Dbg.Trace(BitConverter.ToString(buffer, 32, 16));
-					this.Dbg.Trace(BitConverter.ToString(buffer, 48, 16));
+					this.Trace.Trace("Sector {0}", sector);
+					this.Trace.Trace(BitConverter.ToString(buffer, 0, 16));
+					this.Trace.Trace(BitConverter.ToString(buffer, 16, 16));
+					this.Trace.Trace(BitConverter.ToString(buffer, 32, 16));
+					this.Trace.Trace(BitConverter.ToString(buffer, 48, 16));
 				}
 			}
 		}
@@ -225,7 +225,7 @@ namespace RonftonCard.Main.Forms
 
 			if (this.reader.Select(out card_id))
 			{
-				this.Dbg.Trace("Select card id =" + BitConverter.ToString(card_id), true);
+				this.Trace.Trace("Select card id =" + BitConverter.ToString(card_id), true);
 			}
 		}
 
@@ -235,26 +235,26 @@ namespace RonftonCard.Main.Forms
 		/// </summary>
 		private void BtnSelectCard2_Click(object sender, EventArgs e)
 		{
-			byte[] cardId;
-			UInt16 atqa;
-			byte sak;
+			ResultArgs ret = this.reader.Select();
+			this.Trace.Trace("Select Card " +  ( (ret.Succ) ? "OK!" : "Failed!" ), true);
 
-			if (this.reader.Select2(out cardId, out atqa, out sak))
+			if ( ret.Succ )
 			{
-				this.Dbg.Trace("Select2 ", true);
-				this.Dbg.Trace(String.Format("card_id={0}, atqa={1}, sak={2}",
-						BitConverter.ToString(cardId),
-						atqa.ToString("X4"),
-						sak));
+				CardSelectResult card = (CardSelectResult)ret.Result;
+
+				this.Trace.Trace(String.Format("card_id={0}, atqa=0x{1}, sak=0x{2}",
+						BitConverter.ToString(card.SN),
+						card.ATQA.ToString("X4"),
+						card.SAK.ToString("X2")));
 			}
 		}
 
 		/// <summary>
 		/// test control block
 		/// </summary>
-		private void BtnTest3_Click(object sender, EventArgs e)
+		private void BtnWriteControlBlock_Click(object sender, EventArgs e)
 		{
-			this.Dbg.Trace("Write sector Control block", true);
+			this.Trace.Trace("Write sector Control block", true);
 
 			byte[] keyA = HexString.FromHexString(this.KeyA.Text.Trim(), "-");
 			byte[] keyB = HexString.FromHexString(this.KeyB.Text.Trim(), "-");
@@ -269,7 +269,7 @@ namespace RonftonCard.Main.Forms
 				int sector = int.Parse(cb.Text.Trim());
 				if (this.reader.ChangeControlBlock(sector, mode, keyA, keyB))
 				{
-					this.Dbg.Trace(String.Format("Write sector {0} block ok!", sector));
+					this.Trace.Trace(String.Format("Write sector {0} block ok!", sector));
 				}
 			}
 		}
@@ -280,7 +280,7 @@ namespace RonftonCard.Main.Forms
 		private void BtnTest4_Click(object sender, EventArgs e)
 		{
 			CardInfo cardInfo = CardInfo.CreateTestCardInfo();
-			this.Dbg.Trace(cardInfo.ToString(), true);
+			this.Trace.Trace(cardInfo.ToString(), true);
 		}
 
 		#endregion
@@ -313,7 +313,5 @@ namespace RonftonCard.Main.Forms
 			//	}
 			//}
 		}
-
-
 	}
 }

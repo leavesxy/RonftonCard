@@ -40,11 +40,12 @@
 			this.BtnRestore = new System.Windows.Forms.Button();
 			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
 			this.BtnEnumerate = new System.Windows.Forms.Button();
-			this.TxtTrace = new System.Windows.Forms.TextBox();
+			this.Trace = new System.Windows.Forms.TextBox();
 			this.BntEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.TxtPlain = new System.Windows.Forms.TextBox();
 			this.BtnEncryptByPri = new System.Windows.Forms.Button();
+			this.BtnUtcTime = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// CbDongle
@@ -116,11 +117,11 @@
 			// 
 			// BtnCreateAuthenKey
 			// 
-			this.BtnCreateAuthenKey.Location = new System.Drawing.Point(306, 398);
+			this.BtnCreateAuthenKey.Location = new System.Drawing.Point(367, 398);
 			this.BtnCreateAuthenKey.Name = "BtnCreateAuthenKey";
-			this.BtnCreateAuthenKey.Size = new System.Drawing.Size(148, 29);
+			this.BtnCreateAuthenKey.Size = new System.Drawing.Size(117, 29);
 			this.BtnCreateAuthenKey.TabIndex = 17;
-			this.BtnCreateAuthenKey.Text = "创建用户授权KEY";
+			this.BtnCreateAuthenKey.Text = "创建应用授权";
 			this.BtnCreateAuthenKey.UseVisualStyleBackColor = true;
 			this.BtnCreateAuthenKey.Click += new System.EventHandler(this.BtnCreateAuthenKey_Click);
 			// 
@@ -128,7 +129,7 @@
 			// 
 			this.BtnRestore.Location = new System.Drawing.Point(12, 428);
 			this.BtnRestore.Name = "BtnRestore";
-			this.BtnRestore.Size = new System.Drawing.Size(148, 29);
+			this.BtnRestore.Size = new System.Drawing.Size(117, 29);
 			this.BtnRestore.TabIndex = 16;
 			this.BtnRestore.Text = "一键还原";
 			this.BtnRestore.UseVisualStyleBackColor = true;
@@ -136,11 +137,11 @@
 			// 
 			// BtnCreateUserRootKey
 			// 
-			this.BtnCreateUserRootKey.Location = new System.Drawing.Point(159, 398);
+			this.BtnCreateUserRootKey.Location = new System.Drawing.Point(248, 398);
 			this.BtnCreateUserRootKey.Name = "BtnCreateUserRootKey";
-			this.BtnCreateUserRootKey.Size = new System.Drawing.Size(148, 29);
+			this.BtnCreateUserRootKey.Size = new System.Drawing.Size(117, 29);
 			this.BtnCreateUserRootKey.TabIndex = 10;
-			this.BtnCreateUserRootKey.Text = "创建用户根密钥KEY";
+			this.BtnCreateUserRootKey.Text = "创建用户根密钥";
 			this.BtnCreateUserRootKey.UseVisualStyleBackColor = true;
 			this.BtnCreateUserRootKey.Click += new System.EventHandler(this.BtnCreateUserRootKey_Click);
 			// 
@@ -148,28 +149,28 @@
 			// 
 			this.BtnEnumerate.Location = new System.Drawing.Point(12, 398);
 			this.BtnEnumerate.Name = "BtnEnumerate";
-			this.BtnEnumerate.Size = new System.Drawing.Size(148, 29);
+			this.BtnEnumerate.Size = new System.Drawing.Size(117, 29);
 			this.BtnEnumerate.TabIndex = 18;
-			this.BtnEnumerate.Text = "枚举KEY";
+			this.BtnEnumerate.Text = "枚举设备";
 			this.BtnEnumerate.UseVisualStyleBackColor = true;
 			this.BtnEnumerate.Click += new System.EventHandler(this.BtnEnumerate_Click);
 			// 
-			// TxtTrace
+			// Trace
 			// 
-			this.TxtTrace.Location = new System.Drawing.Point(12, 109);
-			this.TxtTrace.Multiline = true;
-			this.TxtTrace.Name = "TxtTrace";
-			this.TxtTrace.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtTrace.Size = new System.Drawing.Size(771, 283);
-			this.TxtTrace.TabIndex = 5;
+			this.Trace.Location = new System.Drawing.Point(12, 109);
+			this.Trace.Multiline = true;
+			this.Trace.Name = "Trace";
+			this.Trace.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.Trace.Size = new System.Drawing.Size(771, 283);
+			this.Trace.TabIndex = 5;
 			// 
 			// BntEncryptByUserRoot
 			// 
-			this.BntEncryptByUserRoot.Location = new System.Drawing.Point(159, 428);
+			this.BntEncryptByUserRoot.Location = new System.Drawing.Point(249, 428);
 			this.BntEncryptByUserRoot.Name = "BntEncryptByUserRoot";
-			this.BntEncryptByUserRoot.Size = new System.Drawing.Size(148, 29);
+			this.BntEncryptByUserRoot.Size = new System.Drawing.Size(117, 29);
 			this.BntEncryptByUserRoot.TabIndex = 10;
-			this.BntEncryptByUserRoot.Text = "根密钥加密测试";
+			this.BntEncryptByUserRoot.Text = "根密钥加密";
 			this.BntEncryptByUserRoot.UseVisualStyleBackColor = true;
 			this.BntEncryptByUserRoot.Click += new System.EventHandler(this.BntEncryptByUserRoot_Click);
 			// 
@@ -191,13 +192,23 @@
 			// 
 			// BtnEncryptByPri
 			// 
-			this.BtnEncryptByPri.Location = new System.Drawing.Point(306, 428);
+			this.BtnEncryptByPri.Location = new System.Drawing.Point(367, 428);
 			this.BtnEncryptByPri.Name = "BtnEncryptByPri";
-			this.BtnEncryptByPri.Size = new System.Drawing.Size(148, 29);
+			this.BtnEncryptByPri.Size = new System.Drawing.Size(117, 29);
 			this.BtnEncryptByPri.TabIndex = 17;
-			this.BtnEncryptByPri.Text = "用户私钥加密测试";
+			this.BtnEncryptByPri.Text = "私钥加密";
 			this.BtnEncryptByPri.UseVisualStyleBackColor = true;
 			this.BtnEncryptByPri.Click += new System.EventHandler(this.BtnEncryptByPri_Click);
+			// 
+			// BtnUtcTime
+			// 
+			this.BtnUtcTime.Location = new System.Drawing.Point(130, 398);
+			this.BtnUtcTime.Name = "BtnUtcTime";
+			this.BtnUtcTime.Size = new System.Drawing.Size(117, 29);
+			this.BtnUtcTime.TabIndex = 17;
+			this.BtnUtcTime.Text = "显示时钟";
+			this.BtnUtcTime.UseVisualStyleBackColor = true;
+			this.BtnUtcTime.Click += new System.EventHandler(this.BtnUtcTime_Click);
 			// 
 			// DongleForm
 			// 
@@ -215,12 +226,13 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.BtnEncryptByPri);
+			this.Controls.Add(this.BtnUtcTime);
 			this.Controls.Add(this.BtnCreateAuthenKey);
 			this.Controls.Add(this.BtnRestore);
 			this.Controls.Add(this.BntEncryptByUserRoot);
 			this.Controls.Add(this.BtnCreateUserRootKey);
 			this.Controls.Add(this.BtnEnumerate);
-			this.Controls.Add(this.TxtTrace);
+			this.Controls.Add(this.Trace);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -248,10 +260,11 @@
 		private System.Windows.Forms.Button BtnRestore;
 		private System.Windows.Forms.Button BtnCreateUserRootKey;
 		private System.Windows.Forms.Button BtnEnumerate;
-		private System.Windows.Forms.TextBox TxtTrace;
+		private System.Windows.Forms.TextBox Trace;
 		private System.Windows.Forms.Button BntEncryptByUserRoot;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox TxtPlain;
 		private System.Windows.Forms.Button BtnEncryptByPri;
+		private System.Windows.Forms.Button BtnUtcTime;
 	}
 }
