@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RonftonCard.Core;
 using RonftonCard.Core.Config;
 
 namespace RonftonCard.Main.Forms
 {
+	using Bluemoon.WinForm;
+
 	public partial class ConfigForm : Form
 	{
 		public ConfigForm()

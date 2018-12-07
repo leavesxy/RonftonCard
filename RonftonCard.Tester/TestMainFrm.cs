@@ -7,6 +7,7 @@ using RonftonCard.Dongle.RockeyArm;
 
 namespace RonftonCard.Tester
 {
+	using Bluemoon.WinForm;
 	public partial class TestMainFrm : Form
 	{
 		private RockeyArmDongle dongle;

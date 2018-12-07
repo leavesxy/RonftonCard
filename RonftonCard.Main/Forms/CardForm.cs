@@ -6,11 +6,10 @@ using System.Windows.Forms;
 namespace RonftonCard.Main.Forms
 {
 	using Bluemoon;
+	using Bluemoon.WinForm;
 	using Core;
 	using Core.CardReader;
 	using Core.DTO;
-	using KeyService;
-	using System.Text;
 
 	public partial class CardForm : Form
 	{

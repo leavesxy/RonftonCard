@@ -1,5 +1,4 @@
 ﻿using Bluemoon;
-using Bluemoon.Config;
 using log4net;
 using RonftonCard.Core.CardReader;
 using RonftonCard.Core.Config;
@@ -8,7 +7,6 @@ using RonftonCard.Core.KeyService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace RonftonCard.Core
 {
@@ -32,9 +30,9 @@ namespace RonftonCard.Core
 		{
 			try
 			{
-				readerDescriptors = XmlConfigHelper.CreateEntity<IDictionary<String, CardReaderDescriptor>>(CardReaderConfigFileName);
-				templeteDescriptors = XmlConfigHelper.CreateEntity<IDictionary<String, CardTempleteDescriptor>>(CardTempleteConfigFileName);
-				dongleDescriptors = XmlConfigHelper.CreateEntity<IDictionary<String, DongleDescriptor>>(DongleConfigFileName);
+				readerDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardReaderDescriptor>>(CardReaderConfigFileName);
+				templeteDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardTempleteDescriptor>>(CardTempleteConfigFileName);
+				dongleDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, DongleDescriptor>>(DongleConfigFileName);
 			}
 			catch (Exception ex)
 			{

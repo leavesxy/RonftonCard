@@ -33,12 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bluemoon.Core-2.2.0.1, Version=2.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bluemoon.Core-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.Core-2.2.0.1.dll</HintPath>
+    <Reference Include="Bluemoon.Core-2.2.02, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bluemoon.Core-2.2.02.2.2.2\lib\net45\Bluemoon.Core-2.2.02.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Bluemoon.WinForm-2.2.0.1, Version=2.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bluemoon.WinForm-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.WinForm-2.2.0.1.dll</HintPath>
+    <Reference Include="Bluemoon.WinForm-2.2.02, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bluemoon.WinForm-2.2.02.2.2.2\lib\net45\Bluemoon.WinForm-2.2.02.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -96,7 +96,6 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="TabPageDescriptor.cs" />
-    <Compile Include="TextBoxExtension.cs" />
     <EmbeddedResource Include="Forms\CardForm.resx">
       <DependentUpon>CardForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -166,10 +165,6 @@
     <ProjectReference Include="..\RonftonCard.Dongle\RonftonCard.Dongle.csproj">
       <Project>{d10c6a8f-c39c-43d9-9ba4-df200e59396e}</Project>
       <Name>RonftonCard.Dongle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RonftonCard.KeyService\RonftonCard.KeyService.csproj">
-      <Project>{cf92f4d6-6f1b-4346-a585-b3378edf6276}</Project>
-      <Name>RonftonCard.KeyService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

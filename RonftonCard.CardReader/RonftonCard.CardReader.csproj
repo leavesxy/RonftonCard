@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bluemoon.Core-2.2.0.1, Version=2.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bluemoon.Core-2.2.0.1.2.2.0.1\lib\net45\Bluemoon.Core-2.2.0.1.dll</HintPath>
+    <Reference Include="Bluemoon.Core-2.2.02, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bluemoon.Core-2.2.02.2.2.2\lib\net45\Bluemoon.Core-2.2.02.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

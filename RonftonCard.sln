@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.Dongle", "Ronft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.Tester", "RonftonCard.Tester\RonftonCard.Tester.csproj", "{CA4CC5A1-BEF9-45CE-9415-C39099308A1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.KeyService", "RonftonCard.KeyService\RonftonCard.KeyService.csproj", "{CF92F4D6-6F1B-4346-A585-B3378EDF6276}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{CA4CC5A1-BEF9-45CE-9415-C39099308A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA4CC5A1-BEF9-45CE-9415-C39099308A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA4CC5A1-BEF9-45CE-9415-C39099308A1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF92F4D6-6F1B-4346-A585-B3378EDF6276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF92F4D6-6F1B-4346-A585-B3378EDF6276}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF92F4D6-6F1B-4346-A585-B3378EDF6276}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF92F4D6-6F1B-4346-A585-B3378EDF6276}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

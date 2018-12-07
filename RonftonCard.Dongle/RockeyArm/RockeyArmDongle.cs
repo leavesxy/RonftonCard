@@ -5,7 +5,6 @@ using System.Text;
 namespace RonftonCard.Dongle.RockeyArm
 {
 	using Bluemoon;
-	using Bluemoon.Config;
 	using log4net;
 	using Core.Dongle;
 	using DONGLE_HANDLER = Int64;
