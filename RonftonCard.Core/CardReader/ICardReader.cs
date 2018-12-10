@@ -57,7 +57,7 @@ namespace RonftonCard.Core.CardReader
 		bool ReadSector(int sector, out byte[] outData, out int len);
 		bool WriteSector(int sector, byte[] inData, int len);
 
-		bool ChangeControlBlock(int sector, M1KeyMode keyMode, byte[] keyA, byte[] keyB);
+		bool ChangeControlBlock(int sector, M1KeyMode keyMode, byte[] key, byte[] keyA, byte[] keyB);
 
 		#endregion
 	}

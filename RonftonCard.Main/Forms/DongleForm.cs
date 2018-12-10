@@ -25,8 +25,8 @@ namespace RonftonCard.Main.Forms
 
 		private void DongleForm_Load(object sender, EventArgs e)
 		{
-			this.TxtUserRootKey.Text = BitConverter.ToString(ByteUtil.Malloc(16, 0x0a));
-			this.TxtPlain.Text = "01234567";
+			this.UserRootKey.Text = BitConverter.ToString(ByteUtil.Malloc(16, 0x0a));
+			this.TestPlain.Text = "01234567";
 
 			Update();
 
@@ -37,7 +37,7 @@ namespace RonftonCard.Main.Forms
 
 		private void CbDongleSelected_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			this.dongle.Open(this.CbDongle.SelectedIndex);
+			this.dongle.Open(this.Dongles.SelectedIndex);
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace RonftonCard.Main.Forms
 			Action action = delegate ()
 			{
 				// clear trace
-				this.CbDongle.Items.Clear();
+				this.Dongles.Items.Clear();
 
 				// create instance when form load
 				if (this.dongle == null)
@@ -74,8 +74,8 @@ namespace RonftonCard.Main.Forms
 
 					if (!this.dongle.Dongles.IsNullOrEmpty())
 					{
-						this.CbDongle.Items.AddRange(this.dongle.Dongles);
-						this.CbDongle.SelectedIndex = 0;
+						this.Dongles.Items.AddRange(this.dongle.Dongles);
+						this.Dongles.SelectedIndex = 0;
 						ShowDongleInfo(clear);
 					}
 				}
@@ -85,11 +85,11 @@ namespace RonftonCard.Main.Forms
 
 		private void ShowDongleInfo(bool clear)
 		{
-			this.Trace.Trace("Dongles information : ", clear);
+			this.TraceMsg.Trace("Dongles information : ", clear);
 
 			foreach( DongleInfo info in this.dongle.Dongles )
 			{
-				this.Trace.Trace(info.GetInfo());
+				this.TraceMsg.Trace(info.GetInfo());
 			}
 		}
 
@@ -100,17 +100,17 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnRestore_Click(object sender, EventArgs e)
 		{
-			byte[] adminPin = this.dongle.Encoder.GetBytes(this.TxtAdminPin.Text.Trim());
-			int selected = this.CbDongle.SelectedIndex;
+			byte[] adminPin = this.dongle.Encoder.GetBytes(this.AdminPin.Text.Trim());
+			int selected = this.Dongles.SelectedIndex;
 
 			if (this.dongle.Restore(adminPin))
 			{
 				logger.Debug(String.Format("restore {0} ok! dongle info = {1}", selected, this.dongle.Dongles[selected]));
-				this.Trace.Trace(String.Format("restore {0} ok, old dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
+				this.TraceMsg.Trace(String.Format("restore {0} ok, old dongle info = {1}", selected, this.dongle.Dongles[selected]), true);
 			}
 			else
 			{
-				this.Trace.Trace(String.Format("restore {0} Error! error msg = {1}", selected, this.dongle.LastErrorMessage), true);
+				this.TraceMsg.Trace(String.Format("restore {0} Error! error msg = {1}", selected, this.dongle.LastErrorMessage), true);
 			}
 
 			Update();
@@ -122,15 +122,15 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnUtcTime_Click(object sender, EventArgs e)
 		{
-			this.Trace.Trace("Current Dongle 's Timer is : " + this.dongle.GetDevTimer().ToString("yyyy-MM-dd HH:mm:ss"), true);
+			this.TraceMsg.Trace("Current Dongle 's Timer is : " + this.dongle.GetDevTimer().ToString("yyyy-MM-dd HH:mm:ss"), true);
 		}
 
 		#region "--- User root Key  ---"
 		private void BtnCreateUserRootKey_Click(object sender, EventArgs e)
 		{
-			int selected = this.CbDongle.SelectedIndex;
-			byte[] userRootKey = HexString.FromHexString(this.TxtUserRootKey.Text.Trim(), "-");
-			String userId = this.TxtUserID.Text.Trim();
+			int selected = this.Dongles.SelectedIndex;
+			byte[] userRootKey = HexString.FromHexString(this.UserRootKey.Text.Trim(), "-");
+			String userId = this.UserID.Text.Trim();
 
 			DongleUserInfo keyInfo = DongleUserInfo.CreateTestDongleKeyInfo(DongleType.USER_ROOT, userId);
 
@@ -138,15 +138,15 @@ namespace RonftonCard.Main.Forms
 
 			if (arg.Succ)
 			{
-				this.Trace.Trace(String.Format("Create user root key ok! "), true);
+				this.TraceMsg.Trace(String.Format("Create user root key ok! "), true);
 				UserRootDongleResult res = (UserRootDongleResult)arg.Result;
 
-				this.Trace.Trace(res.ToString());
+				this.TraceMsg.Trace(res.ToString());
 				logger.Debug(res.ToString());
 			}
 			else
 			{
-				this.Trace.Trace(String.Format("Create user root key Error! err msg = {0}", this.dongle.LastErrorMessage), true);
+				this.TraceMsg.Trace(String.Format("Create user root key Error! err msg = {0}", this.dongle.LastErrorMessage), true);
 			}
 
 			// refresh dongle
@@ -156,41 +156,41 @@ namespace RonftonCard.Main.Forms
 		private void BntEncryptByUserRoot_Click(object sender, EventArgs e)
 		{
 			byte[] cipher;
-			this.Trace.Trace("Encrypt By User root ...", true);
-			this.Trace.Trace("plain text = " + this.TxtPlain.Text);
+			this.TraceMsg.Trace("Encrypt By User root ...", true);
+			this.TraceMsg.Trace("plain text = " + this.TestPlain.Text);
 
-			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
-			int selected = this.CbDongle.SelectedIndex;
+			byte[] plain = this.dongle.Encoder.GetBytes(this.TestPlain.Text.Trim());
+			int selected = this.Dongles.SelectedIndex;
 
 			if (this.dongle.Encrypt(DongleType.USER_ROOT, plain, out cipher))
 			{
-				this.Trace.Trace(String.Format("cipher length [{0}] , {1}",cipher.Length, BitConverter.ToString(cipher)));
+				this.TraceMsg.Trace(String.Format("cipher length [{0}] , {1}",cipher.Length, BitConverter.ToString(cipher)));
 			}
 			else
-				this.Trace.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
+				this.TraceMsg.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
 		}
 		#endregion
 
 		#region "--- Authen Key ---"
 		private void BtnCreateAuthenKey_Click(object sender, EventArgs e)
 		{
-			int selected = this.CbDongle.SelectedIndex;
-			String userId = this.TxtUserID.Text.Trim();
+			int selected = this.Dongles.SelectedIndex;
+			String userId = this.UserID.Text.Trim();
 
 			DongleUserInfo keyInfo = DongleUserInfo.CreateTestDongleKeyInfo(DongleType.AUTHEN, userId);
 			ResultArgs arg = this.dongle.CreateAppAuthenDongle(userId, keyInfo);
 
 			if (arg.Succ)
 			{
-				this.Trace.Trace(String.Format("Create Authen key ok! "), true);
+				this.TraceMsg.Trace(String.Format("Create Authen key ok! "), true);
 				AppAuthenDongleResult res = (AppAuthenDongleResult)arg.Result;
 
-				this.Trace.Trace(res.ToString());
+				this.TraceMsg.Trace(res.ToString());
 				logger.Debug(res.ToString());
 			}
 			else
 			{
-				this.Trace.Trace(String.Format("Create Authen key Error! err msg = {0}", this.dongle.LastErrorMessage), true);
+				this.TraceMsg.Trace(String.Format("Create Authen key Error! err msg = {0}", this.dongle.LastErrorMessage), true);
 			}
 
 			// refresh dongle
@@ -201,18 +201,18 @@ namespace RonftonCard.Main.Forms
 		private void BtnEncryptByPri_Click(object sender, EventArgs e)
 		{
 			byte[] cipher;
-			this.Trace.Trace("Encrypt By Authen private key ...", true);
-			this.Trace.Trace("plain text = " + this.TxtPlain.Text);
+			this.TraceMsg.Trace("Encrypt By Authen private key ...", true);
+			this.TraceMsg.Trace("plain text = " + this.TestPlain.Text);
 
-			byte[] plain = this.dongle.Encoder.GetBytes(this.TxtPlain.Text.Trim());
-			int selected = this.CbDongle.SelectedIndex;
+			byte[] plain = this.dongle.Encoder.GetBytes(this.TestPlain.Text.Trim());
+			int selected = this.Dongles.SelectedIndex;
 
 			if (this.dongle.Encrypt(DongleType.AUTHEN, plain, out cipher))
 			{
-				this.Trace.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToHexString(cipher)));
+				this.TraceMsg.Trace(String.Format("cipher length [{0}] , {1}", cipher.Length, HexString.ToHexString(cipher)));
 			}
 			else
-				this.Trace.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
+				this.TraceMsg.Trace("Encrypt failed !" + this.dongle.LastErrorMessage);
 		}
 
 		#endregion

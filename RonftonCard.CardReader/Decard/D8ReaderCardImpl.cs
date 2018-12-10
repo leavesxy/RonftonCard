@@ -182,7 +182,6 @@ namespace RonftonCard.CardReader.Decard
 				: M1_SECTOR_SPLIT * 4 + (sector - M1_SECTOR_SPLIT) * 16;
 		}
 
-
 		/// <summary>
 		/// read all sector data
 		/// </summary>
@@ -254,14 +253,12 @@ namespace RonftonCard.CardReader.Decard
 		/// <summary>
 		/// change control block of sector
 		/// </summary>
-		public bool ChangeControlBlock(int sector, M1KeyMode keyMode, byte[] keyA, byte[] keyB)
+		public bool ChangeControlBlock(int sector, M1KeyMode keyMode, byte [] key, byte[] keyA, byte[] keyB)
 		{
 			if (!IsValidSector(sector))
 				return false;
 
-			byte[] key = (keyMode == M1KeyMode.KEY_A) ? keyA : keyB;
 			int startBlockNo = ComputeStartBlockNo(sector);
-			//int blockNum = ComputeBlockNum(sector);
 
 			if (!Authen(keyMode, startBlockNo, key))
 			{
@@ -271,12 +268,11 @@ namespace RonftonCard.CardReader.Decard
 			return dc_changeb3(this.hReader, (byte)(sector & 0xff), keyA, 0x04, 0x04, 0x04, 0x03, 0x00, keyB) == SUCC;
 		}
 
-		public bool ChangeControlBlock2(int sector, M1KeyMode keyMode, byte[] keyA, byte[] keyB)
+		public bool ChangeControlBlock2(int sector, M1KeyMode keyMode, byte[] key, byte[] keyA, byte[] keyB)
 		{
 			if (!IsValidSector(sector))
 				return false;
 
-			byte[] key = (keyMode == M1KeyMode.KEY_A) ? keyA : keyB;
 			int startBlockNo = ComputeStartBlockNo(sector);
 			int blockNum = ComputeBlockNum(sector);
 

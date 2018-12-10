@@ -74,14 +74,14 @@ namespace RonftonCard.Main.Forms
 				return;
 			}
 
-			this.CbCardTemplete.Items.AddRange(ConfigManager.TempleteNames);
-			this.CbCardTemplete.SelectedIndex = 0;
+			this.CardTemplete.Items.AddRange(ConfigManager.TempleteNames);
+			this.CardTemplete.SelectedIndex = 0;
 
-			this.CbCardReader.Items.AddRange(ConfigManager.ReaderNames);
-			this.CbCardReader.SelectedIndex = 0;
+			this.CardReader.Items.AddRange(ConfigManager.CardReaderName);
+			this.CardReader.SelectedIndex = 0;
 
-			this.CbDongle.Items.AddRange(ConfigManager.DongleNames);
-			this.CbDongle.SelectedIndex = 0;
+			this.DongleType.Items.AddRange(ConfigManager.DongleNames);
+			this.DongleType.SelectedIndex = 0;
 		}
 		#endregion
 
@@ -98,17 +98,17 @@ namespace RonftonCard.Main.Forms
 
 		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.ReaderSelected = (String)CbCardReader.Items[CbCardReader.SelectedIndex];
+			//ConfigManager.ReaderSelected = (String)CardReader.Items[CardReader.SelectedIndex];
 		}
 
 		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.TempleteSelected = (String)CbCardTemplete.Items[CbCardTemplete.SelectedIndex];
+			ConfigManager.TempleteSelected = (String)CardTemplete.Items[CardTemplete.SelectedIndex];
 		}
 
 		private void CbDongle_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.DongleSelected = (String)CbDongle.Items[CbDongle.SelectedIndex];
+			ConfigManager.DongleSelected = (String)DongleType.Items[DongleType.SelectedIndex];
 		}
 
 		private void CbCardType_SelectedIndexChanged(object sender, EventArgs e)
@@ -170,5 +170,18 @@ namespace RonftonCard.Main.Forms
 		}
 
 		#endregion
+
+		private void BtnOpenCardReader_Click(object sender, EventArgs e)
+		{
+			ConfigManager.OpenCardReader((String)CardReader.Items[CardReader.SelectedIndex]);
+
+			// disable this button to avoid re-open
+			this.BtnOpenCardReader.Enabled = false;
+		}
+
+		private void BntCloseCardReader_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

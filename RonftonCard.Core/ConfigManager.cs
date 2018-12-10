@@ -16,7 +16,13 @@ namespace RonftonCard.Core
 	#pragma warning disable 168
 	public class ConfigManager
 	{
-		protected static ILog logger = LogManager.GetLogger("RonftonCardLog");
+		///////////////////////////////////////////////////////////////////////////////////
+
+		private static ILog logger = LogManager.GetLogger("RonftonCardLog");
+		private static ICardReader cardReader;
+		private static IKeyService keyService;
+
+		///////////////////////////////////////////////////////////////////////////////////
 
 		private static IDictionary<String, CardTempleteDescriptor> templeteDescriptors;
 		private static IDictionary<String, CardReaderDescriptor> readerDescriptors;
@@ -33,6 +39,7 @@ namespace RonftonCard.Core
 				readerDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardReaderDescriptor>>(CardReaderConfigFileName);
 				templeteDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardTempleteDescriptor>>(CardTempleteConfigFileName);
 				dongleDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, DongleDescriptor>>(DongleConfigFileName);
+				keyService  = new LocalTestKeyService(logger, GetDongle(), "012345");
 			}
 			catch (Exception ex)
 			{
@@ -40,6 +47,51 @@ namespace RonftonCard.Core
 			}
 			return true;
 		}
+
+
+		/// <summary>
+		/// create card reader instance
+		/// </summary>
+		public static bool OpenCardReader(String readerName)
+		{
+			bool ret = true;
+			try
+			{
+				if (cardReader != null)
+					cardReader.Close();
+
+				CardReaderDescriptor desc = readerDescriptors[readerName];
+				Type type = TypeUtil.ParseType(desc.DrvType);
+
+				if (type != null)
+					cardReader = (ICardReader)Activator.CreateInstance(type, new object[] { desc.Port, desc.Baud });
+
+				ret = cardReader.Open();
+			}
+			catch (Exception ex)
+			{
+				logger.Error("GetCardReader error ! msg = " + ex.Message);
+				ret = false;
+			}
+			return ret;
+		}
+
+		public static IKeyService GetKeyService()
+		{
+			return keyService;
+		}
+
+		public static ILog GetLogger()
+		{
+			return logger;
+		}
+
+		public static ICardReader GetCardReader()
+		{
+			return cardReader;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////
 
 		public static String TempleteSelected { get; set; }
 
@@ -60,7 +112,7 @@ namespace RonftonCard.Core
 			}
 		}
 
-		public static String[] ReaderNames
+		public static String[] CardReaderName
 		{
 			get
 			{
@@ -83,27 +135,7 @@ namespace RonftonCard.Core
 
 
 		#region "--- Create instance from config ---"
-
-		/// <summary>
-		/// create card reader instance
-		/// </summary>
-		public static ICardReader GetCardReader()
-		{
-			ICardReader reader = null;
-			try
-			{
-				CardReaderDescriptor desc = readerDescriptors[ReaderSelected];
-				Type type = TypeUtil.ParseType(desc.DrvType);
-
-				if (type != null)
-					reader = (ICardReader)Activator.CreateInstance(type, new object[] { desc.Port, desc.Baud });
-			}
-			catch (Exception ex)
-			{
-				logger.Error("GetCardReader error ! msg = " + ex.Message);
-			}
-			return reader;
-		}
+		
 
 		/// <summary>
 		/// Create dongle instance
@@ -132,16 +164,7 @@ namespace RonftonCard.Core
 		{
 			return templeteDescriptors[TempleteSelected];
 		}
-
-		public static IKeyService GetKeyService()
-		{
-			return new LocalTestKeyService();
-		}
-
-		public static ILog GetLogger()
-		{
-			return logger;
-		}
+		
 		#endregion
 	}
 }

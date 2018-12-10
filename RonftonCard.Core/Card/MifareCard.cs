@@ -5,7 +5,6 @@ namespace RonftonCard.Core.Card
 	using System.Collections.Generic;
 	using Bluemoon;
 	using CardReader;
-	using Config;
 	using DTO;
 	using log4net;
 
@@ -13,15 +12,17 @@ namespace RonftonCard.Core.Card
 	{
 		private IKeyService keyService;
 		private ICardReader reader;
-		private CardTempleteDescriptor cardTemplete;
 		private ILog logger;
+		private byte[] defaultKey;
+		private M1KeyMode keyMode;
 
-		public MifareCard(ILog logger, CardTempleteDescriptor cardTemplete, IKeyService keyService, ICardReader reader)
+		public MifareCard(ILog logger, IKeyService keyService, ICardReader reader, M1KeyMode keyMode, byte[] defaultKey)
 		{
 			this.logger = logger;
-			this.cardTemplete = cardTemplete;
 			this.reader = reader;
 			this.keyService = keyService;
+			this.keyMode = keyMode;
+			this.defaultKey = defaultKey;
 		}
 
 		public bool Personalize()
@@ -34,7 +35,7 @@ namespace RonftonCard.Core.Card
 			return true;
 		}
 
-		public bool Initialize()
+		public bool Initialize(UInt16[] sector)
 		{
 			ResultArgs ret = this.reader.Select();
 			if (!ret.Succ)
@@ -42,29 +43,44 @@ namespace RonftonCard.Core.Card
 
 			CardSelectResult card = (CardSelectResult)ret.Result;
 
-			this.logger.Debug(String.Format("card_id={0}, atqa=0x{1}, sak=0x{2}",
-					BitConverter.ToString(card.SN),
-					card.ATQA.ToString("X4"),
-					card.SAK.ToString("X2")));
+			this.logger.Debug(String.Format("card_id={0}, atqa=0x{1}, sak=0x{2}",BitConverter.ToString(card.SN),card.ATQA.ToString("X4"),card.SAK.ToString("X2")));
 
-			ushort[] sectors = this.cardTemplete.SegmentAddr;
+			List<CardInitRequest> req = PrepareRequest(card.SN, sector);
+			List<CardInitResponse> response = keyService.ComputeKey(req);
 
-			//ResultArgs keyResponse = keyService.ComputeKey();
-			ret = this.keyService.ComputeKey(card.SN);
-			if (ret.Succ)
-			{
-				WriteCardKey((IDictionary<ushort, byte[]>)ret.Result, sectors);
-			}
-			return true;
+			return UpdateCardKey(response);
 		}
 
-		public bool WriteCardKey(IDictionary<ushort, byte[]> keys, ushort[] sectors)
+		public bool Initialize(UInt16 sector)
 		{
-			for (int i = 0; i < sectors.Length; i++)
-			{
-				//if( IsWalletSector( sectors[s] )
-			}
+			return Initialize(new UInt16[] { sector });
+		}
 
+
+		private List<CardInitRequest> PrepareRequest(byte[] sn, UInt16[] sector)
+		{
+			List<CardInitRequest> req = new List<CardInitRequest>();
+			for (int i = 0; i < sector.Length; i++)
+			{
+				req.Add(new CardInitRequest()
+				{
+					SN = sn,
+					Sector = sector[i],
+					SectorType = (byte)'I'
+				});
+			}
+			return req;
+		}
+
+		private bool UpdateCardKey(List<CardInitResponse> response)
+		{
+			if (response == null || response.Count == 0)
+				return true;
+
+			foreach (CardInitResponse __response in response)
+			{
+				this.reader.ChangeControlBlock(__response.Sector, this.keyMode, this.defaultKey, __response.KeyA, __response.KeyB);
+			}
 			return true;
 		}
 	}

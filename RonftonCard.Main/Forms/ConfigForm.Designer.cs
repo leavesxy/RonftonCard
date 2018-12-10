@@ -28,24 +28,24 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.TxtTrace = new System.Windows.Forms.TextBox();
+			this.TraceMsg = new System.Windows.Forms.TextBox();
 			this.BtnReaderInit = new System.Windows.Forms.Button();
 			this.BtnCardTemplete = new System.Windows.Forms.Button();
 			this.BtnCardDataTest = new System.Windows.Forms.Button();
 			this.BtnVirtualCardTest = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// TxtTrace
+			// TraceMsg
 			// 
-			this.TxtTrace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.TxtTrace.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TxtTrace.Location = new System.Drawing.Point(13, 12);
-			this.TxtTrace.Multiline = true;
-			this.TxtTrace.Name = "TxtTrace";
-			this.TxtTrace.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtTrace.Size = new System.Drawing.Size(770, 411);
-			this.TxtTrace.TabIndex = 15;
-			this.TxtTrace.WordWrap = false;
+			this.TraceMsg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.TraceMsg.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TraceMsg.Location = new System.Drawing.Point(13, 12);
+			this.TraceMsg.Multiline = true;
+			this.TraceMsg.Name = "TraceMsg";
+			this.TraceMsg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.TraceMsg.Size = new System.Drawing.Size(770, 411);
+			this.TraceMsg.TabIndex = 15;
+			this.TraceMsg.WordWrap = false;
 			// 
 			// BtnReaderInit
 			// 
@@ -95,7 +95,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
-			this.Controls.Add(this.TxtTrace);
+			this.Controls.Add(this.TraceMsg);
 			this.Controls.Add(this.BtnReaderInit);
 			this.Controls.Add(this.BtnCardTemplete);
 			this.Controls.Add(this.BtnCardDataTest);
@@ -114,7 +114,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.TextBox TxtTrace;
+		private System.Windows.Forms.TextBox TraceMsg;
 		private System.Windows.Forms.Button BtnReaderInit;
 		private System.Windows.Forms.Button BtnCardTemplete;
 		private System.Windows.Forms.Button BtnCardDataTest;

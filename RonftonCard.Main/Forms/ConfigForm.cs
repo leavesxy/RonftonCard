@@ -23,13 +23,13 @@ namespace RonftonCard.Main.Forms
 		{
 			CardTempleteDescriptor desc = ConfigManager.GetCardTemplete();
 
-			this.TxtTrace.Trace("Card Storage information :", true);
-			this.TxtTrace.Line(50);
-			this.TxtTrace.Trace( desc.GetStorageInfo());
-			this.TxtTrace.Line(50);
-			this.TxtTrace.Trace("Card data information :");
-			this.TxtTrace.Line(50);
-			this.TxtTrace.Trace(desc.GetDataItemInfo());
+			this.TraceMsg.Trace("Card Storage information :", true);
+			this.TraceMsg.Line(50);
+			this.TraceMsg.Trace( desc.GetStorageInfo());
+			this.TraceMsg.Line(50);
+			this.TraceMsg.Trace("Card data information :");
+			this.TraceMsg.Line(50);
+			this.TraceMsg.Trace(desc.GetDataItemInfo());
 		}
 
 		private void BtnCardDataTest_Click(object sender, EventArgs e)

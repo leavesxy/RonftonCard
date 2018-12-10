@@ -8,7 +8,7 @@ namespace RonftonCard.Core.Card
 {
 	public interface ICard
 	{
-		bool Initialize();
+		bool Initialize(UInt16[] sector);
 
 		bool Personalize();
 

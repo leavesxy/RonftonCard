@@ -13,6 +13,8 @@ namespace RonftonCard.Core
 	{
 		bool IsOK();
 
-		ResultArgs ComputeKey(byte[] sn);
+		CardInitResponse ComputeKey(CardInitRequest req);
+
+		List<CardInitResponse> ComputeKey(List<CardInitRequest> req);
 	}
 }

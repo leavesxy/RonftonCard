@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Core.DTO
 {
-	public class CardInitializeResult
+	public class CardInitResponse
 	{
-		public byte[] SN { get; set; }
+		public UInt16 Sector { get; set; }
 
-		public List<KeyValuePair<ushort,byte[]>> DescriptorKey;
+		public byte[] KeyA { get; set; }
+
+		public byte[] KeyB { get; set; }
 
 	}
 }

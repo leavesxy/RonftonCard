@@ -51,8 +51,8 @@
     <Compile Include="Card\ICard.cs" />
     <Compile Include="Card\MifareCard.cs" />
     <Compile Include="DTO\CardInfo.cs" />
-    <Compile Include="DTO\CardInitializeRequest.cs" />
-    <Compile Include="DTO\CardInitializeResult.cs" />
+    <Compile Include="DTO\CardInitRequest.cs" />
+    <Compile Include="DTO\CardInitResponse.cs" />
     <Compile Include="DTO\CardSelectResult.cs" />
     <Compile Include="Dongle\DongleUserInfo.cs" />
     <Compile Include="Dongle\IDongle.cs" />

@@ -28,10 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.CbDongle = new System.Windows.Forms.ComboBox();
-			this.TxtUserRootKey = new System.Windows.Forms.TextBox();
-			this.TxtAdminPin = new System.Windows.Forms.TextBox();
-			this.TxtUserID = new System.Windows.Forms.TextBox();
+			this.Dongles = new System.Windows.Forms.ComboBox();
+			this.UserRootKey = new System.Windows.Forms.TextBox();
+			this.AdminPin = new System.Windows.Forms.TextBox();
+			this.UserID = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
@@ -40,44 +40,44 @@
 			this.BtnRestore = new System.Windows.Forms.Button();
 			this.BtnCreateUserRootKey = new System.Windows.Forms.Button();
 			this.BtnEnumerate = new System.Windows.Forms.Button();
-			this.Trace = new System.Windows.Forms.TextBox();
+			this.TraceMsg = new System.Windows.Forms.TextBox();
 			this.BntEncryptByUserRoot = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.TxtPlain = new System.Windows.Forms.TextBox();
+			this.TestPlain = new System.Windows.Forms.TextBox();
 			this.BtnEncryptByPri = new System.Windows.Forms.Button();
 			this.BtnUtcTime = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// CbDongle
+			// Dongles
 			// 
-			this.CbDongle.FormattingEnabled = true;
-			this.CbDongle.Location = new System.Drawing.Point(113, 76);
-			this.CbDongle.Name = "CbDongle";
-			this.CbDongle.Size = new System.Drawing.Size(670, 27);
-			this.CbDongle.TabIndex = 33;
-			this.CbDongle.SelectedIndexChanged += new System.EventHandler(this.CbDongleSelected_SelectedIndexChanged);
+			this.Dongles.FormattingEnabled = true;
+			this.Dongles.Location = new System.Drawing.Point(113, 76);
+			this.Dongles.Name = "Dongles";
+			this.Dongles.Size = new System.Drawing.Size(670, 27);
+			this.Dongles.TabIndex = 33;
+			this.Dongles.SelectedIndexChanged += new System.EventHandler(this.CbDongleSelected_SelectedIndexChanged);
 			// 
-			// TxtUserRootKey
+			// UserRootKey
 			// 
-			this.TxtUserRootKey.Location = new System.Drawing.Point(429, 11);
-			this.TxtUserRootKey.Name = "TxtUserRootKey";
-			this.TxtUserRootKey.Size = new System.Drawing.Size(354, 25);
-			this.TxtUserRootKey.TabIndex = 32;
+			this.UserRootKey.Location = new System.Drawing.Point(429, 11);
+			this.UserRootKey.Name = "UserRootKey";
+			this.UserRootKey.Size = new System.Drawing.Size(354, 25);
+			this.UserRootKey.TabIndex = 32;
 			// 
-			// TxtAdminPin
+			// AdminPin
 			// 
-			this.TxtAdminPin.Location = new System.Drawing.Point(113, 11);
-			this.TxtAdminPin.Name = "TxtAdminPin";
-			this.TxtAdminPin.Size = new System.Drawing.Size(164, 25);
-			this.TxtAdminPin.TabIndex = 30;
+			this.AdminPin.Location = new System.Drawing.Point(113, 11);
+			this.AdminPin.Name = "AdminPin";
+			this.AdminPin.Size = new System.Drawing.Size(164, 25);
+			this.AdminPin.TabIndex = 30;
 			// 
-			// TxtUserID
+			// UserID
 			// 
-			this.TxtUserID.Location = new System.Drawing.Point(113, 44);
-			this.TxtUserID.Name = "TxtUserID";
-			this.TxtUserID.Size = new System.Drawing.Size(125, 25);
-			this.TxtUserID.TabIndex = 29;
-			this.TxtUserID.Text = "01234567";
+			this.UserID.Location = new System.Drawing.Point(113, 44);
+			this.UserID.Name = "UserID";
+			this.UserID.Size = new System.Drawing.Size(125, 25);
+			this.UserID.TabIndex = 29;
+			this.UserID.Text = "01234567";
 			// 
 			// label2
 			// 
@@ -155,14 +155,14 @@
 			this.BtnEnumerate.UseVisualStyleBackColor = true;
 			this.BtnEnumerate.Click += new System.EventHandler(this.BtnEnumerate_Click);
 			// 
-			// Trace
+			// TraceMsg
 			// 
-			this.Trace.Location = new System.Drawing.Point(12, 109);
-			this.Trace.Multiline = true;
-			this.Trace.Name = "Trace";
-			this.Trace.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.Trace.Size = new System.Drawing.Size(771, 283);
-			this.Trace.TabIndex = 5;
+			this.TraceMsg.Location = new System.Drawing.Point(12, 109);
+			this.TraceMsg.Multiline = true;
+			this.TraceMsg.Name = "TraceMsg";
+			this.TraceMsg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.TraceMsg.Size = new System.Drawing.Size(771, 283);
+			this.TraceMsg.TabIndex = 5;
 			// 
 			// BntEncryptByUserRoot
 			// 
@@ -183,12 +183,12 @@
 			this.label1.TabIndex = 20;
 			this.label1.Text = "测试明文：";
 			// 
-			// TxtPlain
+			// TestPlain
 			// 
-			this.TxtPlain.Location = new System.Drawing.Point(429, 47);
-			this.TxtPlain.Name = "TxtPlain";
-			this.TxtPlain.Size = new System.Drawing.Size(354, 25);
-			this.TxtPlain.TabIndex = 32;
+			this.TestPlain.Location = new System.Drawing.Point(429, 47);
+			this.TestPlain.Name = "TestPlain";
+			this.TestPlain.Size = new System.Drawing.Size(354, 25);
+			this.TestPlain.TabIndex = 32;
 			// 
 			// BtnEncryptByPri
 			// 
@@ -215,11 +215,11 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(795, 466);
-			this.Controls.Add(this.CbDongle);
-			this.Controls.Add(this.TxtPlain);
-			this.Controls.Add(this.TxtUserRootKey);
-			this.Controls.Add(this.TxtAdminPin);
-			this.Controls.Add(this.TxtUserID);
+			this.Controls.Add(this.Dongles);
+			this.Controls.Add(this.TestPlain);
+			this.Controls.Add(this.UserRootKey);
+			this.Controls.Add(this.AdminPin);
+			this.Controls.Add(this.UserID);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label7);
@@ -232,7 +232,7 @@
 			this.Controls.Add(this.BntEncryptByUserRoot);
 			this.Controls.Add(this.BtnCreateUserRootKey);
 			this.Controls.Add(this.BtnEnumerate);
-			this.Controls.Add(this.Trace);
+			this.Controls.Add(this.TraceMsg);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -248,10 +248,10 @@
 
 		#endregion
 
-		private System.Windows.Forms.ComboBox CbDongle;
-		private System.Windows.Forms.TextBox TxtUserRootKey;
-		private System.Windows.Forms.TextBox TxtAdminPin;
-		private System.Windows.Forms.TextBox TxtUserID;
+		private System.Windows.Forms.ComboBox Dongles;
+		private System.Windows.Forms.TextBox UserRootKey;
+		private System.Windows.Forms.TextBox AdminPin;
+		private System.Windows.Forms.TextBox UserID;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label7;
@@ -260,10 +260,10 @@
 		private System.Windows.Forms.Button BtnRestore;
 		private System.Windows.Forms.Button BtnCreateUserRootKey;
 		private System.Windows.Forms.Button BtnEnumerate;
-		private System.Windows.Forms.TextBox Trace;
+		private System.Windows.Forms.TextBox TraceMsg;
 		private System.Windows.Forms.Button BntEncryptByUserRoot;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox TxtPlain;
+		private System.Windows.Forms.TextBox TestPlain;
 		private System.Windows.Forms.Button BtnEncryptByPri;
 		private System.Windows.Forms.Button BtnUtcTime;
 	}

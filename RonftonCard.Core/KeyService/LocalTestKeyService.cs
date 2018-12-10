@@ -15,15 +15,14 @@ namespace RonftonCard.Core.KeyService
 		private IDongle dongle;
 
 		private byte[] userId;
-		private byte[] controlBlock;	// 0x78, 0x77, 0x88, 0x69
+		//private byte[] controlBlock;	// 0x78, 0x77, 0x88, 0x69
 
 		private const String KEY_SALT = "RFT";
 		
-		public LocalTestKeyService(ILog logger, IDongle dongle, String userId, byte[] controlBlock)
+		public LocalTestKeyService(ILog logger, IDongle dongle, String userId)
 		{
 			this.logger = logger;
 			this.userId = ArrayUtil.CopyFrom<byte>( Encoding.ASCII.GetBytes(userId), 6 );
-			this.controlBlock = controlBlock;
 			this.dongle = dongle;
 		}
 
@@ -33,52 +32,56 @@ namespace RonftonCard.Core.KeyService
 		}
 
 		/// <summary>
-		/// 钱包扇区(文件) : 'RFT'(3) + sn(4) + userId(6) + 'P' + '00'
-		/// 身份扇区(文件) : 'rft'(3) + sn(4) + userId(6) + 'i' + '00'
+		/// Key : 'RFT'(3) + sn(4) + userId(6) + sectorType + '00'
 		/// </summary>
-		public ResultArgs ComputeKey(byte[] sn)
+		public CardInitResponse ComputeKey(CardInitRequest req)
 		{
-			byte[] key_i = ComputeIdKey(sn);
-			byte[] key_w = ComputeWalletKey(sn);
+			byte[] plain = PrepareKeyData(req);
 
-			ResultArgs ret = new ResultArgs(true);
-			ret.Msg = "OK";
-
-			// 若要改成按每个扇区给密钥
-			// key为扇区号、文件号，value为读密钥和写密钥的组合
-			ret.Result = new Dictionary<ushort, byte[]>()
+			CardInitResponse response = new CardInitResponse()
 			{
-				{ 0, key_i },
-				{ 1, key_w }
+				Sector = req.Sector,
+				KeyA = ComputeKeyA( plain ),
+				KeyB = ComputeKeyB( plain )
 			};
-			return ret;
+
+			return response;
 		}
 
-		private byte[] ComputeIdKey(byte[] sn)
+		public List<CardInitResponse> ComputeKey(List<CardInitRequest> req)
+		{
+			List<CardInitResponse> response = new List<CardInitResponse>();
+
+			foreach (CardInitRequest __req in req)
+			{
+				response.Add(ComputeKey(__req));
+			}
+
+			return response;
+		}
+
+
+		private byte[] ComputeKeyA(byte[] plain)
+		{
+			return new byte[] { 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a };
+		}
+
+		private byte[] ComputeKeyB(byte[] plain)
+		{
+			return new byte[] { 0x0b, 0x0b, 0x0b, 0x0b, 0x0b, 0x0b };
+		}
+
+		private byte[] PrepareKeyData(CardInitRequest req)
 		{
 			List<byte> buffer = new List<byte>();
-			buffer.AddRange(Encoding.ASCII.GetBytes("RFT"));
-			buffer.AddRange(sn);
-			buffer.AddRange(this.userId);
-			buffer.Add((byte)'i');
-			buffer.AddRange( new byte[] { 0x00, 0x00 } );
+			buffer.AddRange(Encoding.ASCII.GetBytes("RFT"));	// 3
+			buffer.AddRange(req.SN);							// 4
+			buffer.AddRange(this.userId);						// 6
+			buffer.Add( req.SectorType );						// 1
+			buffer.AddRange( new byte[] { 0x00, 0x00 } );       // 2
 
-			// 使用dongle根密钥加密上述内容
-			// 一定用logger把密钥记录下来
-			List<byte> key = new List<byte>();
-			key.AddRange(new byte[] { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 });    //key_a
-			key.AddRange(controlBlock);
-			key.AddRange(new byte[] { 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 });    //key_b
-			return key.ToArray();
-		}
-
-		private byte[] ComputeWalletKey(byte[] sn)
-		{
-			List<byte> key = new List<byte>();
-			key.AddRange(new byte[] { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 });    //key_a
-			key.AddRange(controlBlock);
-			key.AddRange(new byte[] { 0x03, 0x03, 0x03, 0x03, 0x03, 0x03 });    //key_b
-			return key.ToArray();
+			logger.Debug("Prepare Key data : " + BitConverter.ToString(buffer.ToArray()));
+			return buffer.ToArray();
 		}
 	}
 }
