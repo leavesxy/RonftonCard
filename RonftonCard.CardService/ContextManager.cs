@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Bluemoon;
-using Common.Logging;
 using RonftonCard.Core.CardReader;
 using Spring.Context;
 using Spring.Context.Support;
+using log4net;
 
 namespace RonftonCard.CardService
 {
-	public class ContextManager
+    public class ContextManager
 	{
-		private const String LOGGER_FILE_NAME = @"etc/logger.xml";
-		private const String SPRING_FILE_NAME = @"etc/spring4net.xml";
+		private const String LOGGER_FILE_NAME = @"etc\logger.xml";
+		private const String SPRING_FILE_NAME = @"etc\spring4net.xml";
+        private const String LOGGER_NAME = "RonftonCardService";
 
-		private static ILog logger;
+
+        private static ILog logger;
 		private static IApplicationContext applicationContext;
 		private static ICardReader cardReader;
 
@@ -31,7 +29,9 @@ namespace RonftonCard.CardService
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
 
-			logger = LogManager.GetLogger("RonftonCardService");
+			logger = LogManager.GetLogger(LOGGER_NAME);
+
+            logger.Debug("ContextManager init ok !");
 
 			// configure spring container
 			applicationContext = new XmlApplicationContext(SPRING_FILE_NAME);
