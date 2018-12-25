@@ -31,42 +31,6 @@ namespace RonftonCard.CardReader.Decard
 			return true;
 		}
 
-		/// <summary>
-		/// low level invoke,include request,anticoll,select
-		/// </summary>
-		/// <returns></returns>
-		//public bool Select2(out byte[] sn, out UInt16 atqa, out byte sak)
-		//{
-		//	atqa = 0;
-		//	sn = null;
-		//	sak = 0x00;
-
-		//	if (this.hReader == -1)
-		//		return false;
-
-		//	//atqa :: M1_S50: 0x0004; M1_S70: 0x0002
-		//	if (dc_request(this.hReader, 0x00, ref atqa) != SUCC)
-		//		return false;
-
-		//	logger.Debug(String.Format("dc_request atqa = 0x{0}", atqa.ToString("X4")));
-
-		//	byte[] __sn = ByteUtil.Malloc(16);
-		//	if (dc_anticoll(this.hReader, 0x00, __sn) != SUCC)
-		//		return false;
-
-		//	// remove zero at the end
-		//	sn = ByteUtil.TrimEnd(__sn);
-
-		//	//M1: sak = 0x08
-		//	//CPU simulate M1: sak=0x28
-		//	if (dc_select(this.hReader, __sn, ref sak) != SUCC)
-		//		return false;
-
-		//	logger.Debug(String.Format("dc_select sak = 0x{0}", sak.ToString("X2")));
-
-		//	return true;
-		//}
-
 		public ResultArgs Select()
 		{
 			ResultArgs ret = new ResultArgs(false);

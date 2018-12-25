@@ -7,7 +7,7 @@ namespace RonftonCard.Service
 {
 	public class DongleController : ApiController
 	{
-		protected static ILog logger = LogManager.GetLogger("RonftonCardService");
+		protected static ILog logger = LogManager.GetLogger("RonftonDongleService");
 
 		[HttpGet]
 		[Route("dongle/test")]

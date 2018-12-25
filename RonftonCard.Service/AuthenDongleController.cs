@@ -10,7 +10,7 @@ namespace RonftonCard.Service
 {
 	public class AuthenDongleController : ApiController
 	{
-		protected static ILog logger = LogManager.GetLogger("RonftonCardService");
+		protected static ILog logger = LogManager.GetLogger("RonftonDongleService");
 
 		[HttpPost]
 		[Route("dongle/authen/create")]

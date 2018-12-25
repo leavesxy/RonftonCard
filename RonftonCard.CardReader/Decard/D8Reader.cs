@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace RonftonCard.CardReader.Decard
 {
-	using Core.DTO;
 	using log4net;
 	using DEV_HANDLER = System.Int32;
 
@@ -38,10 +37,5 @@ namespace RonftonCard.CardReader.Decard
 			this.hReader = -1;
 			this.cardType = cardType;
 		}
-
-		
-
-
-		
 	}
 }
