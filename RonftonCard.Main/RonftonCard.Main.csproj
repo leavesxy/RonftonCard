@@ -145,6 +145,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="etc\comboxSelect.xml" />
     <Content Include="etc\Dongle.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -154,7 +155,11 @@
     <Content Include="etc\CardTemplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="etc\Logger.xml">
+    <Content Include="etc\logger.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="etc\spring4net.xml">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plugin\Dongle_d.dll">

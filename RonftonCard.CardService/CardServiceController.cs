@@ -8,6 +8,7 @@ using Bluemoon;
 using RonftonCard.Core.CardReader;
 using Newtonsoft.Json;
 using log4net;
+using RonftonCard.Core.DTO;
 
 namespace RonftonCard.CardService
 {
@@ -31,22 +32,32 @@ namespace RonftonCard.CardService
         [Route("reader/test")]
         public IHttpActionResult Test()
         {
-            byte[] byteBuffer = new byte[] { 0x01, 0x02, 0x03, 0x4 };
+			//byte[] byteBuffer = new byte[] { 0x01, 0x02, 0x03, 0x4 };
 
-            TestDto dto = new TestDto()
-            {
-                testBytes = byteBuffer,
-                byteString = Encoding.UTF8.GetString(byteBuffer),
-                base64String = Convert.ToBase64String(byteBuffer)
-            };
+			//TestDto dto = new TestDto()
+			//{
+			//    testBytes = byteBuffer,
+			//    byteString = Encoding.UTF8.GetString(byteBuffer),
+			//    base64String = Convert.ToBase64String(byteBuffer)
+			//};
 
-            logger.Debug("test value = " + JsonConvert.SerializeObject(dto));
+			//logger.Debug("test value = " + JsonConvert.SerializeObject(dto));
 
-            byte[] byteBuffer2 = Convert.FromBase64String(dto.base64String);
-            logger.Debug("original byte array = " + BitConverter.ToString(byteBuffer2));
+			//byte[] byteBuffer2 = Convert.FromBase64String(dto.base64String);
+			//logger.Debug("original byte array = " + BitConverter.ToString(byteBuffer2));
 
-            return Json<TestDto>(dto);
-        }
+			//return Json<TestDto>(dto);
+			return Json<ResultArgs>(new ResultArgs(true)
+			{
+				Msg = "OK",
+				Result = new CardSelectResult()
+				{
+					SN = new byte[] { 0x01, 0x02, 0x03, 0x04 },
+					ATQA = 0x40,
+					SAK = 0x28
+				}
+			});
+		}
 
         [HttpGet]
 		[Route("reader/open")]
@@ -92,6 +103,20 @@ namespace RonftonCard.CardService
 		[HttpGet]
 		[Route("reader/read")]
 		public IHttpActionResult Read()
+		{
+			return null;
+		}
+
+		[HttpGet]
+		[Route("reader/initialize")]
+		public IHttpActionResult Initialize()
+		{
+			return null;
+		}
+
+		[HttpGet]
+		[Route("reader/write")]
+		public IHttpActionResult Write()
 		{
 			return null;
 		}
