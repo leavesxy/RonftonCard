@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Bluemoon.WinForm;
 using Newtonsoft.Json;
 using RonftonCard.Core.Dongle;
 using RonftonCard.Dongle.RockeyArm;
 
 namespace RonftonCard.Main.Forms
 {
+	using Bluemoon.WinForm.Toolbox;
+
 	public partial class TestForm : Form
 	{
 		private RockeyArmDongle dongle;

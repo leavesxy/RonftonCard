@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace RonftonCard.Main.Forms
 {
-	using Bluemoon.WinForm;
+	using Bluemoon.WinForm.Toolbox;
     using Core.DTO;
 
 	public partial class DongleForm : Form

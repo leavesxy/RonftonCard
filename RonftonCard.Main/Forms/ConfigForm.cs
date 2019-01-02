@@ -5,7 +5,7 @@ using RonftonCard.Core.Config;
 
 namespace RonftonCard.Main.Forms
 {
-	using Bluemoon.WinForm;
+	using Bluemoon.WinForm.Toolbox;
 
 	public partial class ConfigForm : Form
 	{

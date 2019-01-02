@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ronfton>
+	<reader>
+		<item name="Decard-d8" desc="ShengZhen Decard Technology Co.LTD" idx="0"/>
+		<item name="ePass-SmartPlus" desc="FeiTian Technology Co.LTD" idx="1"/>
+	</reader>
+
+	<dongle>
+		<item name="Rockey-Arm" desc="飞天诚信科技有限公司" idx="0"/>
+	</dongle>
+
+	<card>
+		<item name="Type_A" desc="Mifare Card S40/S70 etc" idx="0"/>
+		<item name="Type_B" desc="二代身份证" idx="1"/>
+	</card>
+</ronfton>

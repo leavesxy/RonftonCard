@@ -1,19 +1,20 @@
-﻿using Bluemoon.WinForm;
-using RonftonCard.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
-using System.IO;
 
 namespace RonftonCard.Main.Forms
 {
+	using Bluemoon.Config;
+	using Bluemoon.WinForm;
+	using Bluemoon.WinForm.Toolbox;
+	using Core;
+
 	public partial class MainFrm : Form
 	{
 		private ResourceManager rm;
 		private List<TabPageDescriptor> tabPageDescriptor;
-		private static String[] cardType = new String[] { "Type_A", "Type_B" };
 
 		#region "--- init ---"
 		public MainFrm(ResourceManager rm)
@@ -36,11 +37,8 @@ namespace RonftonCard.Main.Forms
 
 			InitTabPage();
 			this.TabMainControl.SelectedIndex = 0;
+			InitConfiguration();
 
-			this.CbCardType.Items.AddRange(cardType);
-			this.CbCardType.SelectedIndex = 0;
-
-			LoadConfiguration();
 		}
 
 		private void InitTabPage()
@@ -66,23 +64,22 @@ namespace RonftonCard.Main.Forms
 			this.tabPageDescriptor.Find(desc => desc.PageIndex == 0).TabPageForm.Show();
 		}
 
-		private void LoadConfiguration()
+		private const String configFileName = @"etc\RonftonConfig.xml";
+		private const String ReaderSectionPath = "reader";
+		private const String DongleSectionPath = "dongle";
+		private const String CardSectionPath = "card";
+
+		private void InitConfiguration()
 		{
-			if (!ConfigManager.Init())
-			{
-				MessageBox.Show("初始化配置错误！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
+			IEntityResolver resolver = new XmlDefaultResolver(configFileName);
 
-			this.CardTemplete.Items.AddRange(ConfigManager.TempleteNames);
-			this.CardTemplete.SelectedIndex = 0;
+			this.ReaderModel.BindDisplayItem(resolver,ReaderSectionPath);
+			this.DongleModel.BindDisplayItem(resolver,DongleSectionPath);
+			this.CardType.BindDisplayItem(resolver,CardSectionPath);
 
-			this.CardReader.Items.AddRange(ConfigManager.CardReaderName);
-			this.CardReader.SelectedIndex = 0;
-
-			this.DongleType.Items.AddRange(ConfigManager.DongleNames);
-			this.DongleType.SelectedIndex = 0;
+			ContextManager.Init();
 		}
+
 		#endregion
 
 		#region "--- event handler ---"
@@ -103,17 +100,17 @@ namespace RonftonCard.Main.Forms
 
 		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.TempleteSelected = (String)CardTemplete.Items[CardTemplete.SelectedIndex];
+			//ConfigManager.TempleteSelected = (String)CardTemplete.Items[CardTemplete.SelectedIndex];
 		}
 
 		private void CbDongle_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.DongleSelected = (String)DongleType.Items[DongleType.SelectedIndex];
+			//ConfigManager.DongleSelected = (String)DongleModel.Items[DongleModel.SelectedIndex];
 		}
 
 		private void CbCardType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ConfigManager.CardType = (CardType)Enum.Parse(typeof(CardType), (String)CbCardType.Items[CbCardType.SelectedIndex], true);
+			//ConfigManager.CardType = (CardType)Enum.Parse(typeof(CardType), (String)CbCardType.Items[CbCardType.SelectedIndex], true);
 		}
 
 		#endregion
@@ -125,7 +122,7 @@ namespace RonftonCard.Main.Forms
 		/// </summary>
 		private void BtnRefresh_Click(object sender, EventArgs e)
 		{
-			LoadConfiguration();
+			//LoadConfiguration();
 		}
 
 		/// <summary>
@@ -171,17 +168,11 @@ namespace RonftonCard.Main.Forms
 
 		#endregion
 
-		private void BtnOpenCardReader_Click(object sender, EventArgs e)
+		private void BtnInitConfig_Click(object sender, EventArgs e)
 		{
-			ConfigManager.OpenCardReader((String)CardReader.Items[CardReader.SelectedIndex]);
-
-			// disable this button to avoid re-open
-			this.BtnOpenCardReader.Enabled = false;
-		}
-
-		private void BntCloseCardReader_Click(object sender, EventArgs e)
-		{
-
+			ContextManager.ReaderSelected = ((ComboBoxBindingItem)this.ReaderModel.SelectedItem).Name;
+			ContextManager.DongleSelected = ((ComboBoxBindingItem)this.DongleModel.SelectedItem).Name;
+			ContextManager.CardTypeSelected = ((ComboBoxBindingItem)this.CardType.SelectedItem).Name;
 		}
 	}
 }

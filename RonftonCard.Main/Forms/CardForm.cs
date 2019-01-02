@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace RonftonCard.Main.Forms
 {
 	using Bluemoon;
-	using Bluemoon.WinForm;
+	using Bluemoon.WinForm.Toolbox;
 	using Core;
 	using Core.Card;
 	using Core.CardReader;

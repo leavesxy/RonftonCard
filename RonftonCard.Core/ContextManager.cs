@@ -16,16 +16,20 @@ namespace RonftonCard.Core
 
 		private const String DEFAULT_LOGGER_NAME = "RonftonCardLogger";
 
-
 		private static ILog logger;
 		private static IApplicationContext applicationContext;
-		private static ICardReader cardReader;
 
-		public static bool Init(String loggerName)
+		#region "--- Init Context ---"
+		public static bool Init()
+		{
+			return Init(LOGGER_CONFIG_FILE_NAME, DEFAULT_LOGGER_NAME);
+		}
+
+		public static bool Init(String configFileName, String loggerName)
 		{
 			// configure log4net
 			String fullName;
-			if (FileUtil.Lookup(LOGGER_CONFIG_FILE_NAME, out fullName))
+			if (FileUtil.Lookup(configFileName, out fullName))
 			{
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
@@ -39,20 +43,34 @@ namespace RonftonCard.Core
 			return true;
 		}
 
+		#endregion
+
+		#region "--- interface ---"
 		public static ILog GetLogger()
 		{
 			return logger;
 		}
 
-		public static IApplicationContext GetApplicationContext()
+		public static ICardReader GetCardReader()
 		{
-			return applicationContext;
+			if (!String.IsNullOrEmpty(ReaderSelected))
+				return applicationContext.GetObject<ICardReader>(ReaderSelected);
+
+			return null;
 		}
 
 
-		public static RT GetComponent<RT>(String name)
-		{
-			return applicationContext.GetObject<RT>(name);
-		}
+		#endregion
+
+		#region "--- static properties ---"
+		public static String TempleteSelected { get; set; }
+
+		public static String ReaderSelected { get; set; }
+
+		public static String DongleSelected { get; set; }
+
+		public static String CardTypeSelected { get; set; }
+
+		#endregion
 	}
 }

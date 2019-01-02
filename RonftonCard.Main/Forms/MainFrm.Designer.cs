@@ -29,31 +29,30 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.DongleType = new System.Windows.Forms.ComboBox();
-			this.CardReader = new System.Windows.Forms.ComboBox();
+			this.DongleModel = new System.Windows.Forms.ComboBox();
+			this.ReaderModel = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.CbCardType = new System.Windows.Forms.ComboBox();
+			this.CardType = new System.Windows.Forms.ComboBox();
 			this.CardTemplete = new System.Windows.Forms.ComboBox();
 			this.TabMainControl = new System.Windows.Forms.TabControl();
 			this.BtnExit = new System.Windows.Forms.Button();
 			this.BtnRefresh = new System.Windows.Forms.Button();
-			this.BtnOpenCardReader = new System.Windows.Forms.Button();
-			this.BntCloseCardReader = new System.Windows.Forms.Button();
+			this.BtnInitConfig = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.DongleType);
-			this.groupBox1.Controls.Add(this.CardReader);
+			this.groupBox1.Controls.Add(this.DongleModel);
+			this.groupBox1.Controls.Add(this.ReaderModel);
 			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.label4);
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this.CbCardType);
+			this.groupBox1.Controls.Add(this.CardType);
 			this.groupBox1.Controls.Add(this.CardTemplete);
 			this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupBox1.Location = new System.Drawing.Point(12, 6);
@@ -65,27 +64,27 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "参数设置";
 			// 
-			// DongleType
+			// DongleModel
 			// 
-			this.DongleType.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.DongleType.FormattingEnabled = true;
-			this.DongleType.Location = new System.Drawing.Point(96, 55);
-			this.DongleType.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-			this.DongleType.Name = "DongleType";
-			this.DongleType.Size = new System.Drawing.Size(365, 27);
-			this.DongleType.TabIndex = 1;
-			this.DongleType.SelectedIndexChanged += new System.EventHandler(this.CbDongle_SelectedIndexChanged);
+			this.DongleModel.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.DongleModel.FormattingEnabled = true;
+			this.DongleModel.Location = new System.Drawing.Point(96, 55);
+			this.DongleModel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+			this.DongleModel.Name = "DongleModel";
+			this.DongleModel.Size = new System.Drawing.Size(365, 27);
+			this.DongleModel.TabIndex = 1;
+			this.DongleModel.SelectedIndexChanged += new System.EventHandler(this.CbDongle_SelectedIndexChanged);
 			// 
-			// CardReader
+			// ReaderModel
 			// 
-			this.CardReader.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.CardReader.FormattingEnabled = true;
-			this.CardReader.Location = new System.Drawing.Point(96, 21);
-			this.CardReader.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-			this.CardReader.Name = "CardReader";
-			this.CardReader.Size = new System.Drawing.Size(365, 27);
-			this.CardReader.TabIndex = 1;
-			this.CardReader.SelectedIndexChanged += new System.EventHandler(this.CbCardReader_SelectedIndexChanged);
+			this.ReaderModel.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.ReaderModel.FormattingEnabled = true;
+			this.ReaderModel.Location = new System.Drawing.Point(96, 21);
+			this.ReaderModel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+			this.ReaderModel.Name = "ReaderModel";
+			this.ReaderModel.Size = new System.Drawing.Size(365, 27);
+			this.ReaderModel.TabIndex = 1;
+			this.ReaderModel.SelectedIndexChanged += new System.EventHandler(this.CbCardReader_SelectedIndexChanged);
 			// 
 			// label3
 			// 
@@ -127,16 +126,16 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "读卡器类型：";
 			// 
-			// CbCardType
+			// CardType
 			// 
-			this.CbCardType.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.CbCardType.FormattingEnabled = true;
-			this.CbCardType.Location = new System.Drawing.Point(552, 21);
-			this.CbCardType.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-			this.CbCardType.Name = "CbCardType";
-			this.CbCardType.Size = new System.Drawing.Size(230, 27);
-			this.CbCardType.TabIndex = 1;
-			this.CbCardType.SelectedIndexChanged += new System.EventHandler(this.CbCardType_SelectedIndexChanged);
+			this.CardType.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.CardType.FormattingEnabled = true;
+			this.CardType.Location = new System.Drawing.Point(552, 21);
+			this.CardType.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+			this.CardType.Name = "CardType";
+			this.CardType.Size = new System.Drawing.Size(230, 27);
+			this.CardType.TabIndex = 1;
+			this.CardType.SelectedIndexChanged += new System.EventHandler(this.CbCardType_SelectedIndexChanged);
 			// 
 			// CardTemplete
 			// 
@@ -183,29 +182,17 @@
 			this.BtnRefresh.UseVisualStyleBackColor = true;
 			this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
 			// 
-			// BtnOpenCardReader
+			// BtnInitConfig
 			// 
-			this.BtnOpenCardReader.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnOpenCardReader.Location = new System.Drawing.Point(12, 617);
-			this.BtnOpenCardReader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.BtnOpenCardReader.Name = "BtnOpenCardReader";
-			this.BtnOpenCardReader.Size = new System.Drawing.Size(112, 33);
-			this.BtnOpenCardReader.TabIndex = 11;
-			this.BtnOpenCardReader.Text = "打开读卡器";
-			this.BtnOpenCardReader.UseVisualStyleBackColor = true;
-			this.BtnOpenCardReader.Click += new System.EventHandler(this.BtnOpenCardReader_Click);
-			// 
-			// BntCloseCardReader
-			// 
-			this.BntCloseCardReader.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BntCloseCardReader.Location = new System.Drawing.Point(127, 617);
-			this.BntCloseCardReader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.BntCloseCardReader.Name = "BntCloseCardReader";
-			this.BntCloseCardReader.Size = new System.Drawing.Size(112, 33);
-			this.BntCloseCardReader.TabIndex = 11;
-			this.BntCloseCardReader.Text = "关闭读卡器";
-			this.BntCloseCardReader.UseVisualStyleBackColor = true;
-			this.BntCloseCardReader.Click += new System.EventHandler(this.BntCloseCardReader_Click);
+			this.BtnInitConfig.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnInitConfig.Location = new System.Drawing.Point(12, 617);
+			this.BtnInitConfig.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.BtnInitConfig.Name = "BtnInitConfig";
+			this.BtnInitConfig.Size = new System.Drawing.Size(112, 33);
+			this.BtnInitConfig.TabIndex = 11;
+			this.BtnInitConfig.Text = "初始化配置";
+			this.BtnInitConfig.UseVisualStyleBackColor = true;
+			this.BtnInitConfig.Click += new System.EventHandler(this.BtnInitConfig_Click);
 			// 
 			// MainFrm
 			// 
@@ -214,8 +201,7 @@
 			this.ClientSize = new System.Drawing.Size(826, 653);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.TabMainControl);
-			this.Controls.Add(this.BntCloseCardReader);
-			this.Controls.Add(this.BtnOpenCardReader);
+			this.Controls.Add(this.BtnInitConfig);
 			this.Controls.Add(this.BtnRefresh);
 			this.Controls.Add(this.BtnExit);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -234,19 +220,18 @@
 		#endregion
 
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.ComboBox CardReader;
+		private System.Windows.Forms.ComboBox ReaderModel;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox CardTemplete;
 		private System.Windows.Forms.TabControl TabMainControl;
 		private System.Windows.Forms.Button BtnExit;
-		private System.Windows.Forms.ComboBox DongleType;
+		private System.Windows.Forms.ComboBox DongleModel;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button BtnRefresh;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.ComboBox CbCardType;
-		private System.Windows.Forms.Button BtnOpenCardReader;
-		private System.Windows.Forms.Button BntCloseCardReader;
+		private System.Windows.Forms.ComboBox CardType;
+		private System.Windows.Forms.Button BtnInitConfig;
 	}
 }
 
