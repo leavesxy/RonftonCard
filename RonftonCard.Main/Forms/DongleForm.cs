@@ -20,7 +20,8 @@ namespace RonftonCard.Main.Forms
 		public DongleForm()
 		{
 			InitializeComponent();
-			this.logger = ConfigManager.GetLogger();
+			this.logger = ContextManager.Logger;
+			this.dongle = ContextManager.Dongle;
 		}
 
 		private void DongleForm_Load(object sender, EventArgs e)
@@ -63,21 +64,14 @@ namespace RonftonCard.Main.Forms
 				// clear trace
 				this.Dongles.Items.Clear();
 
-				// create instance when form load
-				if (this.dongle == null)
-					this.dongle = ConfigManager.GetDongle();
+				// refresh dongle
+				this.dongle.Enumerate();
 
-				if (this.dongle != null)
+				if (!this.dongle.Dongles.IsNullOrEmpty())
 				{
-					// refresh dongle
-					this.dongle.Enumerate();
-
-					if (!this.dongle.Dongles.IsNullOrEmpty())
-					{
-						this.Dongles.Items.AddRange(this.dongle.Dongles);
-						this.Dongles.SelectedIndex = 0;
-						ShowDongleInfo(clear);
-					}
+					this.Dongles.Items.AddRange(this.dongle.Dongles);
+					this.Dongles.SelectedIndex = 0;
+					ShowDongleInfo(clear);
 				}
 			};
 			this.BeginInvoke(action);
@@ -216,9 +210,6 @@ namespace RonftonCard.Main.Forms
 		}
 
 		#endregion
-
-		
-
 
 	}
 }

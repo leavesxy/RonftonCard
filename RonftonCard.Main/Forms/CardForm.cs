@@ -45,7 +45,7 @@ namespace RonftonCard.Main.Forms
 			};
 			ResetCardBlock();
 
-			this.reader = ConfigManager.GetCardReader();
+			this.reader = ContextManager.Reader;
 			this.reader.Open();
 			Update();
 		}
@@ -296,9 +296,9 @@ namespace RonftonCard.Main.Forms
 			byte[] key = HexString.FromHexString(this.AuthenKey.Text.Trim(), "-");
 			M1KeyMode keyMode = (M1KeyMode)Enum.Parse(typeof(M1KeyMode), AuthenKeyType.Items[AuthenKeyType.SelectedIndex] as String, true);
 			ICard card = new MifareCard(
-					ConfigManager.GetLogger(),
+					ContextManager.Logger,
 					ConfigManager.GetKeyService(),
-					ConfigManager.GetCardReader(),
+					ContextManager.Reader,
 					keyMode,
 					key);
 

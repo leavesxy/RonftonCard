@@ -40,7 +40,8 @@
 			this.TabMainControl = new System.Windows.Forms.TabControl();
 			this.BtnExit = new System.Windows.Forms.Button();
 			this.BtnRefresh = new System.Windows.Forms.Button();
-			this.BtnInitConfig = new System.Windows.Forms.Button();
+			this.BtnInitDevice = new System.Windows.Forms.Button();
+			this.BtnCloseDevice = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -182,17 +183,29 @@
 			this.BtnRefresh.UseVisualStyleBackColor = true;
 			this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
 			// 
-			// BtnInitConfig
+			// BtnInitDevice
 			// 
-			this.BtnInitConfig.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.BtnInitConfig.Location = new System.Drawing.Point(12, 617);
-			this.BtnInitConfig.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.BtnInitConfig.Name = "BtnInitConfig";
-			this.BtnInitConfig.Size = new System.Drawing.Size(112, 33);
-			this.BtnInitConfig.TabIndex = 11;
-			this.BtnInitConfig.Text = "初始化配置";
-			this.BtnInitConfig.UseVisualStyleBackColor = true;
-			this.BtnInitConfig.Click += new System.EventHandler(this.BtnInitConfig_Click);
+			this.BtnInitDevice.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnInitDevice.Location = new System.Drawing.Point(12, 617);
+			this.BtnInitDevice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.BtnInitDevice.Name = "BtnInitDevice";
+			this.BtnInitDevice.Size = new System.Drawing.Size(112, 33);
+			this.BtnInitDevice.TabIndex = 11;
+			this.BtnInitDevice.Text = "初始化设备";
+			this.BtnInitDevice.UseVisualStyleBackColor = true;
+			this.BtnInitDevice.Click += new System.EventHandler(this.BtnInitDevice_Click);
+			// 
+			// BtnCloseDevice
+			// 
+			this.BtnCloseDevice.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.BtnCloseDevice.Location = new System.Drawing.Point(124, 617);
+			this.BtnCloseDevice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.BtnCloseDevice.Name = "BtnCloseDevice";
+			this.BtnCloseDevice.Size = new System.Drawing.Size(112, 33);
+			this.BtnCloseDevice.TabIndex = 11;
+			this.BtnCloseDevice.Text = " 关闭设备";
+			this.BtnCloseDevice.UseVisualStyleBackColor = true;
+			this.BtnCloseDevice.Click += new System.EventHandler(this.BtnCloseDevice_Click);
 			// 
 			// MainFrm
 			// 
@@ -201,7 +214,8 @@
 			this.ClientSize = new System.Drawing.Size(826, 653);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.TabMainControl);
-			this.Controls.Add(this.BtnInitConfig);
+			this.Controls.Add(this.BtnCloseDevice);
+			this.Controls.Add(this.BtnInitDevice);
 			this.Controls.Add(this.BtnRefresh);
 			this.Controls.Add(this.BtnExit);
 			this.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -231,7 +245,8 @@
 		private System.Windows.Forms.Button BtnRefresh;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox CardType;
-		private System.Windows.Forms.Button BtnInitConfig;
+		private System.Windows.Forms.Button BtnInitDevice;
+		private System.Windows.Forms.Button BtnCloseDevice;
 	}
 }
 

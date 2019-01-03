@@ -102,9 +102,9 @@
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(13, 76);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(76, 20);
+			this.label7.Size = new System.Drawing.Size(65, 20);
 			this.label7.TabIndex = 21;
-			this.label7.Text = "当前KEY：";
+			this.label7.Text = "加密狗：";
 			// 
 			// label5
 			// 

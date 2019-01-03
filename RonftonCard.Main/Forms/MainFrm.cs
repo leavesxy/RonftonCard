@@ -37,8 +37,9 @@ namespace RonftonCard.Main.Forms
 
 			InitTabPage();
 			this.TabMainControl.SelectedIndex = 0;
-			InitConfiguration();
+			this.BtnCloseDevice.Enabled = false;
 
+			InitConfiguration();
 		}
 
 		private void InitTabPage()
@@ -77,7 +78,7 @@ namespace RonftonCard.Main.Forms
 			this.DongleModel.BindDisplayItem(resolver,DongleSectionPath);
 			this.CardType.BindDisplayItem(resolver,CardSectionPath);
 
-			ContextManager.Init();
+			ContextManager.InitConfig();
 		}
 
 		#endregion
@@ -168,11 +169,24 @@ namespace RonftonCard.Main.Forms
 
 		#endregion
 
-		private void BtnInitConfig_Click(object sender, EventArgs e)
+		private void BtnInitDevice_Click(object sender, EventArgs e)
 		{
-			ContextManager.ReaderSelected = ((ComboBoxBindingItem)this.ReaderModel.SelectedItem).Name;
-			ContextManager.DongleSelected = ((ComboBoxBindingItem)this.DongleModel.SelectedItem).Name;
-			ContextManager.CardTypeSelected = ((ComboBoxBindingItem)this.CardType.SelectedItem).Name;
+			ContextManager.InitCardReader(((ComboBoxBindingItem)this.ReaderModel.SelectedItem).Name);
+			ContextManager.InitDongle(((ComboBoxBindingItem)this.DongleModel.SelectedItem).Name);
+			EnableToolbox(false);
+		}
+
+		private void BtnCloseDevice_Click(object sender, EventArgs e)
+		{
+			EnableToolbox(true);
+		}
+
+		private void EnableToolbox(bool enable)
+		{
+			this.BtnCloseDevice.Enabled = !enable;
+			this.BtnInitDevice.Enabled = enable;
+			this.ReaderModel.Enabled = enable;
+			this.DongleModel.Enabled = enable;
 		}
 	}
 }
