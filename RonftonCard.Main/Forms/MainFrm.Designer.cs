@@ -74,7 +74,7 @@
 			this.DongleModel.Name = "DongleModel";
 			this.DongleModel.Size = new System.Drawing.Size(365, 27);
 			this.DongleModel.TabIndex = 1;
-			this.DongleModel.SelectedIndexChanged += new System.EventHandler(this.CbDongle_SelectedIndexChanged);
+			this.DongleModel.SelectedIndexChanged += new System.EventHandler(this.DongleModel_SelectedIndexChanged);
 			// 
 			// ReaderModel
 			// 
@@ -85,7 +85,7 @@
 			this.ReaderModel.Name = "ReaderModel";
 			this.ReaderModel.Size = new System.Drawing.Size(365, 27);
 			this.ReaderModel.TabIndex = 1;
-			this.ReaderModel.SelectedIndexChanged += new System.EventHandler(this.CbCardReader_SelectedIndexChanged);
+			this.ReaderModel.SelectedIndexChanged += new System.EventHandler(this.ReaderModel_SelectedIndexChanged);
 			// 
 			// label3
 			// 
@@ -136,7 +136,6 @@
 			this.CardType.Name = "CardType";
 			this.CardType.Size = new System.Drawing.Size(230, 27);
 			this.CardType.TabIndex = 1;
-			this.CardType.SelectedIndexChanged += new System.EventHandler(this.CbCardType_SelectedIndexChanged);
 			// 
 			// CardTemplete
 			// 
@@ -147,7 +146,7 @@
 			this.CardTemplete.Name = "CardTemplete";
 			this.CardTemplete.Size = new System.Drawing.Size(230, 27);
 			this.CardTemplete.TabIndex = 1;
-			this.CardTemplete.SelectedIndexChanged += new System.EventHandler(this.CbCardTemplete_SelectedIndexChanged);
+			this.CardTemplete.SelectedIndexChanged += new System.EventHandler(this.CardTemplete_SelectedIndexChanged);
 			// 
 			// TabMainControl
 			// 
@@ -224,6 +223,7 @@
 			this.Name = "MainFrm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Form1";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
 			this.Load += new System.EventHandler(this.MainFrm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();

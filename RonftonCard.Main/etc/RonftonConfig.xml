@@ -13,4 +13,8 @@
 		<item name="Type_A" desc="Mifare Card S40/S70 etc" idx="0"/>
 		<item name="Type_B" desc="二代身份证" idx="1"/>
 	</card>
+
+	<cardTemplete>
+		<item name="RFC" desc="融付通标准卡结构" idx="0"/>
+	</cardTemplete>
 </ronfton>

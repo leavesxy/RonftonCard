@@ -5,31 +5,35 @@ using Spring.Context.Support;
 
 namespace RonftonCard.Core
 {
+	using System.Collections.Generic;
 	using System.IO;
 	using Bluemoon;
 	using CardReader;
+	using Config;
 	using Dongle;
 
 	public class ContextManager
 	{
-		private const String LOGGER_CONFIG_FILE_NAME = @"etc\logger.xml";
-		private const String SPRING_CONFIG_FILE_NAME = @"etc\spring4net.xml";
+		private static IDictionary<String, String> configSelected;
 
-		private const String DEFAULT_LOGGER_NAME = "RonftonCardLogger";
-
+		private static IDictionary<String, CardTempleteDescriptor> templeteDescriptors;
+		
 		private static IApplicationContext applicationContext;
-		public static ILog Logger { get; private set; }
-		public static ICardReader Reader { get; private set; }
-		public static IDongle Dongle { get; private set; }
+		public static ILog logger;
+		public static ICardReader reader;
+		public static IDongle dongle;
 
-		#region "--- Init Context ---"
-		public static bool InitConfig()
+		#region "--- Initialize ---"
+		public static bool Init()
 		{
-			return InitConfig(LOGGER_CONFIG_FILE_NAME, DEFAULT_LOGGER_NAME);
+			return Init( ContextConst.LOGGER_CONFIG_FILE_NAME, ContextConst.DEFAULT_LOGGER_NAME);
 		}
 
-		public static bool InitConfig(String configFileName, String loggerName)
+		private const String CardTempleteConfigFileName = "CardTemplete.xml";
+		public static bool Init(String configFileName, String loggerName)
 		{
+			configSelected = new Dictionary<String, String>();
+
 			// configure log4net
 			String fullName;
 			if (FileUtil.Lookup(configFileName, out fullName))
@@ -37,37 +41,86 @@ namespace RonftonCard.Core
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
 
-			ContextManager.Logger = LogManager.GetLogger( loggerName ?? DEFAULT_LOGGER_NAME);
+			ContextManager.logger = LogManager.GetLogger(loggerName ?? ContextConst.DEFAULT_LOGGER_NAME);
 
-			ContextManager.Logger.Debug("ContextManager init ok !");
+			ContextManager.logger.Debug("ContextManager init ok !");
 
 			// configure spring container
-			ContextManager.applicationContext = new XmlApplicationContext(SPRING_CONFIG_FILE_NAME);
+			ContextManager.applicationContext = new XmlApplicationContext( ContextConst.SPRING_CONFIG_FILE_NAME);
+
+			ContextManager.templeteDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardTempleteDescriptor>>(CardTempleteConfigFileName);
+
 			return true;
 		}
 
 		#endregion
 
-		public static void InitCardReader(String readerName )
-		{
-			if (ContextManager.Reader != null)
-			{
-				ContextManager.Reader.Close();
-				ContextManager.Reader = null;
-			}
 
-			ContextManager.Reader = applicationContext.GetObject<ICardReader>(readerName);
+		public static void SetConfigSelected(String configName, String selectedName)
+		{
+			if (!String.IsNullOrEmpty(configName) && !String.IsNullOrEmpty(selectedName))
+			{
+				configSelected[configName] = selectedName;
+			}
 		}
 
-		public static void InitDongle(String dongleName)
+		public static void SetCardReaderSelected(String readerName)
 		{
-			if (ContextManager.Dongle != null)
+			SetConfigSelected( ContextConst.CardReaderSelectedKey, readerName);
+		}
+
+		public static void SetDongleSelected(String dongleName)
+		{
+			SetConfigSelected( ContextConst.DongleSelectedKey, dongleName);
+		}
+
+		public static void SetCardTempleteSelected(String templeteName)
+		{
+			SetConfigSelected(ContextConst.TempleteSelectedKey, templeteName);
+		}
+
+
+		public static ICardReader GetCardReader()
+		{
+			if (ContextManager.reader == null)
 			{
-				ContextManager.Dongle.Close();
-				ContextManager.Dongle = null;
+				ContextManager.reader = applicationContext.GetObject<ICardReader>(configSelected[ ContextConst.CardReaderSelectedKey] );
+			}
+			return ContextManager.reader;
+		}
+
+		public static IDongle GetDongle()
+		{
+			if (ContextManager.dongle == null)
+			{
+				ContextManager.dongle = applicationContext.GetObject<IDongle>(configSelected[ ContextConst.DongleSelectedKey]);
+			}
+			return ContextManager.dongle;
+		}
+
+		public static ILog GetLogger()
+		{
+			return ContextManager.logger;
+		}
+
+		public static CardTempleteDescriptor GetCardTemplete()
+		{
+			return templeteDescriptors[ configSelected[ ContextConst.TempleteSelectedKey] ];
+		}
+
+		public static void Close()
+		{
+			if (ContextManager.dongle != null)
+			{
+				ContextManager.dongle.Close();
+				ContextManager.dongle = null;
 			}
 
-			ContextManager.Dongle = applicationContext.GetObject<IDongle>(dongleName);
+			if (ContextManager.reader != null)
+			{
+				ContextManager.reader.Close();
+				ContextManager.reader = null;
+			}
 		}
 	}
 }

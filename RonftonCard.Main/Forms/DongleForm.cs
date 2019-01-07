@@ -20,12 +20,14 @@ namespace RonftonCard.Main.Forms
 		public DongleForm()
 		{
 			InitializeComponent();
-			this.logger = ContextManager.Logger;
-			this.dongle = ContextManager.Dongle;
+
 		}
 
 		private void DongleForm_Load(object sender, EventArgs e)
 		{
+			this.logger = ContextManager.GetLogger();
+			this.dongle = ContextManager.GetDongle();
+
 			this.UserRootKey.Text = BitConverter.ToString(ByteUtil.Malloc(16, 0x0a));
 			this.TestPlain.Text = "01234567";
 

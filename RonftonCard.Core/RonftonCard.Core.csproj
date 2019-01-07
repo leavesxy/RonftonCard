@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Card\ICard.cs" />
     <Compile Include="Card\MifareCard.cs" />
+    <Compile Include="ContextConst.cs" />
     <Compile Include="ContextManager.cs" />
     <Compile Include="DTO\CardInfo.cs" />
     <Compile Include="DTO\CardInitRequest.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="Config\DongleDescriptor.cs" />
     <Compile Include="Config\TempleteDataDescriptor.cs" />
     <Compile Include="Config\TempleteStorageDescriptor.cs" />
-    <Compile Include="ConfigManager.cs" />
     <Compile Include="IKeyService.cs" />
     <Compile Include="KeyService\LocalTestKeyService.cs" />
     <Compile Include="M1CardAttribute.cs" />

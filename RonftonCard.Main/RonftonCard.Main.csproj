@@ -145,13 +145,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="etc\comboxSelect.xml" />
-    <Content Include="etc\Dongle.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="etc\CardReader.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="etc\CardTemplete.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -69,16 +69,18 @@ namespace RonftonCard.Main.Forms
 		private const String ReaderSectionPath = "reader";
 		private const String DongleSectionPath = "dongle";
 		private const String CardSectionPath = "card";
+		private const String TempleteSectionPath = "cardTemplete";
 
 		private void InitConfiguration()
 		{
-			IEntityResolver resolver = new XmlDefaultResolver(configFileName);
+			// ContextManager.Init must be invoked first !!!
+			ContextManager.Init();
 
+			IEntityResolver resolver = new XmlDefaultResolver(configFileName);
 			this.ReaderModel.BindDisplayItem(resolver,ReaderSectionPath);
 			this.DongleModel.BindDisplayItem(resolver,DongleSectionPath);
 			this.CardType.BindDisplayItem(resolver,CardSectionPath);
-
-			ContextManager.InitConfig();
+			this.CardTemplete.BindDisplayItem(resolver, TempleteSectionPath);
 		}
 
 		#endregion
@@ -93,25 +95,28 @@ namespace RonftonCard.Main.Forms
 				desc.TabPageForm.Show();
 			}
 		}
-
-		private void CbCardReader_SelectedIndexChanged(object sender, EventArgs e)
+		private void ReaderModel_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//ConfigManager.ReaderSelected = (String)CardReader.Items[CardReader.SelectedIndex];
+			SetContextSelected(ContextConst.CardReaderSelectedKey, (ComboBox)sender);
+		}
+		private void DongleModel_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetContextSelected(ContextConst.DongleSelectedKey, (ComboBox)sender);
+		}
+		private void CardTemplete_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetContextSelected(ContextConst.TempleteSelectedKey, (ComboBox)sender);
+		}
+		private void SetContextSelected(String configName, ComboBox cb)
+		{
+			ComboBoxBindingItem item = cb.SelectedItem as ComboBoxBindingItem;
+			ContextManager.SetConfigSelected(configName, item.Name);
 		}
 
-		private void CbCardTemplete_SelectedIndexChanged(object sender, EventArgs e)
+		private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			//ConfigManager.TempleteSelected = (String)CardTemplete.Items[CardTemplete.SelectedIndex];
-		}
-
-		private void CbDongle_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			//ConfigManager.DongleSelected = (String)DongleModel.Items[DongleModel.SelectedIndex];
-		}
-
-		private void CbCardType_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			//ConfigManager.CardType = (CardType)Enum.Parse(typeof(CardType), (String)CbCardType.Items[CbCardType.SelectedIndex], true);
+			// dipose context
+			ContextManager.Close();
 		}
 
 		#endregion
@@ -171,8 +176,6 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnInitDevice_Click(object sender, EventArgs e)
 		{
-			ContextManager.InitCardReader(((ComboBoxBindingItem)this.ReaderModel.SelectedItem).Name);
-			ContextManager.InitDongle(((ComboBoxBindingItem)this.DongleModel.SelectedItem).Name);
 			EnableToolbox(false);
 		}
 

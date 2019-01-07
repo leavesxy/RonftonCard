@@ -21,7 +21,7 @@ namespace RonftonCard.Main.Forms
 
 		private void BtnCardTemplete_Click(object sender, EventArgs e)
 		{
-			CardTempleteDescriptor desc = ConfigManager.GetCardTemplete();
+			CardTempleteDescriptor desc = ContextManager.GetCardTemplete();
 
 			this.TraceMsg.Trace("Card Storage information :", true);
 			this.TraceMsg.Line(50);
