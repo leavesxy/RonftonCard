@@ -14,30 +14,32 @@ namespace RonftonCard.Core.DTO
 		/// <summary>
 		/// version of card
 		/// </summary>
-		[M1Card(offset:0, dataType: CardDataType.BYTE,length:1)]
+		[M1Card(offset:0, handlerName: "byte",length:1)]
 		public byte Version { get; set; }
 
 		/// <summary>
 		/// university Code, 6 digit
 		/// </summary>
-		[M1Card(offset: 1, dataType: CardDataType.BCD, length: 3)]
+		[M1Card(offset: 1, handlerName: "bcdString", length: 3)]
 		public String UniversityCode { get; set; }
 
 		/// <summary>
 		/// school number,user number
 		/// </summary>
-		[M1Card(offset: 4, dataType: CardDataType.STR, length: 12)]
+		[M1Card(offset: 4, handlerName: "string", length: 12)]
 		public String SNO { get; set; }
 
-		/// <summary>
-		/// internal card number
-		/// </summary>
-		public Int32 CardNo { get; set; }
+        /// <summary>
+        /// internal card number
+        /// </summary>
+        [M1Card(offset: 16, handlerName: "number", length: 4)]
+        public Int32 CardNo { get; set; }
 
-		/// <summary>
-		/// expire date of card
-		/// </summary>
-		public DateTime ExpireDate { get; set; }
+        /// <summary>
+        /// expire date of card
+        /// </summary>
+        [M1Card(offset: 20, handlerName: "date", length: 3)]
+        public DateTime ExpireDate { get; set; }
 
 		public byte IdType { get; set; }
 
@@ -86,7 +88,14 @@ namespace RonftonCard.Core.DTO
 		/// </summary>
 		public Int16 SumLmtMeal { get; set; }
 
-		public static CardInfo CreateTestCardInfo()
+        public CardInfo()
+        {
+            this.LastDate = DateTime.Now;
+            this.ExpireDate = DateTime.Now;
+        }
+
+
+        public static CardInfo CreateTestCardInfo()
 		{
 			CardInfo cardInfo = new CardInfo()
 			{
@@ -123,17 +132,17 @@ namespace RonftonCard.Core.DTO
 			sb.Append("ExpireDate = ").Append(this.ExpireDate.ToString("yyyy-MM-dd HH:mm:ss")).Append(Environment.NewLine);
 			sb.Append("IdType = ").Append(this.IdType.ToString()).Append(Environment.NewLine);
 			sb.Append("CardStatus = ").Append(this.CardStatus.ToString()).Append(Environment.NewLine);
-			sb.Append("Name = ").Append(this.Name).Append(Environment.NewLine);
+			sb.Append("Name = ").Append(this.Name??"null").Append(Environment.NewLine);
 			sb.Append("Sex = ").Append(this.Sex.ToString()).Append(Environment.NewLine);
 			sb.Append("Nation = ").Append(this.Nation.ToString()).Append(Environment.NewLine);
 			sb.Append("Country = ").Append(this.Country.ToString()).Append(Environment.NewLine);
-			sb.Append("DeptNo = ").Append( BitConverter.ToString(this.DeptNo)).Append(Environment.NewLine);
+			sb.Append("DeptNo = ").Append(this.DeptNo == null ? "null" : BitConverter.ToString(this.DeptNo)).Append(Environment.NewLine);
 			sb.Append("Balance = ").Append(this.Balance.ToString()).Append(Environment.NewLine);
 			sb.Append("Seq = ").Append(this.Seq.ToString()).Append(Environment.NewLine);
 			sb.Append("LastSumByMeal = ").Append(this.LastSumByMeal.ToString()).Append(Environment.NewLine);
 			sb.Append("LastMealNo = ").Append(this.LastMealNo.ToString()).Append(Environment.NewLine);
 			sb.Append("LastDate = ").Append(this.LastDate.ToString("yyyy-MM-dd HH:mm:ss")).Append(Environment.NewLine);
-			sb.Append("PayPwd = ").Append(this.PayPwd).Append(Environment.NewLine);
+			sb.Append("PayPwd = ").Append(this.PayPwd ?? "null").Append(Environment.NewLine);
 			sb.Append("SumLmtMeal = ").Append(this.SumLmtMeal.ToString()).Append(Environment.NewLine);
 			return sb.ToString();
 		}

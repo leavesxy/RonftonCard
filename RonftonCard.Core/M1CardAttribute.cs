@@ -12,21 +12,21 @@ namespace RonftonCard.Core
 	{
 		public int Offset { get; private set; }
 
-		public CardDataType DataType { get; private set; }
+		public String HandlerName { get; private set; }
 
 		public int Length { get; private set; }
 
 		public String Description { get; private set; }
 
-		public M1CardAttribute(int offset, CardDataType dataType, int length)
-			: this(offset, dataType, length, null)
+		public M1CardAttribute(int offset, String handlerName, int length)
+			: this(offset, handlerName, length, null)
 		{
 		}
 
-		public M1CardAttribute(int offset, CardDataType dataType, int length, String desc)
+		public M1CardAttribute(int offset, String handlerName, int length, String desc)
 		{
 			this.Offset = offset;
-			this.DataType = dataType;
+			this.HandlerName = handlerName;
 			this.Length = length;
 			this.Description = desc;
 		}

@@ -74,7 +74,7 @@ namespace RonftonCard.Main.Forms
 		private void InitConfiguration()
 		{
 			// ContextManager.Init must be invoked first !!!
-			ContextManager.Init();
+			ContextManager.InitAll();
 
 			IEntityResolver resolver = new XmlDefaultResolver(configFileName);
 			this.ReaderModel.BindDisplayItem(resolver,ReaderSectionPath);

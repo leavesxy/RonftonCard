@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<root>
+	<!-- section name -->
+	<cardreader>
+		<reader name="d8" type="Bluemoon.cardreader.d8,Bluemoon.cardreader">
+			<desc>this is a description of card reader</desc>
+		</reader>
+	</cardreader>
+
+	<entity>
+		<item name="entityA" type="Bluemoon.EntityA,Bluemoon">
+			<name>hubin</name>
+			<age>40</age>
+			<address>
+				<item>BeiJing</item>
+				<item value="GuiYang" />
+			</address>
+			<grade>
+				<item name="english" value="80"/>
+				<item name="chinese" value="90"/>
+			</grade>
+			<contact>
+				<item name="A">
+					<person>
+						<name>A</name>
+						<tele>136777777</tele>
+					</person>
+				</item>
+				<item name="B">
+				</item>
+			</contact>
+		</item>
+
+		<item name="entityB" type="Bluemoon.Entity">
+		</item>
+	</entity>
+</root>

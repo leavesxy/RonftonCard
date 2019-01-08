@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.KeyService", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.DongleService", "RonftonCard.DongleService\RonftonCard.DongleService.csproj", "{2D2590F8-2FEF-4FC9-A23F-25C20A2100F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RonftonCard.UnitTest", "RonftonCard.UnitTest\RonftonCard.UnitTest.csproj", "{D3040C71-97C8-4EA8-8E18-9DFE8B8D0E54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{2D2590F8-2FEF-4FC9-A23F-25C20A2100F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D2590F8-2FEF-4FC9-A23F-25C20A2100F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D2590F8-2FEF-4FC9-A23F-25C20A2100F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3040C71-97C8-4EA8-8E18-9DFE8B8D0E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3040C71-97C8-4EA8-8E18-9DFE8B8D0E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3040C71-97C8-4EA8-8E18-9DFE8B8D0E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3040C71-97C8-4EA8-8E18-9DFE8B8D0E54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
