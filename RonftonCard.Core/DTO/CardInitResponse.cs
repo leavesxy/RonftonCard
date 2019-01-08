@@ -10,9 +10,9 @@ namespace RonftonCard.Core.DTO
 	{
 		public UInt16 Sector { get; set; }
 
-		public byte[] KeyA { get; set; }
+		public String ReadableKey { get; set; }
 
-		public byte[] KeyB { get; set; }
+		public String WritableKey { get; set; }
 
 	}
 }

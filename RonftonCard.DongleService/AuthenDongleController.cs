@@ -6,50 +6,44 @@ using Newtonsoft.Json;
 using RonftonCard.Core;
 using RonftonCard.Core.Dongle;
 
-namespace RonftonCard.Service
+namespace RonftonCard.DongleService
 {
-	public class UserRootDongleController : ApiController
+	public class AuthenDongleController : ApiController
 	{
-		protected static ILog logger = LogManager.GetLogger("RonftonDongleService");
+		protected static ILog logger = ContextManager.GetLogger();
 
 		[HttpPost]
-		[Route("dongle/userRoot/create")]
+		[Route("dongle/authen/create")]
 		public IHttpActionResult Create(dynamic request)
 		{
 			String userId = Convert.ToString(request.userId);
-			String rootKey = Convert.ToString(request.rootKey);
-			byte[] rootKeyBytes = HexString.FromHexString(rootKey);
-
 			String jsonString = Convert.ToString(request.keyInfo);
-
 			DongleUserInfo keyInfo = JsonConvert.DeserializeObject<DongleUserInfo>(jsonString);
-
-			ResultArgs ret = DongleUtil.dongle.CreateUserRootDongle(userId, rootKeyBytes, keyInfo);
+			ResultArgs ret = DongleUtil.dongle.CreateAppAuthenDongle(userId, keyInfo);
 			return Json<ResultArgs>(ret);
 		}
 
 		[HttpPost]
-		[Route("dongle/userRoot/encrypt")]
+		[Route("dongle/authen/encrypt")]
 		public IHttpActionResult Encrypt(dynamic request)
 		{
 			String plain = Convert.ToString(request.plain);
 			byte[] plainBytes = DongleUtil.dongle.Encoder.GetBytes(plain);
-
 			byte[] cipher;
 
-			ResultArgs ret = DongleUtil.dongle.Encrypt(DongleType.USER_ROOT, plainBytes, out cipher ) ? 
-					new ResultArgs(true, BitConverter.ToString(cipher), "OK") : 
+			ResultArgs ret = DongleUtil.dongle.Encrypt(DongleType.AUTHEN, plainBytes, out cipher) ?
+					new ResultArgs(true, BitConverter.ToString(cipher), "OK") :
 					new ResultArgs(false, null, DongleUtil.dongle.LastErrorMessage);
 
 			return Json<ResultArgs>(ret);
 		}
 
 		[HttpPost]
-		[Route("dongle/userRoot/restore")]
+		[Route("dongle/authen/restore")]
 		public IHttpActionResult Restore(dynamic request)
 		{
 			String keyPwd = Convert.ToString(request.keyPwd);
-			return Json <ResultArgs>( DongleUtil.Restore(keyPwd));
+			return Json<ResultArgs>(DongleUtil.Restore(keyPwd));
 		}
 	}
 }

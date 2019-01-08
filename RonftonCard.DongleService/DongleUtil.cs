@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bluemoon;
 using RonftonCard.Core;
 using RonftonCard.Core.Dongle;
 
-namespace RonftonCard.Service
+namespace RonftonCard.DongleService
 {
 	public class DongleUtil
 	{
@@ -15,7 +11,7 @@ namespace RonftonCard.Service
 
 		static DongleUtil()
 		{
-			dongle = ConfigManager.GetDongle();
+			dongle = ContextManager.GetDongle();
 		}
 
 		public static ResultArgs Restore(String keyPwd)

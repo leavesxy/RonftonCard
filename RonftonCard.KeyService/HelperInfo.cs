@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.CardService
+namespace RonftonCard.KeyService
 {
 	public class HelperInfo
 	{
 		private static IDictionary<String, String> helperInfo = new Dictionary<String, String>()
 		{
-			{"http://localhost:9001/reader/open   ",  "[GET ]: 打开读卡器"},
-			{"http://localhost:9001/reader/info   ",  "[GET ]: 获取读卡器信息" },
-			{"http://localhost:9001/reader/select ",  "[GET ]: 寻卡" },
-			{"http://localhost:9001/reader/read   ",  "[POST]: 读卡扇区信息" },
+			{"http://localhost:9002/m1               ", "[GET] : 初始化扇区" },
+			{"http://localhost:9002/cpu              ", "[GET] : 初始化扇区" },
+			{"http://localhost:9002/test             ",	"[GET] : 服务测试"},
 		};
 		
 		public static void DbgHelperInfo()
@@ -24,13 +23,6 @@ namespace RonftonCard.CardService
 			{
 				Console.WriteLine(key + " --> " + helperInfo[key]);
 			}
-
-			DbgReadme();
-		}
-
-		public static void DbgReadme()
-		{
-			Console.WriteLine("---------------------------------------------------------------------");
 		}
 	}
 }

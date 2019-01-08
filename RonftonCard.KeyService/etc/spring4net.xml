@@ -2,11 +2,11 @@
 
 <objects xmlns='http://www.springframework.net'>
 	
-	<object id="Decard-d8" type="RonftonCard.CardReader.Decard.D8Reader,RonftonCard.CardReader">
-		<!-- port : COM=0,USB=100,PCSC=200,BLUE_TOOTH=300 -->
+	<!--<object id="Decard-d8" type="RonftonCard.CardReader.Decard.D8Reader,RonftonCard.CardReader">
+		--><!-- port : COM=0,USB=100,PCSC=200,BLUE_TOOTH=300 --><!--
 		<constructor-arg name="port" value="100"/>
 		<constructor-arg name="baud" value="9600"/>
-	</object>
+	</object>-->
 
 	<!--<object id="Rockey-Arm" type="RonftonCard.Dongle.RockeyArm.RockeyArmDongle,RonftonCard.Dongle">
 		<constructor-arg name="encodingName" value="utf-8"/>

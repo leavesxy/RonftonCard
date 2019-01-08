@@ -62,12 +62,12 @@ namespace RonftonCard.Core.Card
 			List<CardInitRequest> req = new List<CardInitRequest>();
 			for (int i = 0; i < sector.Length; i++)
 			{
-				req.Add(new CardInitRequest()
-				{
-					SN = sn,
-					Sector = sector[i],
-					SectorType = (byte)'I'
-				});
+				//req.Add(new CardInitRequest()
+				//{
+				//	SN = sn,
+				//	Sector = sector[i],
+				//	SectorType = (byte)'I'
+				//});
 			}
 			return req;
 		}
@@ -79,7 +79,7 @@ namespace RonftonCard.Core.Card
 
 			foreach (CardInitResponse __response in response)
 			{
-				this.reader.ChangeControlBlock(__response.Sector, this.keyMode, this.defaultKey, __response.KeyA, __response.KeyB);
+				//this.reader.ChangeControlBlock(__response.Sector, this.keyMode, this.defaultKey, __response.KeyA, __response.KeyB);
 			}
 			return true;
 		}

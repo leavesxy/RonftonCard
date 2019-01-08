@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bluemoon;
 using Microsoft.Owin.Hosting;
+using RonftonCard.Core;
 using Spring.Context;
 using Spring.Context.Support;
 
@@ -16,8 +17,9 @@ namespace RonftonCard.CardService
 		private static String BASE_ADDRESS = @"http://localhost:9001/";
 		static void Main(string[] args)
 		{
-			ContextManager.Init();
-
+			ContextManager.InitAll("RonftonCardService");
+			ContextManager.SetCardReaderSelected("Decard-d8");
+			
 			// Start OWIN host 
 			using (WebApp.Start<StartService>(url: BASE_ADDRESS))
 			{

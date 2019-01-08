@@ -82,14 +82,11 @@
     <Compile Include="Dongle\DongleAuthenMode.cs" />
     <Compile Include="CardReader\M1KeyMode.cs" />
     <Compile Include="CardReader\ReaderPortType.cs" />
-    <Compile Include="Config\CardReaderDescriptor.cs" />
     <Compile Include="CardReader\ICardReader.cs" />
     <Compile Include="Config\CardTempleteDescriptor.cs" />
-    <Compile Include="Config\DongleDescriptor.cs" />
     <Compile Include="Config\TempleteDataDescriptor.cs" />
     <Compile Include="Config\TempleteStorageDescriptor.cs" />
     <Compile Include="IKeyService.cs" />
-    <Compile Include="KeyService\LocalTestKeyService.cs" />
     <Compile Include="M1CardAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\ComboxDisplayBindingItem.cs" />

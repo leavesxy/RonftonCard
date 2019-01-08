@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using Bluemoon;
 using RonftonCard.Core.CardReader;
-using Newtonsoft.Json;
 using log4net;
 using RonftonCard.Core.DTO;
+using RonftonCard.Core;
 
 namespace RonftonCard.CardService
 {
@@ -16,37 +12,15 @@ namespace RonftonCard.CardService
 	{
 		protected static ILog logger = ContextManager.GetLogger();
 
-        //{"http://localhost:9001/reader/open   ",  "[GET]: 打开读卡器"},
-        //{"http://localhost:9001/reader/info   ",  "[GET]: 获取读卡器信息" },
-        //{"http://localhost:9001/reader/select ",  "[GET]: 寻卡" },
-        //{"http://localhost:9001/reader/read/id",  "[GET]: 读卡信息,id代表扇区号" },
-
-        class TestDto
-        {
-            public byte[] testBytes { get; set; }
-            public String byteString { get; set; }
-            public String base64String { get; set; }
-        }
+        //{"http://localhost:9001/reader/open   ",  "[GET] : 打开读卡器"},
+        //{"http://localhost:9001/reader/info   ",  "[GET] : 获取读卡器信息" },
+        //{"http://localhost:9001/reader/select ",  "[GET] : 寻卡" },
+        //{"http://localhost:9001/reader/read/id",  "[POST]: 读卡信息,id代表扇区号" },
 
         [HttpGet]
         [Route("reader/test")]
         public IHttpActionResult Test()
         {
-			//byte[] byteBuffer = new byte[] { 0x01, 0x02, 0x03, 0x4 };
-
-			//TestDto dto = new TestDto()
-			//{
-			//    testBytes = byteBuffer,
-			//    byteString = Encoding.UTF8.GetString(byteBuffer),
-			//    base64String = Convert.ToBase64String(byteBuffer)
-			//};
-
-			//logger.Debug("test value = " + JsonConvert.SerializeObject(dto));
-
-			//byte[] byteBuffer2 = Convert.FromBase64String(dto.base64String);
-			//logger.Debug("original byte array = " + BitConverter.ToString(byteBuffer2));
-
-			//return Json<TestDto>(dto);
 			return Json<ResultArgs>(new ResultArgs(true)
 			{
 				Msg = "OK",
@@ -100,11 +74,17 @@ namespace RonftonCard.CardService
             return result;
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route("reader/read")]
-		public IHttpActionResult Read()
+		public IHttpActionResult Read(dynamic request)
 		{
-			return null;
+			int sector = Convert.ToInt32(request.sector);
+			M1KeyMode keyMode = Enum.Parse(typeof(M1KeyMode), Convert.ToString(request.mode), true);
+			byte[] key = HexString.FromHexString(Convert.ToString(request.key), "-");
+
+			logger.Debug(String.Format("read sector {0}, mode = {1}, key={2} ", sector, keyMode, BitConverter.ToString(key)));
+
+			return Json < ResultArgs > (CardUtil.ReadSector(sector, keyMode, key));
 		}
 
 		[HttpGet]

@@ -1,10 +1,14 @@
-﻿using Microsoft.Owin.Hosting;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Bluemoon;
+using Microsoft.Owin.Hosting;
 using RonftonCard.Core;
 
-namespace RonftonCard.Service
+namespace RonftonCard.DongleService
 {
 	class Program
 	{
@@ -16,8 +20,8 @@ namespace RonftonCard.Service
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
 
-			ConfigManager.Init();
-			ConfigManager.DongleSelected = "Rockey-Arm";
+			ContextManager.InitAll("RonftonDongleService");
+			ContextManager.SetDongleSelected("Rockey-Arm");
 
 			string baseAddress = @"http://localhost:9000/";
 

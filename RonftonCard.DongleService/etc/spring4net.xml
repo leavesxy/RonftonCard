@@ -8,10 +8,10 @@
 		<constructor-arg name="baud" value="9600"/>
 	</object>
 
-	<!--<object id="Rockey-Arm" type="RonftonCard.Dongle.RockeyArm.RockeyArmDongle,RonftonCard.Dongle">
+	<object id="Rockey-Arm" type="RonftonCard.Dongle.RockeyArm.RockeyArmDongle,RonftonCard.Dongle">
 		<constructor-arg name="encodingName" value="utf-8"/>
 		<constructor-arg name="seed" value="0123456789abcdef"/>
 		<constructor-arg name="errMsgFileName" value="RockeyArmErrorMessage.properties"/>
-	</object>-->
+	</object>
 	
 </objects>

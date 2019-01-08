@@ -26,28 +26,49 @@ namespace RonftonCard.Core
 		#region "--- Initialize ---"
 		public static bool Init()
 		{
-			return Init( ContextConst.LOGGER_CONFIG_FILE_NAME, ContextConst.DEFAULT_LOGGER_NAME);
+			return Init( ContextConst.DEFAULT_LOGGER_NAME );
 		}
 
-		private const String CardTempleteConfigFileName = "CardTemplete.xml";
-		public static bool Init(String configFileName, String loggerName)
+		public static bool Init(String loggerName)
+		{
+			return Init(ContextConst.LOGGER_CONFIG_FILE_NAME, loggerName);
+		}
+				
+		public static bool Init(String loggerFileName, String loggerName)
 		{
 			configSelected = new Dictionary<String, String>();
 
 			// configure log4net
 			String fullName;
-			if (FileUtil.Lookup(configFileName, out fullName))
+			if (FileUtil.Lookup(loggerFileName, out fullName))
 			{
 				log4net.Config.XmlConfigurator.Configure(new FileInfo(fullName));
 			}
 
 			ContextManager.logger = LogManager.GetLogger(loggerName ?? ContextConst.DEFAULT_LOGGER_NAME);
 
-			ContextManager.logger.Debug("ContextManager init ok !");
-
 			// configure spring container
 			ContextManager.applicationContext = new XmlApplicationContext( ContextConst.SPRING_CONFIG_FILE_NAME);
+			
+			return true;
+		}
 
+		private const String CardTempleteConfigFileName = "CardTemplete.xml";
+
+		public static bool InitAll()
+		{
+			return InitAll(ContextConst.DEFAULT_LOGGER_NAME);
+		}
+
+		public static bool InitAll(String loggerName)
+		{
+			return InitAll(ContextConst.LOGGER_CONFIG_FILE_NAME, loggerName);
+		}
+		public static bool InitAll(String loggerFileName, String loggerName)
+		{
+			Init(loggerFileName, loggerName);
+
+			// card templete
 			ContextManager.templeteDescriptors = XmlConfigUtil.CreateEntity<IDictionary<String, CardTempleteDescriptor>>(CardTempleteConfigFileName);
 
 			return true;

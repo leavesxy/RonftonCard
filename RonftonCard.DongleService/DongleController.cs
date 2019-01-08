@@ -3,7 +3,7 @@ using System.Web.Http;
 using Bluemoon;
 using System;
 
-namespace RonftonCard.Service
+namespace RonftonCard.DongleService
 {
 	public class DongleController : ApiController
 	{
