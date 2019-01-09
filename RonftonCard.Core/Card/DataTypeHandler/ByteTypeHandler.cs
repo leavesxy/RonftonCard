@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Card.Handler
+namespace RonftonCard.Core.Card.DataTypeHandler
 {
-    public class ByteHandler : ICardDataHandler
+    public class ByteTypeHandler : ICardDataTypeHandler
     {
-        public ByteHandler()
+        public ByteTypeHandler()
         {
         }
 
         public byte[] GetBytes(object obj, int length)
         {
             if (obj.GetType().IsArray)
-                return GetBytes((byte[])obj, length);
+                return GetBytes( obj as byte[], length);
 
             if (obj.GetType().IsList())
                 return GetBytes(ArrayUtil.CopyFromList((IList)obj, typeof(byte)), length);

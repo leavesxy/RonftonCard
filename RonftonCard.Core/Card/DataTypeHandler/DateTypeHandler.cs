@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Card.Handler
+namespace RonftonCard.Core.Card.DataTypeHandler
 {
-    public class DateHandler : ICardDataHandler
+    public class DateTypeHandler : ICardDataTypeHandler
     {
         public byte[] GetBytes(object obj, int length)
         {
@@ -30,11 +30,13 @@ namespace RonftonCard.Core.Card.Handler
         public Object Parse(Type type, byte[] byteArray)
         {
             String val = HexString.ToHexString(byteArray);
-            if (byteArray.Length == 3)
-                val = "20" + val;
-            else if (byteArray.Length == 2)
-                val = "2019" + val;
-
+			if (byteArray.Length == 3)
+				val = "20" + val;
+			else if (byteArray.Length == 2)
+			{
+				// use current year
+				val = DateTime.Now.ToString("yyyy") + val;
+			}
             return DateTime.ParseExact(val, "yyyyMMdd", null);
         }
     }

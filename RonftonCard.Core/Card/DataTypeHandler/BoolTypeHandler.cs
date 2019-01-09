@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Card.Handler
+namespace RonftonCard.Core.Card.DataTypeHandler
 {
-    public class BoolHandler : ICardDataHandler
+	using Bluemoon;
+
+    public class BoolTypeHandler : ICardDataTypeHandler
     {
         public byte[] GetBytes(object obj, int length)
         {
@@ -18,6 +16,9 @@ namespace RonftonCard.Core.Card.Handler
 
         public Object Parse(Type type, byte[] byteArray)
         {
+			if (byteArray.IsNullOrEmpty())
+				return (Boolean)false;
+
             return byteArray[0] == (byte)0x00 ? false : true;
         }
     }

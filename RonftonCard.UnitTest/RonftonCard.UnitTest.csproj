@@ -58,6 +58,7 @@
     <Compile Include="Core\CardDataHandler\ByteHandlerTest.cs" />
     <Compile Include="Core\CardDataHandler\NumberHandlerTest.cs" />
     <Compile Include="Core\CardDataTest.cs" />
+    <Compile Include="DbgUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

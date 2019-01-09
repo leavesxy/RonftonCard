@@ -5,17 +5,13 @@ using RonftonCard.Core.CardReader;
 using log4net;
 using RonftonCard.Core.DTO;
 using RonftonCard.Core;
+using Newtonsoft.Json;
 
 namespace RonftonCard.CardService
 {
 	public class CardServiceController : ApiController
 	{
 		protected static ILog logger = ContextManager.GetLogger();
-
-        //{"http://localhost:9001/reader/open   ",  "[GET] : 打开读卡器"},
-        //{"http://localhost:9001/reader/info   ",  "[GET] : 获取读卡器信息" },
-        //{"http://localhost:9001/reader/select ",  "[GET] : 寻卡" },
-        //{"http://localhost:9001/reader/read/id",  "[POST]: 读卡信息,id代表扇区号" },
 
         [HttpGet]
         [Route("reader/test")]
@@ -74,9 +70,12 @@ namespace RonftonCard.CardService
             return result;
 		}
 
+		/// <summary>
+		/// read sector
+		/// </summary>
 		[HttpPost]
-		[Route("reader/read")]
-		public IHttpActionResult Read(dynamic request)
+		[Route("reader/readSector")]
+		public IHttpActionResult ReadSector(dynamic request)
 		{
 			int sector = Convert.ToInt32(request.sector);
 			M1KeyMode keyMode = Enum.Parse(typeof(M1KeyMode), Convert.ToString(request.mode), true);
@@ -87,18 +86,42 @@ namespace RonftonCard.CardService
 			return Json < ResultArgs > (CardUtil.ReadSector(sector, keyMode, key));
 		}
 
+		[HttpPost]
+		[Route("reader/readBlock")]
+		public IHttpActionResult ReadBlock(dynamic request)
+		{
+			int block = Convert.ToInt32(request.block);
+			M1KeyMode keyMode = Enum.Parse(typeof(M1KeyMode), Convert.ToString(request.mode), true);
+			byte[] key = HexString.FromHexString(Convert.ToString(request.key), "-");
+
+			return Json<ResultArgs>(new ResultArgs(true, null, "ok"));
+			//logger.Debug(String.Format("read sector {0}, mode = {1}, key={2} ", sector, keyMode, BitConverter.ToString(key)));
+
+			//return Json<ResultArgs>(CardUtil.ReadSector(sector, keyMode, key));
+		}
+
+
 		[HttpGet]
-		[Route("reader/initialize")]
-		public IHttpActionResult Initialize()
+		[Route("reader/init")]
+		public IHttpActionResult Init()
 		{
 			return null;
 		}
 
-		[HttpGet]
-		[Route("reader/write")]
-		public IHttpActionResult Write()
+		[HttpPost]
+		[Route("reader/personalize")]
+		public IHttpActionResult Personalize(dynamic request)
 		{
-			return null;
+			int sector = Convert.ToInt32(request.sector);
+			M1KeyMode keyMode = Enum.Parse(typeof(M1KeyMode), Convert.ToString(request.mode), true);
+			byte[] key = HexString.FromHexString(Convert.ToString(request.key), "-");
+
+			CardInfo cardInfo = JsonConvert.DeserializeObject<CardInfo>(Convert.ToString(request.data));
+			logger.Debug(String.Format("personalize : {0}, keyMode={1}, Key={2}",
+							sector, keyMode, BitConverter.ToString(key)));
+			logger.Debug(cardInfo.ToString()); 
+
+			return Json<ResultArgs>( new ResultArgs( true, cardInfo, "OK") );
 		}
 	}
 }

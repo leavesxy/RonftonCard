@@ -14,31 +14,31 @@ namespace RonftonCard.Core.DTO
 		/// <summary>
 		/// version of card
 		/// </summary>
-		[M1Card(offset:0, handlerName: "byte",length:1)]
+		[M1Card(offset:0, dataType: "byte",length:1)]
 		public byte Version { get; set; }
 
 		/// <summary>
 		/// university Code, 6 digit
 		/// </summary>
-		[M1Card(offset: 1, handlerName: "bcdString", length: 3)]
+		[M1Card(offset: 1, dataType: "bcdString", length: 3)]
 		public String UniversityCode { get; set; }
 
 		/// <summary>
 		/// school number,user number
 		/// </summary>
-		[M1Card(offset: 4, handlerName: "string", length: 12)]
+		[M1Card(offset: 4, dataType: "string", length: 12)]
 		public String SNO { get; set; }
 
         /// <summary>
         /// internal card number
         /// </summary>
-        [M1Card(offset: 16, handlerName: "number", length: 4)]
+        [M1Card(offset: 16, dataType: "number", length: 4)]
         public Int32 CardNo { get; set; }
 
         /// <summary>
         /// expire date of card
         /// </summary>
-        [M1Card(offset: 20, handlerName: "date", length: 3)]
+        [M1Card(offset: 20, dataType: "date", length: 3)]
         public DateTime ExpireDate { get; set; }
 
 		public byte IdType { get; set; }

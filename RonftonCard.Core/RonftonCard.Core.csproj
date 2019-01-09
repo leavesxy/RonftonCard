@@ -60,15 +60,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card\Handler\BcdStringHandler.cs" />
-    <Compile Include="Card\Handler\BoolHandler.cs" />
-    <Compile Include="Card\Handler\ByteHandler.cs" />
-    <Compile Include="Card\Handler\DateHandler.cs" />
-    <Compile Include="Card\Handler\NumberHandler.cs" />
-    <Compile Include="Card\Handler\StringHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\BcdStringTypeHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\BoolTypeHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\ByteTypeHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\DateTypeHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\NumberTypeHandler.cs" />
+    <Compile Include="Card\DataTypeHandler\StringTypeHandler.cs" />
     <Compile Include="Card\ICard.cs" />
-    <Compile Include="Card\ICardDataHandler.cs" />
+    <Compile Include="Card\ICardDataTypeHandler.cs" />
     <Compile Include="Card\MifareCard.cs" />
+    <Compile Include="Card\VirtualCard.cs" />
     <Compile Include="ContextConst.cs" />
     <Compile Include="ContextManager.cs" />
     <Compile Include="DTO\CardInfo.cs" />

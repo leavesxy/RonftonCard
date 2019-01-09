@@ -191,9 +191,10 @@ namespace RonftonCard.CardReader.Decard
 				return false;
 
 			// compute block number for this sector
-			// if len is greater than block number of this sector, the excess part is discarded
+			// if len is greater than block number of this sector, the excess part is discard
 			// if len is less than block number of this sector, keep the rest of sector
-			int loop = Math.Min(ComputeBlockNum(sector), len / M1_BLOCK_LEN);
+			// the last block is Control block, can't be written
+			int loop = Math.Min( ComputeBlockNum(sector) -1 , len / M1_BLOCK_LEN);
 
 			int startBlockNo = ComputeStartBlockNo(sector);
 

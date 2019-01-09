@@ -2,17 +2,14 @@
 using Bluemoon.Broker;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Card.Handler
+namespace RonftonCard.Core.Card.DataTypeHandler
 {
-    public class NumberHandler : ICardDataHandler
+    public class NumberTypeHandler : ICardDataTypeHandler
     {
         private IDictionary<String, Type> numberType;
 
-        public NumberHandler()
+        public NumberTypeHandler()
         {
             this.numberType = new Dictionary<String, Type>()
             {

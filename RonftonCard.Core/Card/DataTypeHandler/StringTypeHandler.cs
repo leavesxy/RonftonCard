@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RonftonCard.Core.Card.Handler
+namespace RonftonCard.Core.Card.DataTypeHandler
 {
-    public class BcdStringHandler : ICardDataHandler
+    public class StringTypeHandler : ICardDataTypeHandler
     {
         public byte[] GetBytes(object obj, int length)
         {
@@ -16,12 +16,12 @@ namespace RonftonCard.Core.Card.Handler
             if (String.IsNullOrEmpty(str))
                 return ByteUtil.Malloc(length);
 
-            return ArrayUtil.CopyFrom(HexString.FromHexString(str), length);
+            return ArrayUtil.CopyFrom(Encoding.UTF8.GetBytes(str), length);
         }
 
         public Object Parse(Type type, byte[] byteArray)
         {
-            return HexString.ToHexString(byteArray);
+            return Encoding.UTF8.GetString(byteArray);
         }
     }
 }

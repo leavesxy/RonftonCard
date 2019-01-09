@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RonftonCard.Core.Card
 {
-    public interface ICardDataHandler
+    public interface ICardDataTypeHandler
     {
         byte[] GetBytes(Object obj, int length);
 

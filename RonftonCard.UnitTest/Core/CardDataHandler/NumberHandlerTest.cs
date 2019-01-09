@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RonftonCard.Core.Card;
-using RonftonCard.Core.Card.Handler;
+using RonftonCard.Core.Card.DataTypeHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace RonftonCard.UnitTest.Core.CardDataHandler
         [TestMethod]
         public void Test_1()
         {
-            ICardDataHandler dh = new NumberHandler();
+            ICardDataTypeHandler dh = new NumberTypeHandler();
 
             byte[] buffer;
 
