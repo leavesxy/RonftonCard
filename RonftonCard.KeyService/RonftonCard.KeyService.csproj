@@ -121,6 +121,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="etc\CardConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="etc\logger.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

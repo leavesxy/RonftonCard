@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<card>
+	<user id="000001" name="广州中山大学">
+		<item sector="0" offset="16" size="32" />
+		<item sector="1" offset="0" size="48" />
+		<item sector="2" offset="0" size="48" />
+	</user>
+</card>

@@ -10,8 +10,8 @@ namespace RonftonCard.KeyService
 	{
 		private static IDictionary<String, String> helperInfo = new Dictionary<String, String>()
 		{
-			{"http://localhost:9002/m1               ", "[GET] : 初始化扇区" },
-			{"http://localhost:9002/cpu              ", "[GET] : 初始化扇区" },
+			{"http://localhost:9002/m1               ", "[GET] : 初始化M1卡" },
+			{"http://localhost:9002/cpu              ", "[GET] : 初始化CPU卡" },
 			{"http://localhost:9002/test             ",	"[GET] : 服务测试"},
 		};
 		
