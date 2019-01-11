@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<cardTemplete>
+	<item userId="000001" name="中山大学">
+		<cardType>S50</cardType>
+
+		<descriptor>
+			<item descriptor="0" descriptorType="i"/>
+			<item descriptor="1" descriptorType="i"/>
+			<item descriptor="2" descriptorType="p"/>
+		</descriptor>
+		
+		<virtualAddressTable>
+			<item descriptor = "0" blockNo="1" logicBlockNo="1" offset="0" size="16"/>
+			<item descriptor = "0" blockNo="2" logicBlockNo="2" offset="16" size="16" />
+			<item descriptor = "1" blockNo="4" logicBlockNo="3" offset="32" size="16"/>
+			<item descriptor = "1" blockNo="5" logicBlockNo="4" offset="48" size="16"/>
+			<item descriptor = "1" blockNo="6" logicBlockNo="5" offset="64" size="16"/>
+			<item descriptor = "2" blockNo="8" logicBlockNo="6" offset="80" size="16"/>
+			<item descriptor = "2" blockNo="9" logicBlockNo="7" offset="96" size="16"/>
+			<item descriptor = "2" blockNo="10" logicBlockNo="8" offset="112" size="16"/>
+		</virtualAddressTable>
+	</item>
+</cardTemplete>

@@ -69,6 +69,8 @@
     <Compile Include="Card\ICard.cs" />
     <Compile Include="Card\ICardDataTypeHandler.cs" />
     <Compile Include="Card\MifareCard.cs" />
+    <Compile Include="Card\VirtualAddressUnit.cs" />
+    <Compile Include="Card\VirtualAddressTable.cs" />
     <Compile Include="Card\VirtualCard.cs" />
     <Compile Include="ContextConst.cs" />
     <Compile Include="ContextManager.cs" />
@@ -102,7 +104,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="etc\CardTemplete.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

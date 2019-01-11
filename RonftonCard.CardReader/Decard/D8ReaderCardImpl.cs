@@ -88,8 +88,8 @@ namespace RonftonCard.CardReader.Decard
 		private const int M1_BLOCK_LEN = 16;
 
 		/// <summary>
-		/// M1_S50: 16 sectors,  64 blocks
-		/// M1_S70: 40 sectors, 256 blocks
+		/// M1_S50: 16 sectors,  64 blocks, 0~63
+		/// M1_S70: 40 sectors, 256 blocks, 0~255
 		///			in the first 32 sectors, 4 blocks per sector. 
 		///			16 blocks per sector in the last 8 sectors
 		/// </summary>
