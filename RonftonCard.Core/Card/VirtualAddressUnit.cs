@@ -27,9 +27,9 @@ namespace RonftonCard.Core.Card
 		public UInt32 BlockNo { get; set; }
 
 		/// <summary>
-		/// for sort using
+		/// internal block no ,use for sorting
 		/// </summary>
-		public UInt32 LogicBlockNo { get; set; }
+		public UInt32 internalBlockNo { get; set; }
 
 		/// <summary>
 		/// offset address in virtual card buffer
@@ -44,13 +44,7 @@ namespace RonftonCard.Core.Card
 
 		public bool IsValid()
 		{
-			if (this.Descriptor < 0 ||
-				this.BlockNo < 0 ||
-				this.LogicBlockNo < 0 ||
-				this.Offset < 0 ||
-				Size <= 0)
-				return false;
-			return true;
+            return Size <= 0;
 		}
 	}
 }

@@ -16,7 +16,13 @@ namespace RonftonCard.Core.Card
 
 		public int Size
 		{
-			get { return virtualAddressTable.Sum(v => v.Size); }
+			get
+            {
+                UInt32 size = 0;
+
+                virtualAddressTable.ForEach(v => size += v.Size);
+                return (int)size;
+            }
 		}
 
 		public Boolean IsValid()
@@ -36,7 +42,7 @@ namespace RonftonCard.Core.Card
 						return false;
 
 					// Block No duplication
-					if (va[i].BlockNo == va[i - 1].BlockNo || va[i].LogicBlockNo == va[i - 1].LogicBlockNo)
+					if (va[i].BlockNo == va[i - 1].BlockNo || va[i].internalBlockNo == va[i - 1].internalBlockNo)
 						return false;
 				}
 			}
